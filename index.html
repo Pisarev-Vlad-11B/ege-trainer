@@ -319,60 +319,6 @@ main{position:relative;isolation:isolate}
  .theory-view .theory-step,.score-jar,.score-jar .jar-lid{transition:none!important}
 }
 </style>
-<style>
-/* Крышка банки остаётся неподвижной */
-.score-jar .jar-lid,
-.score-jar:hover .jar-lid{
-  transform:none !important;
-  top:-13px;
-  transition:none !important;
-}
-</style>
-
-<style>
-/* Очень плавное выделение каждой карточки достижения */
-.achievement-page-card{
-  transition:
-    transform 1.35s cubic-bezier(.16,1,.3,1),
-    border-color 1.35s cubic-bezier(.16,1,.3,1),
-    box-shadow 1.35s cubic-bezier(.16,1,.3,1),
-    background 1.35s cubic-bezier(.16,1,.3,1);
-  will-change:transform,box-shadow;
-}
-.achievement-page-card:before{
-  transition:opacity 1.4s cubic-bezier(.16,1,.3,1);
-}
-.achievement-page-card:hover{
-  transform:translateY(-4px) scale(1.018);
-  border-color:#d5a8ad;
-  box-shadow:0 16px 32px rgba(113,53,59,.12),0 0 0 3px rgba(214,151,157,.075);
-}
-.achievement-page-icon{
-  transition:
-    transform 1.4s cubic-bezier(.16,1,.3,1),
-    box-shadow 1.4s cubic-bezier(.16,1,.3,1),
-    background-color 1.4s cubic-bezier(.16,1,.3,1),
-    filter 1.4s cubic-bezier(.16,1,.3,1);
-}
-.achievement-page-copy strong{
-  transition:color 1.35s cubic-bezier(.16,1,.3,1);
-}
-.achievement-page-card:hover .achievement-page-icon{
-  transform:translateY(-2px) scale(1.07) rotate(-3deg);
-  box-shadow:0 8px 16px rgba(169,54,69,.11);
-}
-.achievement-page-card:hover .achievement-page-copy strong{color:#9f3040}
-.score-jar{
-  transition:filter 1.35s cubic-bezier(.16,1,.3,1),box-shadow 1.35s cubic-bezier(.16,1,.3,1);
-}
-.score-jar:hover{
-  filter:drop-shadow(0 10px 15px rgba(169,54,69,.20));
-}
-@media(prefers-reduced-motion:reduce){
-  .achievement-page-card,.achievement-page-card:before,.achievement-page-icon,
-  .achievement-page-copy strong,.score-jar,.score-jar:after{transition:none!important}
-}
-</style>
 </head>
 <body>
 <header class="topbar">
@@ -769,5 +715,59 @@ renderTask();updateStats();
 .home-author{position:absolute;right:4px;bottom:0;color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.15px;opacity:.88}
 @media(max-width:600px){.home-author{right:8px;font-size:11px}}
 </style>
-</body>
+\n</body>
 </html>
+<style>
+/* Крышка банки остаётся неподвижной */
+.score-jar .jar-lid,
+.score-jar:hover .jar-lid{
+  transform:none !important;
+  top:-13px;
+  transition:none !important;
+}
+</style>
+
+<style>
+/* Очень плавное выделение каждой карточки достижения */
+.achievement-page-card{
+  transition:
+    transform 1.35s cubic-bezier(.16,1,.3,1),
+    border-color 1.35s cubic-bezier(.16,1,.3,1),
+    box-shadow 1.35s cubic-bezier(.16,1,.3,1),
+    background 1.35s cubic-bezier(.16,1,.3,1);
+  will-change:transform,box-shadow;
+}
+.achievement-page-card:before{
+  transition:opacity 1.4s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover{
+  transform:translateY(-4px) scale(1.018);
+  border-color:#d5a8ad;
+  box-shadow:0 16px 32px rgba(113,53,59,.12),0 0 0 3px rgba(214,151,157,.075);
+}
+.achievement-page-icon{
+  transition:
+    transform 1.4s cubic-bezier(.16,1,.3,1),
+    box-shadow 1.4s cubic-bezier(.16,1,.3,1),
+    background-color 1.4s cubic-bezier(.16,1,.3,1),
+    filter 1.4s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-copy strong{
+  transition:color 1.35s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover .achievement-page-icon{
+  transform:translateY(-2px) scale(1.07) rotate(-3deg);
+  box-shadow:0 8px 16px rgba(169,54,69,.11);
+}
+.achievement-page-card:hover .achievement-page-copy strong{color:#9f3040}
+.score-jar{
+  transition:filter 1.35s cubic-bezier(.16,1,.3,1),box-shadow 1.35s cubic-bezier(.16,1,.3,1);
+}
+.score-jar:hover{
+  filter:drop-shadow(0 10px 15px rgba(169,54,69,.20));
+}
+@media(prefers-reduced-motion:reduce){
+  .achievement-page-card,.achievement-page-card:before,.achievement-page-icon,
+  .achievement-page-copy strong,.score-jar,.score-jar:after{transition:none!important}
+}
+</style>
