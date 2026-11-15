@@ -656,9 +656,11 @@ max-height: 55px;
 
   <div class="stat-card">
     <h3>🏆 Таблица лидеров</h3>
-    <div id="leaderboardList">
-      <p>Здесь скоро появится рейтинг учеников.</p>
-    </div>
+    <div id="myLeaderboardRank"></div>
+
+<div id="leaderboardList">
+  <p>Здесь скоро появится рейтинг учеников.</p>
+</div>
   </div>
 </section>
   <section id="tasks" class="view">
@@ -1255,6 +1257,14 @@ window.__syncCloudState = syncCloudState;
   ...item.data()
 }))
       .sort((a, b) => (Number(b.streak) || 0) - (Number(a.streak) || 0));
+    const myRank = document.getElementById("myLeaderboardRank");
+const myIndex = leaders.findIndex(item => item.id === auth.currentUser.uid);
+
+if (myRank) {
+  myRank.innerHTML = myIndex >= 0
+    ? `<div style="padding:12px;margin-bottom:12px;border-radius:12px;background:var(--soft);color:var(--ink);font-weight:700;">📍 Твоё место в рейтинге: № ${myIndex + 1}</div>`
+    : `<div style="padding:12px;margin-bottom:12px;border-radius:12px;background:var(--soft);color:var(--ink);">📍 Ты пока не попал в рейтинг</div>`;
+}
 
     if (leaders.length === 0) {
       list.innerHTML = "<p>Пока никто не попал в рейтинг.</p>";
