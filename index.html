@@ -1223,6 +1223,15 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
   } catch (e) {
     console.warn("Не удалось обновить рейтинг:", e);
   }
+
+  // Обновляем публичный профиль
+  try {
+    if (profile?.isPublic === true) {
+      await syncPublicProfile(profile, state);
+    }
+  } catch (e) {
+    console.warn("Не удалось обновить публичный профиль:", e);
+  }
 }
 window.__syncCloudState = syncCloudState;
   async function renderLeaderboard() {
