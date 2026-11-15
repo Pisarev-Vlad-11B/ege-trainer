@@ -1513,11 +1513,14 @@ $id("deleteAccountBtn").addEventListener("click", async () => {
 
     const uid = user.uid;
 
-    await Promise.all([
-      deleteDoc(userDoc(uid)),
-      deleteDoc(doc(db, "leaderboard", uid)),
-      deleteDoc(doc(db, "publicProfiles", uid))
-    ]);
+    await deleteDoc(userDoc(uid));
+console.log("Личные данные удалены");
+
+await deleteDoc(doc(db, "leaderboard", uid));
+console.log("Запись рейтинга удалена");
+
+await deleteDoc(doc(db, "publicProfiles", uid));
+console.log("Публичный профиль удалён");
 
     await deleteUser(user);
 
