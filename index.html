@@ -460,13 +460,17 @@ main{position:relative;isolation:isolate}
 .profile-status.is-online{background:var(--greenbg);color:var(--green)}
 .profile-auth-btn{white-space:nowrap}
  .profile-nav-avatar {
-  width: 500px;
-  height: 500px;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px;
+  max-width: 40px;
+  min-height: 40px;
+  max-height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #f1dfe1;
-  vertical-align: middle;
   flex-shrink: 0;
+  display: block;
 }
 
 #profileNav {
