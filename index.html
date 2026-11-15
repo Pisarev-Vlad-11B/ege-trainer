@@ -1789,6 +1789,21 @@ html[data-theme="dark"] .theory-view:before {
   background: #59343e;
   opacity: .25;
 }
+/* Наведение на плашки теории в тёмной теме */
+html[data-theme="dark"] .theory-view .theory-visual-card:hover,
+html[data-theme="dark"] .theory-view .theory-callout:hover,
+html[data-theme="dark"] .theory-view .theory-step:hover {
+  background: #3b363d;
+  background-color: #3b363d;
+  border-color: #66515b;
+  color: #eee7e9;
+  box-shadow: 0 9px 20px rgba(0,0,0,.25);
+}
+
+html[data-theme="dark"] .theory-view .theory-step:hover span,
+html[data-theme="dark"] .theory-view .theory-visual-card:hover span {
+  color: #ded6d9;
+}
 </style>
 <div id="publicProfileOverlay" class="public-profile-overlay" hidden>
   <div class="public-profile-window">
