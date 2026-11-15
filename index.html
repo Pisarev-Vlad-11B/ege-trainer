@@ -1285,7 +1285,7 @@ if (myRank) {
         <div
   class="leaderboard-entry"
   data-user-id="${item.id}"
-  style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd;cursor:pointer;background:${item.id === auth.currentUser.uid ? (document.documentElement.getAttribute('data-theme') === 'dark' ? '#633b46' : '#f8e8eb') : 'transparent'};border:${item.id === auth.currentUser.uid ? '1px solid #8b3a4a' : 'none'};border-left:${item.id === auth.currentUser.uid ? '5px solid #8b3a4a' : 'none'};border-radius:10px;font-weight:${item.id === auth.currentUser.uid ? '800' : '400'}"
+  style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd;cursor:pointer;color:${document.documentElement.getAttribute('data-theme') === 'dark' ? '#ffffff' : '#000000'};background:${item.id === auth.currentUser.uid ? (document.documentElement.getAttribute('data-theme') === 'dark' ? '#633b46' : '#f8e8eb') : 'transparent'};border:${item.id === auth.currentUser.uid ? '1px solid #8b3a4a' : 'none'};border-left:${item.id === auth.currentUser.uid ? '5px solid #8b3a4a' : 'none'};border-radius:10px;font-weight:${item.id === auth.currentUser.uid ? '800' : '400'}"
 >
   <span>${index + 1}. ${username}</span>
   <strong>🔥 ${Number(item.streak) || 0}</strong>
