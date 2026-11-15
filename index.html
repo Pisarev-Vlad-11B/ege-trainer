@@ -1172,7 +1172,27 @@ async function loadAccount(user, fallbackUsername = "") {
   await setDoc(ref, initial, { merge: true });
   return { ...initial, username };
 }
-async function syncCloudState(state) {
+async function syncPublicProfile(data = profile, state = window.__getLocalState?.()) {
+  if (!auth?.currentUser || !db || !data) return;
+
+  const username = String(
+    data.username || (auth.currentUser.email || "ученик").split("@")[0]
+  ).slice(0, 40);
+
+  const streak = Math.max(0, Math.floor(Number(state?.streak) || 0));
+
+  await setDoc(doc(db, "publicProfiles", auth.currentUser.uid), {
+    username,
+    firstName: String(data.firstName || "").slice(0, 40),
+    lastName: String(data.lastName || "").slice(0, 50),
+    about: String(data.about || "").slice(0, 300),
+    avatarUrl: String(data.avatarUrl || ""),
+    streak,
+    isPublic: data.isPublic === true,
+    updatedAt: serverTimestamp()
+  });
+}
+  async function syncCloudState(state) {
   if (!auth?.currentUser || !db || !state) return;
 
   // Сохраняем личный прогресс
