@@ -757,7 +757,11 @@ max-height: 55px;
   </label>
   <p>Если включить, другие ученики смогут увидеть твоё имя, аватар, описание и серию огоньков.</p>
 </div>
-      <div class="profile-actions"><button class="primary" id="saveProfileBtn" disabled>Сохранить профиль</button><button class="secondary" id="signOutBtn" hidden>Выйти</button></div>
+      <div class="profile-actions">
+  <button class="primary" id="saveProfileBtn" disabled>Сохранить профиль</button>
+  <button class="secondary" id="signOutBtn" hidden>Выйти</button>
+  <button class="secondary" id="deleteAccountBtn" type="button" hidden style="color:#b4233a;border-color:#b4233a;">Удалить аккаунт</button>
+</div>
       <p class="profile-privacy-note">Мы не запрашиваем номер телефона, электронную почту или дату рождения. Указывай только ту информацию о себе, которой готов поделиться.</p>
     </div>
     <div class="profile-progress-card"><h3>Твой прогресс</h3><div class="profile-progress-grid"><div><strong id="profileDone">0</strong><span>решено заданий</span></div><div><strong id="profileAccuracy">—</strong><span>точность</span></div><div><strong id="profileStreak">0</strong><span>серия ответов</span></div></div><p>После подключения сервера твой прогресс будет храниться в аккаунте и синхронизироваться между устройствами.</p></div>
@@ -1046,11 +1050,12 @@ document.addEventListener("click", function(e) {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  setPersistence, browserLocalPersistence, browserSessionPersistence,
-  signOut, onAuthStateChanged
+setPersistence, browserLocalPersistence, browserSessionPersistence,
+signOut, onAuthStateChanged, deleteUser,
+EmailAuthProvider, reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, getDocs, collection, setDoc, serverTimestamp
+  getFirestore, doc, getDoc, getDocs, collection, setDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 /*
@@ -1121,6 +1126,7 @@ const setProfileEnabled = enabled => {
     const el = $id(id); if (el) el.disabled = !enabled;
   });
   $id("signOutBtn").hidden = !enabled;
+  $id("deleteAccountBtn").hidden = !enabled;
   $id("profileAuthBtn").hidden = enabled;
 };
 function paintProfile(data) {
@@ -1486,7 +1492,56 @@ $id("avatarFile").addEventListener("change", async e => {
     toast(errorText(err));
   }
 });
-$id("signOutBtn").addEventListener("click", async () => {
+$id("deleteAccountBtn").addEventListener("click", async () => {
+  const user = auth?.currentUser;
+  if (!user || !db) return;
+
+  if (!confirm("Ты действительно хочешь удалить аккаунт? Весь прогресс, профиль и место в рейтинге будут удалены без возможности восстановления.")) return;
+
+  const password = prompt("Для подтверждения введи пароль от аккаунта:");
+  if (password === null) return;
+
+  if (!password) {
+    toast("Нужно ввести пароль.");
+    return;
+  }
+
+  try {
+    const credential = EmailAuthProvider.credential(user.email, password);
+
+    await reauthenticateWithCredential(user, credential);
+
+    const uid = user.uid;
+
+    await Promise.all([
+      deleteDoc(userDoc(uid)),
+      deleteDoc(doc(db, "leaderboard", uid)),
+      deleteDoc(doc(db, "publicProfiles", uid))
+    ]);
+
+    await deleteUser(user);
+
+    lastHandledUid = null;
+    paintProfile(null);
+
+    if (window.__resetLocalState) {
+      window.__resetLocalState();
+    }
+
+    showView("home");
+    toast("Аккаунт и связанные данные удалены.");
+  } catch (e) {
+    console.error("Ошибка удаления аккаунта:", e);
+
+    if (e.code === "auth/invalid-credential" ||
+        e.code === "auth/wrong-password") {
+      toast("Неверный пароль.");
+    } else {
+      toast(errorText(e));
+    }
+  }
+});
+  $id("signOutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
     lastHandledUid = null;
