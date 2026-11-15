@@ -1260,6 +1260,69 @@ window.__syncCloudState = syncCloudState;
 }
 
 window.__renderLeaderboard = renderLeaderboard;
+  document.getElementById("leaderboardList").addEventListener("click", async (e) => {
+  const entry = e.target.closest(".leaderboard-entry");
+  if (!entry) return;
+
+  const userId = entry.dataset.userId;
+  const overlay = document.getElementById("publicProfileOverlay");
+  const content = document.getElementById("publicProfileContent");
+
+  overlay.hidden = false;
+  content.innerHTML = "<p>Загружаем профиль...</p>";
+
+  try {
+    const snapshot = await getDoc(doc(db, "publicProfiles", userId));
+
+    if (!snapshot.exists() || snapshot.data().isPublic !== true) {
+      content.innerHTML = "<p>Этот ученик пока не открыл свой профиль.</p>";
+      return;
+    }
+
+    const data = snapshot.data();
+    const escapeHTML = value => String(value || "").replace(/[&<>"']/g, ch => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[ch]));
+
+    const fullName = [data.firstName, data.lastName].filter(Boolean).join(" ") || data.username || "Ученик";
+
+    content.innerHTML = `
+      <div style="text-align:center">
+        ${data.avatarUrl
+          ? `<img class="public-profile-avatar" src="${escapeHTML(data.avatarUrl)}" alt="Аватар">`
+          : ""}
+        <h2>${escapeHTML(fullName)}</h2>
+        <p>${escapeHTML(data.username)}</p>
+      </div>
+      <div class="public-profile-about">${escapeHTML(data.about || "Ученик пока ничего не рассказал о себе.")}</div>
+      <div class="public-profile-streak">🔥 Серия правильных ответов: ${Number(data.streak) || 0}</div>
+    `;
+  } catch (error) {
+    console.error("Ошибка загрузки публичного профиля:", error);
+    content.innerHTML = "<p>Не удалось загрузить профиль.</p>";
+  }
+});
+  const publicProfileOverlay = document.getElementById("publicProfileOverlay");
+
+document.getElementById("publicProfileClose").addEventListener("click", () => {
+  publicProfileOverlay.hidden = true;
+});
+
+publicProfileOverlay.addEventListener("click", (e) => {
+  if (e.target === publicProfileOverlay) {
+    publicProfileOverlay.hidden = true;
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    publicProfileOverlay.hidden = true;
+  }
+});
 async function restoreAccount(user, username = "") {
   const data = await loadAccount(user, username);
   paintProfile(data);
