@@ -510,6 +510,75 @@ max-height: 55px;
 .profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .profile-privacy-note{font-size:12px;line-height:1.5;color:var(--muted);margin:16px 0 0}
 .profile-progress-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+  .public-profile-overlay[hidden] {
+  display: none;
+}
+
+.public-profile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(35, 25, 28, 0.58);
+  backdrop-filter: blur(5px);
+}
+
+.public-profile-window {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 24px 80px #3b20252b;
+}
+
+.public-profile-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper2);
+  color: var(--muted);
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.public-profile-window h2 {
+  margin: 8px 40px 18px 0;
+}
+
+.public-profile-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f1dfe1;
+}
+
+.public-profile-about {
+  margin-top: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.public-profile-streak {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--paper2);
+  font-size: 18px;
+  font-weight: 800;
+}
 .profile-progress-grid div{background:var(--paper2);border-radius:16px;padding:16px;text-align:center;display:grid;gap:4px}
 .profile-progress-grid strong{font-size:26px;color:var(--red)}.profile-progress-grid span{font-size:12px;color:var(--muted)}
 .auth-window{position:relative;width:min(440px,calc(100vw - 32px));background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:30px;box-shadow:0 24px 80px #3b20252b;animation:authIn .28s ease}
@@ -678,6 +747,13 @@ max-height: 55px;
         <label>Фамилия<input id="profileLastName" type="text" maxlength="50" placeholder="Например, Писарев" autocomplete="family-name" disabled></label>
         <label>О себе <span class="optional-label">необязательно</span><textarea id="profileAbout" maxlength="300" placeholder="Расскажи немного о себе, своих целях и подготовке к ЕГЭ…" disabled></textarea></label>
       </div>
+      <div class="public-profile-setting">
+  <label>
+    <input type="checkbox" id="profileIsPublic" disabled>
+    Показывать мой профиль другим ученикам в рейтинге
+  </label>
+  <p>Если включить, другие ученики смогут увидеть твоё имя, аватар, описание и серию огоньков.</p>
+</div>
       <div class="profile-actions"><button class="primary" id="saveProfileBtn" disabled>Сохранить профиль</button><button class="secondary" id="signOutBtn" hidden>Выйти</button></div>
       <p class="profile-privacy-note">Мы не запрашиваем номер телефона, электронную почту или дату рождения. Указывай только ту информацию о себе, которой готов поделиться.</p>
     </div>
@@ -1058,6 +1134,9 @@ function paintProfile(data) {
   $id("profileFirstName").value = data?.firstName || "";
   $id("profileLastName").value = data?.lastName || "";
   $id("profileAbout").value = data?.about || "";
+  const publicToggle = $id("profileIsPublic");
+  publicToggle.checked = data?.isPublic === true;
+  publicToggle.disabled = !signed;
   const avatar = data?.avatarUrl || "";
   $id("profileAvatar").hidden = !avatar;
  $id("removeAvatarBtn").hidden = !avatar;
@@ -1141,7 +1220,10 @@ window.__syncCloudState = syncCloudState;
     const snapshot = await getDocs(collection(db, "leaderboard"));
 
     const leaders = snapshot.docs
-      .map(item => item.data())
+      .map(item => ({
+  id: item.id,
+  ...item.data()
+}))
       .sort((a, b) => (Number(b.streak) || 0) - (Number(a.streak) || 0));
 
     if (leaders.length === 0) {
@@ -1160,10 +1242,14 @@ window.__syncCloudState = syncCloudState;
         }[ch]));
 
       return `
-        <div style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd">
-          <span>${index + 1}. ${username}</span>
-          <strong>🔥 ${Number(item.streak) || 0}</strong>
-        </div>
+        <div
+  class="leaderboard-entry"
+  data-user-id="${item.id}"
+  style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd;cursor:pointer"
+>
+  <span>${index + 1}. ${username}</span>
+  <strong>🔥 ${Number(item.streak) || 0}</strong>
+</div>
       `;
     }).join("");
 
@@ -1226,9 +1312,27 @@ $id("saveProfileBtn").addEventListener("click", async () => {
   const firstName = $id("profileFirstName").value.trim();
   const lastName = $id("profileLastName").value.trim();
   const about = $id("profileAbout").value.trim();
+  const isPublic = $id("profileIsPublic").checked;
   if (firstName.length < 2) { toast("Имя должно содержать хотя бы 2 символа."); return; }
   try {
-    await setDoc(userDoc(auth.currentUser.uid), { firstName, lastName, about, updatedAt: serverTimestamp() }, { merge: true });
+    await setDoc(userDoc(auth.currentUser.uid), {
+  firstName,
+  lastName,
+  about,
+  isPublic,
+  updatedAt: serverTimestamp()
+}, { merge: true });
+
+await setDoc(doc(db, "publicProfiles", auth.currentUser.uid), {
+  username: profile.username || "Ученик",
+  firstName,
+  lastName,
+  about,
+  avatarUrl: profile.avatarUrl || "",
+  streak: Math.max(0, Math.floor(Number(window.__getLocalState?.()?.streak) || 0)),
+  isPublic,
+  updatedAt: serverTimestamp()
+});
     paintProfile({ ...profile, firstName, lastName, about });
     toast("Профиль сохранён!");
   } catch (e) { toast(errorText(e)); }
@@ -1419,5 +1523,13 @@ if (FIREBASE_CONFIG_READY) {
 .home-author{position:absolute;right:4px;bottom:0;color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.15px;opacity:.88}
 @media(max-width:600px){.home-author{right:8px;font-size:11px}}
 </style>
+<div id="publicProfileOverlay" class="public-profile-overlay" hidden>
+  <div class="public-profile-window">
+    <button id="publicProfileClose" class="public-profile-close" type="button">×</button>
+    <div id="publicProfileContent">
+      <p>Загружаем профиль...</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
