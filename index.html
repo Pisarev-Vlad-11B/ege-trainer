@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f6f2ef">
+<title>ЕГЭ · Русский язык — тренажёр задания 12</title>
+<style>
+:root{--bg:#f6f2ef;--paper:#fffdfa;--paper2:#fbf7f3;--ink:#292526;--muted:#83797a;--line:#e9dfdc;--red:#a93645;--red2:#c65360;--soft:#f6e8e9;--green:#287a56;--greenbg:#e8f4ed;--bad:#b13d43;--badbg:#fae9e9;--shadow:0 18px 55px rgba(71,30,37,.09);--radius:22px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #d99ba3;outline-offset:3px}
+.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,72px);border-bottom:1px solid rgba(120,80,80,.09);background:rgba(255,253,250,.78);backdrop-filter:blur(16px);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:-.4px}.brandmark{width:38px;height:38px;border-radius:13px;background:var(--red);color:white;display:grid;place-items:center;font-weight:800;box-shadow:0 6px 16px #a9364530}.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.2px;margin-top:2px}
+.nav{display:flex;gap:7px}.nav button{border:0;background:transparent;color:var(--muted);padding:11px 16px;border-radius:13px;font-weight:600}.nav button.active,.nav button:hover{background:var(--soft);color:var(--red)}
+main{max-width:1200px;margin:auto;padding:44px 28px 80px;position:relative}.view{display:none}.view.active{display:block;animation:fade .35s ease}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center;min-height:420px}.eyebrow{color:var(--red);font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase}.hero h1{font-size:clamp(38px,5vw,62px);line-height:1.02;letter-spacing:-2.8px;margin:16px 0}.hero p{color:var(--muted);font-size:17px;line-height:1.65;max-width:520px}.primary{background:var(--red);color:#fff;border:0;border-radius:14px;padding:14px 22px;font-weight:700;box-shadow:0 8px 20px #a936452b;transition:.2s}.primary:hover{background:var(--dark);transform:translateY(-2px)}.secondary{border:1px solid var(--line);background:white;color:var(--ink);border-radius:13px;padding:12px 18px;font-weight:650}.hero-art{min-height:330px;border-radius:32px;background:linear-gradient(145deg,#f0dfe0,#f9e9dc);position:relative;overflow:hidden;display:grid;place-items:center}.hero-art:before,.hero-art:after{content:"";position:absolute;border-radius:50%;background:#fff8;}.hero-art:before{width:260px;height:260px;right:-45px;top:-60px}.hero-art:after{width:180px;height:180px;left:-40px;bottom:-65px}.book{position:relative;z-index:1;width:210px;height:250px;background:#fffdfa;border-radius:12px 22px 22px 12px;box-shadow:18px 18px 0 #a9364520,0 25px 45px #71353b30;transform:rotate(-7deg);padding:30px 24px}.book:before{content:"";position:absolute;left:17px;top:0;bottom:0;width:2px;background:#eadcda}.book .booktag{color:var(--red);font-size:10px;letter-spacing:2px;font-weight:800}.book strong{display:block;font-size:34px;line-height:1.02;margin:25px 0 12px;letter-spacing:-1.5px}.book span{color:var(--muted);font-size:12px}.bookline{height:5px;background:#f0e5e2;border-radius:8px;margin-top:18px;width:90%}.bookline:nth-last-child(1){width:65%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.stat{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}.stat b{font-size:26px;display:block}.stat span{color:var(--muted);font-size:13px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:26px}.section-head h2{font-size:34px;letter-spacing:-1.2px;margin:8px 0}.section-head p{margin:0;color:var(--muted)}
+.task-tabs{display:flex;gap:10px;margin-bottom:24px}.task-tab{padding:12px 18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);font-weight:700;color:var(--muted)}.task-tab.active{background:var(--red);color:white;border-color:var(--red)}.count-pill{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;margin-left:7px;border-radius:20px;background:#ffffff35;font-size:11px}
+.practice-shell{position:relative;display:grid;grid-template-columns:130px minmax(0,1fr) 130px;gap:18px;align-items:stretch}.side-art{border-radius:24px;background:linear-gradient(160deg,#f0e2df,#f7eee8);min-height:470px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.side-art .orb{width:100px;height:100px;border-radius:50%;background:#fff9;position:absolute}.side-art.left .orb{top:40px;left:-30px}.side-art.right .orb{bottom:35px;right:-35px}.side-symbol{font-size:64px;z-index:1;opacity:.8;transform:rotate(-12deg)}.side-art.right .side-symbol{transform:rotate(12deg)}
+.task-card{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:clamp(22px,4vw,42px);box-shadow:var(--shadow);min-height:470px;display:flex;flex-direction:column}.task-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.task-number{font-size:12px;font-weight:800;color:var(--red);letter-spacing:1px;text-transform:uppercase}.progress-label{font-size:12px;color:var(--muted);font-weight:650}.progress{height:6px;border-radius:10px;background:#f0e8e5;overflow:hidden;margin:-15px 0 28px}.progress span{height:100%;display:block;background:var(--red);border-radius:10px;transition:width .3s}
+.prompt{font-size:clamp(16px,2vw,19px);font-weight:650;line-height:1.55;margin:0 0 20px}.question-list{font-size:16px;line-height:1.9;white-space:pre-line;color:#51494a;padding:18px 20px;background:#faf6f2;border:1px solid #f0e7e3;border-radius:16px}
+.answer-area{margin-top:auto;padding-top:25px}.answer-label{display:block;font-size:12px;color:var(--muted);font-weight:750;margin-bottom:9px}.answer-row{display:flex;gap:10px}.answer-input{width:100%;min-width:0;border:1.5px solid var(--line);background:white;border-radius:13px;padding:14px 16px;font-size:20px;font-weight:700;letter-spacing:4px;color:var(--ink)}.answer-input.correct{border-color:#63a987;background:var(--greenbg);color:var(--green)}.answer-input.incorrect{border-color:#d98b90;background:var(--badbg);color:var(--bad)}.check-btn{white-space:nowrap;border:0;border-radius:13px;padding:0 22px;background:var(--red);color:white;font-weight:750}.feedback{min-height:24px;margin-top:10px;font-size:13px;font-weight:650}.feedback.good{color:var(--green)}.feedback.bad{color:var(--bad)}
+.task-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}.arrow-btn{border:1px solid var(--line);background:white;border-radius:12px;padding:11px 15px;font-weight:700}.arrow-btn:disabled{opacity:.35;cursor:not-allowed}.theory-open{border:0;background:transparent;color:var(--red);font-weight:750;padding:10px}.mistakes-empty{background:var(--paper);border:1px dashed #dfcfca;border-radius:22px;padding:55px 20px;text-align:center;color:var(--muted)}.mistakes-list{display:grid;gap:12px}.mistake-item{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px}.mistake-item p{margin:6px 0 0;color:var(--muted);font-size:13px}.mistake-item strong{color:var(--red)}
+.theory-view{max-width:850px;margin:auto;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:clamp(22px,4vw,42px);line-height:1.7}.theory-view h3{color:var(--red);margin-top:28px}.theory-view p,.theory-view li{color:#5e5556}
+.overlay{position:fixed;inset:0;background:#241b1dcc;backdrop-filter:blur(8px);z-index:30;display:none;align-items:center;justify-content:center;padding:18px}.overlay.open{display:flex;animation:fade .2s}.theory-window{width:min(760px,100%);max-height:85vh;display:flex;flex-direction:column;overflow:hidden;background:#fffdfa;border-radius:22px;box-shadow:0 30px 100px #0005;transform:scale(.94) translateY(14px);opacity:0;animation:windowIn .32s cubic-bezier(.2,.8,.2,1) forwards}.overlay.open .theory-window{animation:windowIn .32s cubic-bezier(.2,.8,.2,1) forwards}@keyframes windowIn{to{transform:scale(1) translateY(0);opacity:1}}.windowbar{height:48px;min-height:48px;flex:0 0 48px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 17px;gap:7px;position:relative;background:#fffdfa;z-index:2}.dot{width:10px;height:10px;border-radius:50%;background:#e58b83}.dot:nth-child(2){background:#e9c36d}.dot:nth-child(3){background:#7dbb91}.windowtitle{margin:auto;font-size:12px;color:var(--muted);font-weight:700}.close{border:0;background:#f3e9e7;border-radius:9px;padding:6px 10px;color:#725e60}.windowcontent{padding:28px 34px 35px;line-height:1.7;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#c98790 #f4e9e7}.windowcontent h2{margin-top:0}.windowcontent h3{color:var(--red);margin-top:24px}.windowcontent p,.windowcontent li{color:#5e5556}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#30282a;color:white;padding:12px 18px;border-radius:12px;font-size:13px;box-shadow:var(--shadow);z-index:50;display:none}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.hero-art{min-height:250px}.practice-shell{grid-template-columns:1fr}.side-art{display:none}.task-card{min-height:500px}.stats{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:560px){.topbar{height:auto;min-height:68px;padding:12px 16px;align-items:flex-start;gap:10px;flex-direction:column}.nav{width:100%;overflow:auto}.nav button{padding:9px 12px;font-size:13px}.brand{font-size:14px}main{padding:28px 14px 55px}.hero{min-height:0}.hero h1{font-size:42px}.hero p{font-size:15px}.stats{gap:8px}.stat{padding:13px}.stat b{font-size:21px}.stat span{font-size:11px}.section-head{align-items:flex-start;flex-direction:column}.section-head h2{font-size:29px}.task-tabs{width:100%}.task-tab{flex:1;padding:12px 8px;font-size:13px}.task-card{padding:20px 16px;border-radius:20px}.question-list{font-size:14px;padding:14px}.answer-row{flex-direction:column}.check-btn{padding:14px}.task-footer{flex-wrap:wrap}.theory-open{margin-left:auto}.windowcontent{padding:22px 20px}.mistake-item{align-items:flex-start;flex-direction:column}}
+
+/* Наведение и плавные переходы */
+.brandmark{border:0;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,background .22s ease}
+.brandmark:hover{transform:translateY(-2px) scale(1.06);background:var(--red2);box-shadow:0 9px 22px #a9364545}
+.nav button{transition:background .22s ease,color .22s ease,transform .22s ease}
+.nav button:hover{transform:translateY(-2px)}
+.task-tab,.stat,.mistake-item,.task-card,.theory-view,.secondary,.arrow-btn,.hero-art{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease}
+.task-tab:hover,.stat:hover,.mistake-item:hover,.secondary:hover,.arrow-btn:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(71,30,37,.09);border-color:#d8b8b8}
+.hero-art:hover{transform:translateY(-3px);box-shadow:0 18px 35px rgba(71,30,37,.10)}
+.primary{transition:transform .22s ease,box-shadow .22s ease,background .22s ease}
+.primary:hover{background:var(--red2);transform:translateY(-3px);box-shadow:0 12px 25px #a9364538}
+.theory-actions{display:flex;justify-content:flex-end;max-width:850px;margin:18px auto 0}
+
+/* Иллюстрации и выразительные акценты */
+.hero-art{isolation:isolate}
+.hero-art .floating-pencil{position:absolute;z-index:2;width:14px;height:150px;border-radius:8px;background:linear-gradient(90deg,#a93645,#d77d83);right:16%;top:20%;transform:rotate(32deg);box-shadow:0 8px 18px #a9364525}
+.hero-art .floating-pencil:before{content:"";position:absolute;top:-13px;left:2px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:14px solid #d6a78d}
+.hero-art .floating-pencil:after{content:"";position:absolute;bottom:-8px;left:3px;width:8px;height:10px;background:#f1c9c7;border-radius:0 0 5px 5px}
+.hero-art .spark{position:absolute;z-index:2;color:#a93645;font-size:28px;font-weight:800}
+.hero-art .spark.one{top:17%;left:17%;transform:rotate(-12deg)}
+.hero-art .spark.two{right:12%;bottom:18%;font-size:20px}
+.hero-art .mini-note{position:absolute;z-index:2;left:12%;bottom:17%;background:#fffdfa;color:#a93645;border:1px solid #ead6d5;border-radius:13px;padding:10px 13px;font-size:11px;font-weight:800;letter-spacing:.4px;transform:rotate(-8deg);box-shadow:0 8px 18px #71353b16}
+.theory-view{position:relative;overflow:hidden}
+.theory-view:before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:#f7e9e7;right:-95px;top:-95px;pointer-events:none}
+.theory-view h2{position:relative;font-size:clamp(25px,3vw,34px);letter-spacing:-1px}
+.theory-view h3{font-size:20px;letter-spacing:-.35px;margin:34px 0 12px}
+.theory-view p,.theory-view li{font-size:15px;line-height:1.8}
+.theory-view b,.theory-view strong{color:#9f3040;background:linear-gradient(transparent 58%,#f6dfe1 58%);padding:0 2px}
+.theory-view .theory-lead{font-size:16px;background:#fbf1ef;border:1px solid #f0dedd;border-radius:17px;padding:18px 20px;color:#57494a}
+.theory-visual{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0 28px}
+.theory-visual-card{background:linear-gradient(145deg,#fbf3f0,#f7e6e6);border:1px solid #efdcda;border-radius:18px;padding:15px;min-height:155px;display:flex;align-items:center;gap:14px;overflow:hidden}
+.theory-visual-card svg{width:90px;min-width:90px;height:90px}
+.theory-visual-card strong{display:block;color:#8f2d3b;background:none;font-size:14px;line-height:1.35}
+.theory-visual-card span{display:block;color:#76696a;font-size:12px;line-height:1.45;margin-top:5px}
+.theory-callout{margin:20px 0;padding:17px 19px;border-left:4px solid var(--red);border-radius:0 15px 15px 0;background:#fbf0ef}
+.theory-callout strong{color:var(--red);background:none}
+.theory-step{display:flex;gap:12px;align-items:flex-start;margin:10px 0;padding:11px 13px;background:#fcf8f5;border:1px solid #f0e6e2;border-radius:13px}
+.theory-step em{font-style:normal;flex:0 0 27px;height:27px;display:grid;place-items:center;background:#f2dfe0;color:#9e3442;border-radius:9px;font-size:12px;font-weight:800}
+.theory-step span{color:#5e5556;font-size:14px;line-height:1.6}
+@media(max-width:600px){.theory-visual{grid-template-columns:1fr}.theory-visual-card{min-height:125px}.theory-visual-card svg{width:76px;min-width:76px;height:76px}.hero-art .mini-note{left:5%;bottom:10%}}
+
+
+/* Обновлённая навигация и интерактивная статистика */
+.brand{border:0;background:transparent;padding:7px 12px 7px 7px;border-radius:16px;cursor:pointer;text-align:left;transition:background .22s ease,transform .22s ease,box-shadow .22s ease;display:flex;align-items:center;gap:12px;color:var(--ink)}
+.brand-copy{display:block;font-weight:800;letter-spacing:.2px;line-height:1.25}
+.brand-copy small{display:block;color:var(--muted);font-weight:550;font-size:11px;letter-spacing:.2px;margin-top:3px}
+.brand:hover{background:var(--soft);transform:translateY(-2px);box-shadow:0 8px 20px #a9364518}
+.brand:hover .brandmark{background:var(--red2);transform:rotate(-5deg) scale(1.05)}
+.brandmark{flex:0 0 38px;transition:transform .22s ease,background .22s ease}
+.nav button{transition:background .22s ease,color .22s ease,transform .22s ease}
+.nav button:hover{transform:translateY(-2px)}
+.theory-open{display:inline-flex;align-items:center;gap:10px;border:1px solid #ead4d5;background:linear-gradient(135deg,#fffaf8,#f8e9e9);color:var(--red);font-weight:800;padding:11px 17px;border-radius:14px;box-shadow:0 5px 15px #a9364510;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.theory-open:hover{transform:translateY(-3px);box-shadow:0 10px 22px #a9364520;background:#f7e5e6}
+.theory-open-icon{width:23px;height:23px;display:grid;place-items:center;border-radius:8px;background:#f1d9dc;color:var(--red)}
+.theory-open-arrow{font-size:16px}
+.stats-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:20px;align-items:stretch}
+.jar-card,.stat-card{background:var(--paper);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.jar-card{padding:clamp(22px,3vw,34px);overflow:hidden}
+.jar-heading h3{font-size:25px;margin:7px 0 5px;letter-spacing:-.7px}
+.jar-heading p{color:var(--muted);font-size:14px;line-height:1.55;margin:0;max-width:440px}
+.jar-stage{display:flex;align-items:center;justify-content:center;gap:clamp(24px,5vw,55px);padding:30px 5px 18px}
+.score-jar{width:150px;height:220px;position:relative;border:5px solid #d9b9bd;border-top:0;border-radius:24px 24px 32px 32px;background:linear-gradient(90deg,#fff7f6,#fff 48%,#f8eded);overflow:visible;box-shadow:inset 0 0 17px #a9364512,0 12px 25px #4b22221c;isolation:isolate}
+.jar-lid{position:absolute;z-index:5;top:-17px;left:-10px;width:160px;height:24px;border-radius:8px;background:linear-gradient(#c65360,#8e303e);border:2px solid #792936;box-shadow:0 4px 7px #61232b25}
+.jar-liquid-window{position:absolute;inset:0;overflow:hidden;border-radius:19px 19px 26px 26px;z-index:1}
+.jar-water{position:absolute;bottom:0;left:-8%;width:116%;height:0%;background:linear-gradient(105deg,#d9868e,#bb4b59 42%,#973342);border-radius:45% 45% 0 0 / 9% 9% 0 0;transition:height .8s cubic-bezier(.2,.8,.2,1);transform:none;will-change:auto}
+.jar-water:before{content:"";position:absolute;left:0;right:0;top:-7px;height:14px;border-radius:50%;background:#d9868e;opacity:.85}
+.jar-gloss{position:absolute;z-index:2;left:13px;top:13px;width:13px;height:65%;border-radius:20px;background:linear-gradient(#fff9,#fff0);pointer-events:none}
+.jar-mark{position:absolute;z-index:3;left:0;right:0;top:48%;text-align:center;font-size:13px;font-weight:900;letter-spacing:3px;color:#a9364560;pointer-events:none}
+.jar-score{display:flex;flex-direction:column;gap:6px}
+.jar-score strong{font-size:clamp(35px,5vw,52px);line-height:1;color:var(--red);letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.jar-score span,.jar-percent{font-size:13px;color:var(--muted)}
+.jar-percent{margin-top:10px;font-weight:750;color:var(--red)}
+.jar-hint{border-top:1px solid var(--line);padding-top:15px;margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.stats-cards{display:grid;grid-template-rows:repeat(3,1fr);gap:14px}
+.stat-card{padding:22px;transition:transform .22s ease,box-shadow .22s ease}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #4b22221a}
+.stat-card span{display:block;color:var(--muted);font-size:13px;font-weight:650}
+.stat-card strong{display:block;font-size:34px;line-height:1.2;color:var(--red);margin:8px 0 5px;font-variant-numeric:tabular-nums}
+.stat-card small{color:var(--muted);font-size:12px}
+.stat-track{height:7px;background:#f1e6e4;border-radius:20px;overflow:hidden;margin:13px 0 9px}
+.stat-track i{display:block;width:0;height:100%;border-radius:20px;background:linear-gradient(90deg,#d9868e,#a93645);transition:width .6s ease}
+@media(max-width:760px){.stats-layout{grid-template-columns:1fr}.stats-cards{grid-template-rows:auto}.jar-stage{gap:28px}}
+@media(max-width:560px){.brand{padding:5px}.brand-copy{font-size:12px}.brand-copy small{font-size:10px}.brandmark{width:36px;height:36px;flex-basis:36px}.jar-stage{gap:22px}.score-jar{width:126px;height:190px}.jar-lid{width:136px}.jar-score strong{font-size:36px}.stat-card{padding:18px}}
+
+
+/* Более спокойная типографика теории */
+.theory-view{color:#403a3b}
+.theory-view h2,.theory-view h3,.windowcontent h2,.windowcontent h3{color:#75414b}
+.theory-view p,.theory-view li,.windowcontent p,.windowcontent li{color:#62595a}
+.theory-view strong,.windowcontent strong{color:#78434d}
+.theory-view .rule-card,.windowcontent .rule-card{background:#fbf5f2}
+.theory-view mark,.windowcontent mark{background:#f0dfe1;color:#70404a;padding:1px 5px;border-radius:5px}
+.hero-doodle{position:absolute;color:#a77a91;opacity:.58;pointer-events:none;filter:drop-shadow(0 5px 8px #a9364510)}
+.doodle-pencil{width:92px;right:5%;top:4%;transform:rotate(8deg);color:#9d6b84}
+.doodle-book{width:126px;left:-2%;bottom:5%;transform:rotate(-7deg);color:#98718f;opacity:.52}
+.doodle-sheet{width:75px;right:2%;bottom:0;transform:rotate(8deg);color:#b08da7;opacity:.55}
+.hero-letters{position:absolute;right:13%;top:37%;font-size:42px;font-weight:950;letter-spacing:5px;color:#b7a1c0;opacity:.38;transform:rotate(-9deg);pointer-events:none}
+.streak-achievements{display:grid;grid-template-columns:minmax(230px,.72fr) minmax(0,1.5fr);gap:15px;margin-top:18px}
+.streak-card,.achievements-card{border:1px solid var(--line);background:var(--paper);border-radius:22px;box-shadow:var(--shadow);padding:22px}
+.streak-card{display:flex;align-items:center;gap:15px;position:relative;overflow:hidden}
+.streak-flame{font-size:42px;filter:drop-shadow(0 4px 6px #e28a3b55);animation:flamePulse 1.15s ease-in-out infinite alternate;transform-origin:50% 85%}
+@keyframes flamePulse{0%{transform:translateY(1px) scale(.96) rotate(-3deg);filter:drop-shadow(0 2px 3px #e28a3b44)}100%{transform:translateY(-3px) scale(1.08) rotate(3deg);filter:drop-shadow(0 5px 9px #e28a3b88)}}
+.streak-copy{display:flex;flex-direction:column;gap:2px}
+.streak-copy span{font-size:12px;color:var(--muted);font-weight:700}
+.streak-copy strong{font-size:36px;color:var(--red);line-height:1.1;font-variant-numeric:tabular-nums}
+.streak-copy small{font-size:11px;color:var(--muted)}
+.best-streak{position:absolute;bottom:13px;right:18px;font-size:11px;color:var(--muted)}
+.best-streak b{color:var(--red)}
+.achievements-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.achievements-head h3{font-size:20px;margin:4px 0 0}
+.achievement-total{font-size:12px;font-weight:800;color:var(--red);background:var(--soft);padding:7px 10px;border-radius:20px}
+.achievement-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.achievement{border:1px solid var(--line);background:#fffdfa;border-radius:14px;padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:transform .2s ease,background .2s ease}
+.achievement.unlocked{background:#fbf0ed;border-color:#e8c9c7}
+.achievement:hover{transform:translateY(-3px)}
+.achievement-icon{font-size:23px;filter:grayscale(1);opacity:.45}
+.achievement.unlocked .achievement-icon{filter:none;opacity:1}
+.achievement strong{font-size:11px;color:#62595a}
+.achievement small{font-size:10px;color:var(--muted)}
+@media(max-width:760px){.streak-achievements{grid-template-columns:1fr}.achievement-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:480px){.achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-doodle{opacity:.35}}
+
+
+/* Глобальные иллюстрации: находятся в свободных полях страницы, а не внутри карточек */
+main{position:relative;isolation:isolate}
+.view{position:relative;z-index:1}
+.page-doodles{position:fixed;inset:76px 0 0;pointer-events:none;z-index:0;overflow:hidden}
+.page-doodle{position:absolute;color:#a77a91;opacity:.25;filter:drop-shadow(0 5px 8px #a9364510)}
+.doodle-star{width:58px;left:2.2%;top:17%;transform:rotate(12deg)}
+.doodle-pencil{width:76px;right:2.5%;top:28%;transform:rotate(13deg)}
+.doodle-book{width:105px;left:1%;bottom:12%;transform:rotate(-8deg)}
+.doodle-paper{width:58px;right:3%;bottom:10%;transform:rotate(7deg)}
+.doodle-letters{right:5%;top:57%;font-size:31px;font-weight:950;letter-spacing:4px;transform:rotate(-10deg);color:#b7a1c0}
+.doodle-spark{left:5%;top:65%;font-size:34px;color:#b77f88}
+.hero-art .hero-doodle,.hero-art .hero-letters{display:none}
+.hero-art .floating-pencil{right:13%;top:12%}
+.hero-art .spark{display:none}
+@media(max-width:850px){.page-doodles{opacity:.5}.doodle-star{left:0}.doodle-pencil{right:0}.doodle-book,.doodle-paper{opacity:.12}}
+@media(max-width:560px){.page-doodles{inset:120px 0 0;opacity:.25}.page-doodle{transform:scale(.75)}.doodle-letters{font-size:22px}}
+
+.compact-head{margin-bottom:16px}
+.stats-layout{grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);gap:15px;align-items:stretch}
+.jar-card{padding:20px 23px}
+.jar-heading h3{font-size:22px;margin:4px 0}
+.jar-heading p{font-size:12px}
+.jar-stage{padding:17px 3px 10px;gap:25px}
+.score-jar{width:118px;height:165px;border-width:4px;border-radius:20px 20px 27px 27px}
+.jar-lid{left:-8px;top:-13px;width:126px;height:19px;transform-origin:8% 95%;transition:transform .82s cubic-bezier(.22,1,.36,1),top .82s cubic-bezier(.22,1,.36,1),box-shadow .82s ease,border-radius .82s ease;will-change:transform}
+.score-jar:hover .jar-lid{transform:translate3d(2px,-13px,0) rotate(-13deg);top:-15px;border-radius:7px 9px 5px 7px;box-shadow:0 13px 18px #61232b38}
+.score-jar{transition:filter .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}\n.score-jar:hover{filter:drop-shadow(0 10px 15px rgba(169,54,69,.20));}\n.score-jar:after{content:"";position:absolute;z-index:4;left:4px;right:4px;top:-4px;height:7px;border-radius:50%;border:2px solid #d9b9bd;background:#fff9;transition:opacity .5s ease,transform .7s ease;pointer-events:none}\n.score-jar:hover:after{transform:translateY(-7px);opacity:.65}
+.jar-liquid-window{border-radius:16px 16px 22px 22px}
+.jar-score strong{font-size:40px}
+.jar-hint{font-size:11px;padding-top:10px}
+.stats-cards{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:11px}
+.stat-card{padding:17px 18px;border-radius:19px;min-height:110px}
+.stat-card strong{font-size:30px;margin:5px 0 2px}
+.stat-card span{font-size:12px}
+.stat-card small{font-size:11px}
+.stat-track{margin:8px 0 5px}
+.streak-stat-card{display:flex;align-items:center;gap:12px;grid-column:span 2;min-height:88px}
+.streak-stat-card>div:last-child{display:flex;flex-direction:column;gap:2px}
+.streak-stat-card strong{font-size:27px;margin:0}
+.streak-stat-card small b{color:var(--red)}
+.streak-flame{width:43px;height:50px;display:grid;place-items:center;flex:0 0 43px;filter:drop-shadow(0 4px 5px #e28a3b35)}
+.streak-flame svg{width:40px;height:48px;overflow:visible;animation:flameFloat 3.2s ease-in-out infinite}
+.flame-outer{fill:#e77b42;transform-origin:32px 68px;animation:flameSway 2.8s ease-in-out infinite}
+.flame-inner{fill:#ffd17c;transform-origin:32px 68px;animation:flameCore 2.2s ease-in-out infinite}
+@keyframes flameFloat{0%,100%{transform:translateY(1px) scale(1)}50%{transform:translateY(-3px) scale(1.025)}}
+@keyframes flameSway{0%,100%{transform:rotate(-2deg) scaleY(1)}50%{transform:rotate(2deg) scaleY(1.035)}}
+@keyframes flameCore{0%,100%{transform:scale(.98);opacity:.9}50%{transform:scale(1.04);opacity:1}}
+.stats-footer-note{margin-top:14px;padding:12px 16px;border-radius:15px;background:#fbefed;border:1px solid #f0dedd;color:#76545a;font-size:12px}
+.stats-footer-note span{color:var(--red);margin-right:7px}
+@media(max-width:760px){
+ .stats-layout{grid-template-columns:1fr;gap:12px}
+ .jar-card{padding:17px 19px}
+ .jar-stage{padding:12px 0 8px}
+ .stats-cards{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+ .stat-card{min-height:100px}
+}
+@media(max-width:480px){
+ .stats-cards{gap:8px}
+ .stat-card{padding:13px;min-height:96px}
+ .stat-card strong{font-size:26px}
+ .jar-stage{gap:18px}
+ .score-jar{width:105px;height:145px}
+ .jar-lid{width:113px}
+ .jar-score strong{font-size:34px}
+}
+
+.achievement-total-large{white-space:nowrap}
+.motivation-banner{display:flex;align-items:center;gap:20px;padding:24px 27px;margin-bottom:19px;border-radius:23px;background:linear-gradient(120deg,#f7e7e6,#fbf1e9 72%,#f4e9ef);border:1px solid #ecd9d8;position:relative;overflow:hidden}
+.motivation-spark{font-size:42px;color:#b35a68;flex:0 0 auto;text-shadow:0 5px 12px #a9364520}
+.motivation-banner h3{font-size:23px;letter-spacing:-.6px;margin:5px 0}
+.motivation-banner p{font-size:13px;line-height:1.55;color:#77686a;margin:0;max-width:720px}
+.achievement-page-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.achievement-page-card{min-width:0;display:flex;align-items:center;gap:13px;padding:16px 15px;border:1px solid var(--line);background:var(--paper);border-radius:18px;box-shadow:0 8px 20px rgba(71,30,37,.035);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.achievement-page-card{position:relative;overflow:hidden;transform:translateZ(0);transition:transform .42s cubic-bezier(.2,.8,.2,1),border-color .42s ease,box-shadow .42s ease,background .42s ease}\n.achievement-page-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 10%,rgba(214,151,157,.2),transparent 58%);opacity:0;transition:opacity .45s ease;pointer-events:none}\n.achievement-page-card:hover{transform:translateY(-5px) scale(1.018);border-color:#d5a8ad;box-shadow:0 15px 30px rgba(113,53,59,.13),0 0 0 3px rgba(214,151,157,.10);background:linear-gradient(135deg,#fffdfa,#fbefed)}\n.achievement-page-card:hover:before{opacity:1}\n.achievement-page-card:hover .achievement-page-icon{transform:translateY(-3px) rotate(-5deg) scale(1.08);box-shadow:0 7px 14px rgba(169,54,69,.12)}\n.achievement-page-icon{position:relative;z-index:1;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease,background .45s ease}\n.achievement-page-copy,.achievement-status{position:relative;z-index:1}\n.achievement-page-card:hover .achievement-page-copy strong{color:#9f3040;transition:color .35s ease}
+.achievement-page-card.unlocked{background:linear-gradient(135deg,#fffdfa,#fbefed);border-color:#e8c9c7}
+.achievement-page-icon{width:45px;height:45px;display:grid;place-items:center;flex:0 0 45px;border-radius:14px;background:#f4eeec;font-size:23px;filter:grayscale(1);opacity:.5}
+.achievement-page-card.unlocked .achievement-page-icon{background:#f5e1df;filter:none;opacity:1}
+.achievement-page-copy{min-width:0;display:flex;flex-direction:column;gap:4px}
+.achievement-page-copy strong{font-size:13px;color:#57494a}
+.achievement-page-copy span{font-size:11px;color:var(--muted)}
+.achievement-status{margin-left:auto;white-space:nowrap;font-size:10px;font-weight:750;color:#a59a99}
+.achievement-page-card.unlocked .achievement-status{color:var(--green)}
+.motivation-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.motivation-quotes article{padding:17px 18px;border-radius:17px;background:#fbf6f2;border:1px solid #eee3df}
+.motivation-quotes span{font-size:10px;letter-spacing:1px;font-weight:800;color:var(--red)}
+.motivation-quotes p{font-size:13px;line-height:1.5;font-weight:650;color:#69595b;margin:8px 0 0}
+@media(max-width:850px){.achievement-page-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.motivation-quotes{grid-template-columns:1fr}}
+@media(max-width:560px){.achievement-page-grid{grid-template-columns:1fr}.achievement-page-card{padding:13px}.motivation-banner{padding:18px;gap:13px}.motivation-banner h3{font-size:19px}.achievement-status{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.flame-outer,.flame-inner,.streak-flame svg{animation:none!important}.jar-lid,.achievement-page-card{transition:none}}
+
+
+/* Центральная иллюстративная композиция внизу главной страницы */
+.home-center-doodles{height:112px;max-width:510px;margin:3px auto 0;position:relative;display:flex;align-items:center;justify-content:center;gap:36px;color:#a77a91;pointer-events:none}
+.home-doodle{display:block;overflow:visible;filter:drop-shadow(0 5px 8px #a9364510)}
+.home-doodle-book{width:104px;height:78px;opacity:.46;transform:rotate(-3deg)}
+.home-doodle-bulb{width:61px;height:76px;opacity:.43;color:#bd8d77;transform:rotate(5deg)}
+.home-doodle-pencil{width:68px;height:68px;opacity:.43;transform:rotate(8deg)}
+.home-doodle-spark{position:absolute;font-size:25px;color:#b77f88;opacity:.58}
+.home-doodle-spark.spark-a{left:17%;top:13px;transform:rotate(-12deg)}
+.home-doodle-spark.spark-b{right:16%;bottom:11px;transform:rotate(12deg)}
+.home-doodle-letters{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-size:10px;font-weight:900;letter-spacing:3px;color:#b7a1c0;opacity:.68}
+@media(max-width:600px){.home-center-doodles{height:88px;gap:23px;margin-top:8px}.home-doodle-book{width:84px}.home-doodle-bulb{width:48px}.home-doodle-pencil{width:54px}.home-doodle-spark.spark-a{left:8%}.home-doodle-spark.spark-b{right:8%}}
+@media(prefers-reduced-motion:reduce){.score-jar,.jar-lid,.score-jar:after,.achievement-page-card,.achievement-page-card:before,.achievement-page-icon{transition:none!important}}
+
+
+/* Центральная нижняя композиция главной страницы */
+#home .home-center-doodles{
+  height:132px;max-width:590px;margin:8px auto 0;gap:clamp(28px,5vw,58px);
+  opacity:.82;color:#a77a91;
+}
+#home .home-center-doodles .home-doodle-book{width:126px;height:94px;opacity:.78;transform:rotate(-7deg)}
+#home .home-center-doodles .home-doodle-bulb{width:70px;height:88px;opacity:.68;transform:rotate(5deg)}
+#home .home-center-doodles .home-doodle-pencil{width:72px;height:82px;opacity:.72;transform:rotate(10deg)}
+#home .home-center-doodles .home-doodle-letters{font-size:23px;font-weight:950;letter-spacing:2px;opacity:.72}
+#home .home-center-doodles .home-doodle-spark{font-size:30px;opacity:.78}
+#home .home-center-doodles .spark-a{left:12%;top:7px}
+#home .home-center-doodles .spark-b{right:12%;bottom:5px}
+@media(max-width:600px){
+ #home .home-center-doodles{height:100px;gap:22px;margin-top:10px;opacity:.68}
+ #home .home-center-doodles .home-doodle-book{width:88px;height:70px}
+ #home .home-center-doodles .home-doodle-bulb{width:50px;height:65px}
+ #home .home-center-doodles .home-doodle-pencil{width:52px;height:62px}
+ #home .home-center-doodles .home-doodle-letters{font-size:16px}
+}
+
+
+
+/* Очень плавные hover-анимации */
+.achievement-page-card{
+  will-change:transform;
+  transition:transform 1.05s cubic-bezier(.16,1,.3,1),
+             border-color 1.05s ease,box-shadow 1.05s ease,
+             background 1.05s ease;
+}
+.achievement-page-card:hover{
+  transform:translateY(-4px) scale(1.018);
+  box-shadow:0 15px 30px rgba(113,53,59,.12),0 0 0 3px rgba(214,151,157,.08);
+}
+.theory-view .theory-visual-card,
+.theory-view .theory-callout,
+.theory-view .theory-step{
+  transition:transform 1.1s cubic-bezier(.16,1,.3,1),
+             box-shadow 1.1s ease,border-color 1.1s ease,
+             background-color 1.1s ease;
+}
+.theory-view .theory-visual-card:hover,
+.theory-view .theory-callout:hover,
+.theory-view .theory-step:hover{
+  transform:translateY(-2px);
+  border-color:#dfb9bb;
+  box-shadow:0 9px 20px rgba(113,53,59,.075);
+  background-color:#fff9f6;
+}
+.theory-view .theory-visual-card svg{
+  transition:transform 1.15s cubic-bezier(.16,1,.3,1);
+}
+.theory-view .theory-visual-card:hover svg{transform:scale(1.035) rotate(-1deg)}
+
+/* Банка: крышка медленно приподнимается и плавно возвращается */
+.score-jar{transition:filter 1.2s cubic-bezier(.16,1,.3,1),transform 1.2s cubic-bezier(.16,1,.3,1)}
+.score-jar:hover{filter:drop-shadow(0 10px 15px rgba(169,54,69,.20));}
+.score-jar:after{content:"";position:absolute;z-index:4;inset:-5px;border-radius:28px 28px 36px 36px;border:2px solid rgba(214,151,157,0);pointer-events:none;transition:border-color 1.35s ease,box-shadow 1.35s ease;}
+.score-jar:hover:after{border-color:rgba(214,151,157,.45);box-shadow:0 0 0 5px rgba(214,151,157,.07);}
+
+@media(prefers-reduced-motion:reduce){
+ .achievement-page-card,.theory-view .theory-visual-card,.theory-view .theory-callout,
+ .theory-view .theory-step,.score-jar,.score-jar .jar-lid{transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button class="brand" id="homeLogo" type="button" aria-label="Перейти на главную">
+    <span class="brandmark">Р</span>
+    <span class="brand-copy">РУССКИЙ ЯЗЫК<small>Тренажёр ЕГЭ · задание 12</small></span>
+  </button>
+  <nav class="nav">
+    <button data-view="tasks">Задания</button>
+    <button data-view="theory">Теория</button>
+    <button data-view="stats">Статистика</button>
+    <button data-view="achievements">Достижения</button>
+  </nav>
+</header>
+<main>
+  <div class="page-doodles" aria-hidden="true">
+    <svg class="page-doodle doodle-star" viewBox="0 0 100 100"><path d="M50 5 60 38 95 50 60 61 50 95 39 61 5 50 39 38Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg>
+    <svg class="page-doodle doodle-pencil" viewBox="0 0 120 120"><path d="m18 88 58-58 17 17-58 58-22 5z M18 88l17 17 M76 30l9-9q5-5 10 0l7 7q5 5 0 10l-9 9" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="page-doodle doodle-book" viewBox="0 0 150 120"><path d="M12 25q35-15 63 5v76q-28-20-63-5z M138 25q-35-15-63 5v76q28-20 63-5z M75 30v76 M25 45l34 7 M25 62l34 7 M91 52l34-7 M91 69l34-7" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <svg class="page-doodle doodle-paper" viewBox="0 0 110 130"><path d="M22 8h48l20 20v92H22z M70 8v22h20 M37 52h38 M37 68h38 M37 84h22 M37 102l8 8 17-19" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="page-doodle doodle-letters">АБВ</span>
+    <span class="page-doodle doodle-spark">✦</span>
+  </div>
+<section id="home" class="view active">
+  <div class="hero">
+    <div><div class="eyebrow">Подготовка к ЕГЭ</div><h1>Прокачай<br>задание № 12</h1><p>Тренируйся на 143 заданиях, проверяй себя и возвращайся к ошибкам. Порядок заданий меняется при каждом новом прохождении.</p><button class="primary" id="startBtn">Начать тренировку <span>→</span></button></div>
+    <div class="hero-art">
+      <div class="spark one">✦</div><div class="spark two">✧</div><div class="floating-pencil"></div>
+      <div class="mini-note">ПРАВИЛО → ПРАКТИКА</div>
+      <div class="book"><div class="booktag">ЕГЭ · РУССКИЙ</div><strong>Глаголы<br>и формы</strong><span>Задание двенадцать</span><div class="bookline"></div><div class="bookline"></div></div>
+      <svg class="hero-doodle doodle-pencil" viewBox="0 0 120 120" aria-hidden="true"><path d="M22 82 79 25l17 17-57 57-22 5z M22 82l17 17 M79 25l9-9q5-5 10 0l7 7q5 5 0 10l-9 9" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="hero-doodle doodle-book" viewBox="0 0 150 120" aria-hidden="true"><path d="M12 25q35-15 63 5v76q-28-20-63-5z M138 25q-35-15-63 5v76q28-20 63-5z M75 30v76 M25 45l34 7 M25 62l34 7 M91 52l34-7 M91 69l34-7" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="hero-doodle doodle-sheet" viewBox="0 0 110 130" aria-hidden="true"><path d="M22 8h48l20 20v92H22z M70 8v22h20 M37 52h38 M37 68h38 M37 84h22 M37 102l8 8 17-19" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="hero-letters">АБВ</div>
+    </div>
+  </div>
+  <div class="home-center-doodles" aria-hidden="true">
+    <span class="home-doodle-spark spark-a">✦</span>
+    <svg class="home-doodle home-doodle-book" viewBox="0 0 150 110"><path d="M10 22q34-14 65 5v70q-31-19-65-5z M140 22q-34-14-65 5v70q31-19 65-5z M75 27v70 M23 42l37 7 M23 59l37 7 M92 49l35-7 M92 66l35-7" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="home-doodle home-doodle-bulb" viewBox="0 0 90 110"><path d="M45 9a27 27 0 0 0-16 49c6 5 8 11 8 17h16c0-6 2-12 8-17A27 27 0 0 0 45 9Z M36 84h18 M38 93h14 M41 101h8 M45 0v-0 M9 26l-6-3 M81 26l6-3 M14 66l-6 5 M76 66l6 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="home-doodle home-doodle-pencil" viewBox="0 0 120 120"><path d="m18 88 58-58 17 17-58 58-22 5z M18 88l17 17 M76 30l9-9q5-5 10 0l7 7q5 5 0 10l-9 9" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="home-doodle-spark spark-b">✧</span>
+    <span class="home-doodle-letters">ЕГЭ · 12</span>
+  </div>
+  <div class="home-author">Писарев Владислав 11Б</div>
+</section>
+<section id="tasks" class="view">
+  <div class="section-head"><div><div class="eyebrow">Практика</div><h2>Задания</h2><p>Решай самостоятельно — порядок заданий перемешивается.</p></div></div>
+  <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button></div>
+  <div id="bankPane">
+    <div class="practice-shell">
+      <div class="side-art left"><div class="orb"></div><div class="side-symbol">✦</div></div>
+      <article class="task-card">
+        <div class="task-meta"><div class="task-number" id="taskNumber">Задание 1 из 143</div><div class="progress-label" id="progressLabel">0% пройдено</div></div>
+        <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+        <p class="prompt">Укажите варианты ответов, в которых в обоих словах одного ряда пропущена одна и та же буква. Запишите номера ответов.</p>
+        <div class="question-list" id="questionText"></div>
+        <div class="answer-area"><label class="answer-label" for="answerInput">ТВОЙ ОТВЕТ · ВВЕДИ ЦИФРЫ БЕЗ ПРОБЕЛОВ</label><div class="answer-row"><input id="answerInput" class="answer-input" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="Например, 23"><button class="check-btn" id="checkBtn">Проверить</button></div><div class="feedback" id="feedback"></div></div>
+        <div class="task-footer"><button class="arrow-btn" id="prevBtn">← Назад</button><button class="theory-open" id="openTheory"><span class="theory-open-icon">✦</span><span>Открыть теорию</span><span class="theory-open-arrow">↗</span></button><button class="arrow-btn" id="nextBtn">Далее →</button></div>
+      </article>
+<div class="side-art right"><div class="orb"></div><div class="side-symbol">✎</div></div>
+    </div>
+  </div>
+  <div id="errorsPane" hidden><div id="mistakesList" class="mistakes-list"></div></div>
+</section>
+<section id="stats" class="view">
+  <div class="section-head compact-head"><div><div class="eyebrow">Твой прогресс</div><h2>Статистика</h2><p>Все главные показатели — на одном экране.</p></div></div>
+  <div class="stats-layout">
+    <div class="jar-card">
+      <div class="jar-heading"><span class="eyebrow">ТВОЙ ПРОГРЕСС</span><h3>Банка баллов</h3><p>Каждый правильный ответ наполняет банку.</p></div>
+      <div class="jar-stage">
+        <div class="score-jar" id="scoreJar" aria-label="Банка прогресса">
+          <div class="jar-lid"></div>
+          <div class="jar-liquid-window"><div class="jar-water" id="jarWater"></div><div class="jar-gloss"></div></div>
+          <div class="jar-mark">ЕГЭ</div>
+        </div>
+        <div class="jar-score"><strong id="jarCount">0/143</strong><span>заданий выполнено</span><div class="jar-percent" id="jarPercent">0% прогресса</div></div>
+      </div>
+      <p class="jar-hint" id="statHint">Реши первое задание, чтобы начать наполнять банку.</p>
+    </div>
+    <div class="stats-cards">
+      <article class="stat-card"><span>Правильные ответы</span><strong id="statDone">0/143</strong><small>Задания, решённые правильно</small></article>
+      <article class="stat-card"><span>Общий прогресс</span><strong id="statCompletion">0%</strong><div class="stat-track"><i id="statCompletionBar"></i></div><small>Доля выполненных заданий</small></article>
+      <article class="stat-card"><span>Осталось решить</span><strong id="statRemaining">143</strong><small>До полного прохождения банка</small></article>
+      <article class="stat-card streak-stat-card">
+        <div class="streak-flame" aria-hidden="true"><svg viewBox="0 0 64 76"><path class="flame-outer" d="M34 3C38 20 58 25 56 47c-1 16-11 26-25 26C14 73 5 62 7 47 9 31 22 25 24 10c8 8 9 14 9 19C40 22 39 12 34 3Z"/><path class="flame-inner" d="M34 37c2 9 13 12 12 23-1 8-6 12-14 12-8 0-13-6-12-13 1-7 7-10 8-17 4 4 5 7 5 10 3-4 3-9 1-15Z"/></svg></div>
+        <div><span>Серия правильных ответов</span><strong id="streakCount">0</strong><small>подряд · рекорд: <b id="bestStreak">0</b></small></div>
+      </article>
+    </div>
+  </div>
+  <div class="stats-footer-note"><span>✦</span> Каждый решённый пример приближает тебя к цели. Продолжай в своём темпе!</div>
+</section>
+<section id="achievements" class="view">
+  <div class="section-head"><div><div class="eyebrow">Твои маленькие и большие победы</div><h2>Достижения</h2><p>Открывай новые значки шаг за шагом — прогресс складывается из усилий.</p></div><span class="achievement-total achievement-total-large" id="achievementTotal">0/12 открыто</span></div>
+  <div class="motivation-banner"><div class="motivation-spark">✦</div><div><span class="eyebrow">НЕ ЗАБЫВАЙ</span><h3>У тебя получается лучше, чем кажется.</h3><p>Не обязательно быть идеальным с первого раза. Важно продолжать, замечать ошибки и становиться увереннее.</p></div></div>
+  <div class="achievement-page-grid" id="achievementGrid"></div>
+  <div class="motivation-quotes">
+    <article><span>01 / НАСТРОЙ</span><p>«Большая цель достигается маленькими шагами».</p></article>
+    <article><span>02 / УВЕРЕННОСТЬ</span><p>«Ошибка — не поражение, а подсказка, что повторить».</p></article>
+    <article><span>03 / РОСТ</span><p>«Каждое усилие сегодня — это больше уверенности в себе завтра».</p></article>
+  </div>
+</section>
+<section id="theory" class="view">
+  <div class="section-head"><div><div class="eyebrow">Краткая памятка</div><h2>Теория к заданию № 12</h2><p>Правописание личных окончаний глаголов и суффиксов причастий.</p></div></div>
+  <div class="theory-view" id="theoryBody"></div>
+  <div class="theory-actions"><button class="primary" id="theoryStartBtn">Перейти к заданиям <span>→</span></button></div>
+</section>
+</main>
+
+<div class="overlay" id="theoryOverlay" aria-hidden="true"><div class="theory-window" role="dialog" aria-modal="true" aria-label="Теория"><div class="windowbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="windowtitle">Теория · задание 12</span><button class="close" id="closeTheory">Закрыть</button></div><div class="windowcontent" id="theoryModalContent"></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const TASKS = [{"id":1,"question":"1) скоропорт..щиеся, донос..тся (звуки)\n2) перелов..т (рыбаки), мо..щиеся\n3) дорогосто..щая, выкрикива..щая\n4) посыла..мый, наруша..т (водитель)\n5) оклеива..мый, (верхушка дерева) спил..тся","answers":["14","41"]},{"id":2,"question":"1) бор..тся (народ), усво..шь\n2) вышл..т (бабушка), броса..шь\n3) крас..т (маляр), встрет..шь\n4) внемл..щий, пригрева..мый\n5) капризнича..т, независ..мый","answers":["23","32"]},{"id":3,"question":"1) стро..тся (дом), подозрева..мый\n2) труд..тся (электрики), броса..т (игроки)\n3) леле..щая, пар..т (облака)\n4) кат..тся (шар), вид..мый\n5) лет..щий, постав..т (архитекторы)","answers":["45","54"]},{"id":4,"question":"1) плач..т (малыш), брос..шь\n2) волну..щийся, усво..т (ученики)\n3) кудахч..т (курица), прогрева..мое\n4) брюзж..щий, запева..т (пионеры)\n5) (меня) тревож..т (мысли), дыш..щий","answers":["35","53"]},{"id":5,"question":"1) скач..щий, ненавид..щий\n2) слыш..щий, друж..т (соседи)\n3) ре..т (флаг), зре..т (зерно)\n4) круж..щий, занос..т (грузчики)\n5) суш..т, рису..т","answers":["23","32"]},{"id":6,"question":"1) накле..вший, предъяв..т (прокурор)\n2) рассмотр..шь, вынужда..шь\n3) задремл..шь, задрапиру..шь\n4) завис..мый, нянч..щая\n5) произнос..шь, рокоч..т (мотор)","answers":["13","31"]},{"id":7,"question":"1) преобразу..мый, (боец) служ..т\n2) дремл..шь, леч..шь\n3) перекин..шь, вычита..мые\n4) сломл..нный, (он)разыгрыва..т\n5) (страны) гранич..т, шепч..щий (на ухо)","answers":["34","43"]},{"id":8,"question":"1) стро..тся (школа), засмотр..шься\n2) дыш..щий, щекоч..щий\n3) вышл..т, приход..тся (братом)\n4) леч..щий, зна..щий\n5) труд..тся (рабочие), высто..вшая (армия)","answers":["15","51"]},{"id":9,"question":"1) колебл..шься, выдел..шь\n2) независ..мый, мысл..мый\n3) наруша..мый, предполага..мый\n4) невид..мый, непромока..мый\n5) произнос..шь, щипл..шь","answers":["23","32"]},{"id":10,"question":"1) закручива..мый, (Земля) верт..тся\n2) завис..мый, (птичка) вылет..т\n3) задерж..шься, опериру..мый\n4) выгор..шь, раскруч..нный\n5) предвид..шь, (печка) топ..тся","answers":["25","52"]},{"id":11,"question":"1) постро..шь, (можно) наде..ться\n2) задерж..вшийся, раду..щийся\n3) раскле..шь, намет..ть (план)\n4) пропол..шь, упроща..шь\n5) (он) расстел..т, заправ..шь","answers":["34","43"]},{"id":12,"question":"1) (они) мел..т (зерно), ссор..щийся,\n2) не успоко..тся (активисты), (она) доеда..т\n3) чист..щий, поража..щий\n4) наве..т (ветер), посвяща..тся (стихотворение)\n5) дорогосто..щая, подвод..щая","answers":["45","54"]},{"id":13,"question":"1) пен..щееся, наве..ть\n2) ненавид..щий, муч..вшийся\n3) (матросы) задра..т, разбав..вший\n4) ма..щийся, вывалива..щийся\n5) (враг) не ворот..тся, отча..нный","answers":["14","41"]},{"id":14,"question":"1) зате..ла, выздоров..ть\n2) отча..ться, разве..в\n3) (друг) уступ..т, (слово) молв..тся\n4) (учитель) провер..т, ляж..шь (пораньше)\n5) пен..щееся, разбавл..нный","answers":["23","32"]},{"id":15,"question":"1) (они) стел..т (скатерть), ове..нный\n2) вер..вший, вылет..шь\n3) мел..щий (кофе), (огородники) пол..т (грядки)\n4) выздоров..вший (юноша), высп..шься\n5) скач..щий (конь), (они) дыш..т","answers":["23","32"]},{"id":16,"question":"1) трепещ..м (от страха), колебл..мые (ветром)\n2) понош..нное (платье), завис..мый\n3) потер..нный (багаж), (флаги) ре..т\n4) взлеле..вший, занима..щаяся (заря)\n5) выгор..шь, расстро..вшись","answers":["15","51"]},{"id":17,"question":"1) предвид..вший, незыбл..мый\n2) пыш..щий (здоровьем), (они) вылож..т\n3) противореч..щий, выслуш..вший\n4) обездвиж..нный, натерп..шься\n5) щебеч..щий, (они) клокоч..т","answers":["135","351","531","153","315"]},{"id":18,"question":"1) умо..шься, вид..мый\n2) кле..шь, будораж..вший (воображение)\n3) расстро..вшись, повад..шься\n4) колыш..щиеся (травы), (они) леч..т\n5) взлеле..вший, вер..щий (на слово)","answers":["235","253","352","325","523","532"]},{"id":19,"question":"1) немысл..мый, застро..нный\n2) та..щие (снега), (они) вид..тся\n3) (вы) устан..те, колебл..мый\n4) выскоч..м, (вы) вытерп..те\n5) (они) обид..тся, пове..вший","answers":["345","543","435","453","354"]},{"id":20,"question":"1) дремл..щий, (они) гон..тся (друг за другом)\n2) установл..нный, неуправля..мый\n3) (они) шепч..тся, маш..щий (крыльями)\n4) (вы) остан..тесь, встрет..вшись\n5) насто..нный, леле..мый","answers":["23","32"]},{"id":21,"question":"1) дорогосто..щий, вылин..вшая (ткань)\n2) (ничего не) знач..щий, (автомобили) движ..тся\n3) выплачива..мый, обезум..вший (от страха)\n4) ове..нный (прохладой), настро..в (радио)\n5) (кони) брод..т (по лугу), дремл..щий (в поезде)","answers":["13","31"]},{"id":22,"question":"1) вскоч..шь, (вы) порт..те (изделие)\n2) выкач..нный (из гаража велосипед), грохоч..щий\n3) устро..вший (праздник), муч..мый (сомнениями)\n4) (он) клевещ..т, движ..мый\n5) теш..щий (себя надеждами), обвенч..нные","answers":["135","351","531","153","315","513"]},{"id":23,"question":"1) (вы слишком) тороп..тесь, посе..шь (пшеницу)\n2) скро..нный (костюм), контролиру..мая (ситуация)\n3) выслуш..нный (ответ), маш..щий (руками)\n4) мол..щийся (в церкви), рассе..вший (сомнения)\n5) (они) высме..т (зло), ороша..щий (землю)","answers":["245","452","524","542","254","425"]},{"id":24,"question":"1) колебл..мый (волной), прав..вший (лошадьми)\n2) провер..вший (ответы), (всадник) скач..т\n3) обтека..мая (форма), (дворник) вымет..т (мусор)\n4) служ..щий (делу), задерж..нный (преступник)\n5) завещ..нный (дом), распор..шь (швы)","answers":["34","43"]},{"id":25,"question":"1) предвид..вший, водонепроница..мый\n2) прокашл..вшийся, медл..щий (с выбором)\n3) (ты) мел..шь (кофе), (он) движ..тся\n4) незыбл..мый, (едва) слыш..мый\n5) (что-то) знач..щий, (дети) плач..т","answers":["123","132","231","213","321","312"]},{"id":26,"question":"1) вылин..вший, обеспоко..нный\n2) обещ..нный, огнедыш..щий\n3) немысл..мое (дело), застрел..шь\n4) измуч..нный, (птица) щебеч..т\n5) (они) противореч..т, (они) тащ..т","answers":["2345"]},{"id":27,"question":"1) (куры) кудахч..т, слыш..щий\n2) замысл..вший, надломл..нный\n3) тревож..вшийся, (он) наточ..т (ножницы)\n4) (они) топч..т (траву), блещ..щий (умом)\n5) обожа..мый, муч..мый (угрызениями совести)","answers":["34","43"]},{"id":28,"question":"1) посе..нный, взлеле..в\n2) щекоч..щий, противореч..щий\n3) обездвиж..нный, колебл..мся\n4) раска..вшись, дремл..щий\n5) замес..шь (тесто), движ..мый","answers":["135","351","531","153","315","513"]},{"id":29,"question":"1) протопч..м (тропинку), повал..нные (деревья)\n2) замуч..шься, использу..мый\n3) размел..шь (зёрна), наполн..вший (водой)\n4) (недорого) сто́..щие (сувениры), (котлеты) жар..тся\n5) (кошки) мурлыч..т, теш..щий (себя надеждой)","answers":["14","41"]},{"id":30,"question":"1) (родители) вышл..т (посылку), дежур..щий (в клинике)\n2) (это) противореч..т (правилам), окле..вший (обоями)\n3) расстел..шь, сломл..нный\n4) тревож..щийся (за близких), (они) плещ..тся (в воде)\n5) произнос..шь, обижа..мый","answers":["23","32"]},{"id":31,"question":"1) возненавид..шь, разве..вший (сомнения)\n2) обруш..вшийся, независ..мый\n3) укороч..нный, увенч..нный\n4) обессил..шь (соперника), (всё) измен..тся\n5) завер..нная (копия), (ветер) колыш..т","answers":["245"]},{"id":32,"question":"1) рассмотр..шь, приравнива..мый\n2) неж..шься, незамеч..нный\n3) (он) держ..тся, повер..вший\n4) кол..щее (оружие), пил..щий (дрова)\n5) осме..нный, ре..вшие (флаги)","answers":["35"]},{"id":33,"question":"1) кол..щийся (предмет), рассе..нный (человек)\n2) (здания) руш..тся, противореч..щий\n3) щур..щийся (от солнца), дремл..щий\n4) разбуж..нный, (ребёнок) лепеч..т\n5) жал..щие (насекомые), гоня..щий (птиц с огорода)","answers":["24"]},{"id":34,"question":"1) (она) стара..тся, (дедушка) выздорове..т\n2) (они) хлопоч..т, (ничего) не знач..щий\n3) (ткань) выгор..т (на солнце), слыш..мый\n4) уполномоч..нный, скач..нный (с диска файл)\n5) взлеле..нный, выгул..нная (собака)","answers":["135"]},{"id":35,"question":"1) подгон..шь (автомобиль), распределя..м (ресурсы)\n2) клокоч..щий, (они) задерж..т (преступника)\n3) подсматрива..те (в глазок), воплоща..мая (мечта)\n4) разве..вший (сомнения), неприемл..мый (тон)\n5) непроверя..мая (гласная), (она) обижа..тся","answers":["35"]},{"id":36,"question":"1) трепещ..щий (листок), (врачи) леч..т\n2) закашля..шься, ненавид..мый\n3) (газон) выгор..т (на солнце), устро..вший (встречу)\n4) понаде..вшийся (на удачу), беспоко..щийся\n5) муч..щий (меня вопрос), (участки) гранич..т (с лесом)","answers":["345"]},{"id":37,"question":"1) реж..щий (слух звук), (новости) будораж..т (коллектив)\n2) расходу..мый, надпил..нный\n3) нянч..вший, упуст..шь (возможность)\n4) учу..вший (запах), (они) пол..т (грядки)\n5) брош..нный (на берег), скос..шь (траву)","answers":["23"]},{"id":38,"question":"1) све́́р..вшие (часы), вылет..шь (вовремя)\n2) (дети) переч..т (родителям), каж..щееся (сходство)\n3) уменьш..нный, зате..м (праздник)\n4) (вы) вид..те, немысл..мый\n5) ла..щий (пёс), рассе..нный (человек)","answers":["134"]},{"id":39,"question":"1) излеч..шься, разлож..м (вещи)\n2) напо́лн..вший (светом), обожа..мый\n3) услыш..нный, теш..щий (надеждой)\n4) вер..щий (в чудо), почу..вший (запах)\n5) переинач..нный, (она) назнач..т (цену)","answers":["134"]},{"id":40,"question":"1) всклокоч..нный, вы́ ключ..вший\n2) пересил..шь, увид..мся\n3) (он) жажд..т (общения), удосто..нный (награды)\n4) непроница..мый, (ребёнок) пыш..т (здоровьем)\n5) реж..щий (край), дыш..щий","answers":["234"]},{"id":41,"question":"1) ответ..шь, организу..мый\n2) запиш..м, повер..вший\n3) выключ..нный, когда вы́ мо..те (пол)\n4) хвал..щийся (успехами), ве..вший (ветерок)\n5) пилотиру..щий, (дома) (они) видне..тся (вдали)","answers":["345"]},{"id":42,"question":"1) составля..мый, захоч..шь\n2) (растение) жажд..т (влаги), настро..вшись (на работу)\n3) пыш..щий (жаром), (они) бормоч..т\n4) (мы) познаком..мся, (мотоцикл) разгон..тся\n5) тревож..вшийся, незыбл..мый (порядок)","answers":["134"]},{"id":43,"question":"1) (ребята) высп..тся, ве..щий (с юга)\n2) лопоч..щий (младенец), (новости) тревож..т\n3) невид..мые (преграды), (оса) жал..тся\n4) прикле..вшийся (намертво), (велосипед) кат..тся\n5) (куры) кудахч..т, (рыбаки) тащ..т (лодку к берегу)","answers":["34"]},{"id":44,"question":"1) вытерп..шь, выкач..нная (из гаража машина)\n2) (он) корм..т, (он) полощ..т\n3) морга..шь, просмотр..нный\n4) зате..вший, возненавид..в\n5) (он) заскоч..т, встрет..вший","answers":["35"]},{"id":45,"question":"1) взвеш..нное (решение), прокат..шься\n2) обяж..шь, завис..вший (от нас)\n3) посе..в (морковь), (дорого) сто́..вший\n4) закрут..шь, преследу..мый\n5) курлыч..щий, (звёзды) блещ..т","answers":["25"]},{"id":46,"question":"1) (дети) плач..т, жажд..щий\n2) дыш..щий, (они) приумнож..т (богатство)\n3) (он) паш..т (поле), (мы) наполн..м (вёдра)\n4) (он) раска..тся, крас..вший (двери)\n5) встро..нный, слыш..мый","answers":["12"]},{"id":47,"question":"1) (они) дополн..т, (они) зате..т\n2) (вы) вытерп..те, незыбл..мый\n3) посе..нный, завис..щий\n4) бор..мся, биоразлага..мый\n5) колебл..щий, разве..вший","answers":["34"]},{"id":48,"question":"1) хохоч..щий, слыш..вший\n2) поджар..нный, независ..мый\n3) несдерж..нный, (огни) блещ..т\n4) прицел..шься, (он) переч..т (родителям)\n5) расходу..шь, (он) брызж..т (водой)","answers":["45"]},{"id":49,"question":"1) поса́ж..нный (куст), взлеле..в\n2) стрекоч..щий, держ..щий\n3) встревож..нный, колебл..мый\n4) почу..вший, дремл..щий\n5) (собака) ла..т, незыбл..мый","answers":["35"]},{"id":50,"question":"1) зате..вший, залож..нный (нос)\n2) дослуш..нный, дыш..щий\n3) муч..мый (сомнениями), потерп..шь\n4) взвинч..нный, (кошка) мурлыч..т\n5) (они) вскоч..т (в трамвай на ходу), (ничего не) знач..щий","answers":["2345"]},{"id":51,"question":"1) рокоч..т (трубы), хлещ..щий (ливень)\n2) колебл..шься, обезоруж..нный\n3) засева..мый, поддерж..шь\n4) раскрас..в, (он) выдел..т (участок)\n5) вылеч..вший, поду..шь","answers":["124"]},{"id":52,"question":"1) (кроты) ро..т, (рабочие) стро..т\n2) леле..шь, замеч..нный\n3) ненавид..мый, (собака) ла..т\n4) ужал..в (в руку), (он) выстрел..т\n5) незабыва..мый, прогон..шь","answers":["24"]},{"id":53,"question":"1) (завтра) увид..мся, выздоров..вший\n2) хлещ..щий (по стеклам ветер), (они) маж..тся (кремом)\n3) недосяга..мый, (мы) гоня..мся (за мячом)\n4) (она) вылеч..тся, немысл..мый\n5) (они) лицемер..т, кол..щий (дрова)","answers":["234"]},{"id":54,"question":"1) вороч..вшийся (во сне), (они) законч..т (вовремя)\n2) раскраш..нный, постигн..шь (умом)\n3) бушу..щая (стихия), (пассажиры) дремл..т\n4) выкин..м (из головы), муч..мый (жаждой)\n5) переч..щий (родителям), реж..щие (инструменты)","answers":["123"]},{"id":55,"question":"1) наследу..мый, размен..нный (рубль)\n2) передума..шь, (надежда) тепл..тся\n3) (котёнок) жмур..тся, замет..вший (изменения)\n4) маш..щий (флагом), (люди) пляш..т\n5) жар..щий (картошку), (они) сброс..т (рюкзаки)","answers":["345"]},{"id":56,"question":"1) проед..мся (по городу), застигн..шь (врасплох)\n2) реж..щий (инструмент), (все) хохоч..т\n3) необстрел..нный (солдат), несгиба..мый\n4) недремл..щие (конкуренты), кол..щие (предметы)\n5) встревож..нные (птицы), замес..шь (тесто)","answers":["124"]},{"id":57,"question":"1) вспен..вшийся, (курица) кудахч..т\n2) брызж..щий, выдерж..вший\n3) числ..щийся, ка..щийся\n4) замеш..нное (тесто), гоня..шься\n5) припа..нная (к крышке ручка), ла..вшая (собака)","answers":["45"]},{"id":58,"question":"1) обездвиж..нный, (вы) устан..те\n2) помедл..вший, взлеле..нный\n3) вывал..нные (из ящика фрукты), (меня никто не) обижа..т\n4) выздоров..вший, выль..шь (из банки)\n5) меч..щийся (из стороны в сторону), (они) слыш..т","answers":["134"]},{"id":59,"question":"1) обмен..нный, зала..вший\n2) муч..мый (совестью), разрумян..шься\n3) (они) истле..т (в земле), ржаве..щий (металл)\n4) движ..мый (любопытством), проветр..вший (класс)\n5) (они) продерж..тся, скач..щий (галопом)","answers":["1234"]},{"id":60,"question":"1) энергозавис..мый, благоустро..шь\n2) беспоко..щийся, выгул..нный (пёс)\n3) непроница..мый, подта..вшее (мороженое)\n4) вывер..шь (рукопись), не сыщ..шь (днём с огнём)\n5) (они) перестел..т (паркет), вылин..вшие (обои)","answers":["12"]},{"id":61,"question":"1) (журавли) курлыч..т, (врачи) леч..т\n2) (трава) колыш..тся, незыбл..мый\n3) противореч..щий, повенч..нная (пара)\n4) (наша сила) зижд..тся (на вере в победу), предвид..шь\n5) дремл..щий, (овцы) бле..т","answers":["235"]},{"id":62,"question":"1) усво..нный (материал), понаде..вшись\n2) намыл..вший (руки), вороч..вшийся (с боку на бок)\n3) трепещ..щий, (они тяжело) дыш..т\n4) независ..мый, (он) гон..тся (за мечтой)\n5) (туман) зыбл..тся, (мы) хлопоч..м","answers":["45"]},{"id":63,"question":"1) обиж..нный, дремл..шь\n2) (они) держ..тся (за руки), мурлыч..щий (кот)\n3) будораж..вший (воображение), (рассвет чуть) брезж..т\n4) утер..нные (документы), (они) высп..тся\n5) (они) вышл..т (посылку), завис..щий (от обстоятельств)","answers":["134"]},{"id":64,"question":"1) невид..мый, отмет..м (юбилей)\n2) завис..вший, постел..шь\n3) удво..нный, неча..нный\n4) пыш..щий (здоровьем), (они что-то) бормоч..т\n5) незыбл..мый, пове..вший (с юга)","answers":["124"]},{"id":65,"question":"1) накрахмал..вший, сломл..нный\n2) верт..шься, прогоня..мый\n3) закручива..щий, (они этого не) приемл..т\n4) колебл..мся, застро..нный\n5) курлыч..щие (журавли), (они) жажд..т (славы)","answers":["345"]},{"id":66,"question":"1) животрепещ..щий (вопрос), (они) паш..т (землю)\n2) сто́..вшие (дорого вещи), (дождь) хлещ..т\n3) (хорошо) высп..шься, немысл..мый\n4) услыш..вший, (он) бормоч..т\n5) колебл..мый (ветром), утрат..вший","answers":["13"]},{"id":67,"question":"1) ве..щий (прохладой), (волны) трепл..т (лодку)\n2) высто..шь (в борьбе), разгоня..шься\n3) услыш..нный, корч..щийся (от боли)\n4) заверт..шься, обанкрот..вшийся\n5) распояс..вшись, (они) покрош..т (хлеб)","answers":["1345"]},{"id":68,"question":"1) (всё) перемел..тся, (он никак не) отдыш..тся\n2) вымол..шь (пощаду), скрюч..вшийся (от боли)\n3) обезглав..вший (гидру), (вы всегда) поддерж..те\n4) раскач..нная (лодка), маяч..щий (вдали)\n5) (они) бор..тся, (матрос) дра..щий (палубу)","answers":["234"]},{"id":69,"question":"1) униж..нный, размел..шь (специи)\n2) брызж..щий (идеями), (они) услыш..т\n3) (ткань) выгор..т (на солнце), движ..мый (любовью)\n4) замеш..нный (в преступлении), колебл..мый (ветром)\n5) кудахч..щие (куры), щебеч..т (птицы)","answers":["135"]},{"id":70,"question":"1) замеч..нный (кем-то), обожа..мый\n2) вылин..вшая (ткань), чу..щий (недоброе)\n3) измуч..нный (сомнениями), (трава) колыш..тся\n4) противореч..щий (здравому смыслу), (кошки) мурлыч..т\n5) расстро..вшись (из-за неудачи), (он) мысл..т (логически)","answers":["135"]},{"id":71,"question":"1) (он) тревож..тся, бре..шься\n2) дремл..щий, (они) стел..тся\n3) (собаки) ла..т, неприемл..щий\n4) (капли) брызж..т, (они) ищ..т\n5) посе..шь, (овца) бле..т","answers":["2345"]},{"id":72,"question":"1) (они) хол..т (дочь), стро..щий\n2) вылет..шь, ненавид..мый\n3) ограб..вший, пропол..шь (грядки)\n4) (все) выскоч..т, маш..щий\n5) почу..вший, рассе..нный (человек)","answers":["125"]},{"id":73,"question":"1) уравн..нный (в правах), прикле..вший\n2) вменя..мый, размел..м (зёрна)\n3) смеш..нное (чувство), ненавид..шь\n4) (курица) кудахч..т, вытерп..м\n5) (ветры) ве..т, (они) бор..тся","answers":["25"]},{"id":74,"question":"1) наде..вшийся (на удачу), помн..щий (наизусть)\n2) невид..мый, высп..мся\n3) (друзья) хлопоч..т, (дети) услыш..т\n4) пороч..щий (репутацию), грохоч..щий\n5) заброш..нный, чу..вший (беду)","answers":["12"]},{"id":75,"question":"1) выковыр..нный, осме..нный (толпой)\n2) высп..мся, неприемл..мый\n3) почу..шь (опасность), (тряпка) истле..т\n4) надыш..мся, разрумян..вшийся\n5) ненавид..вший, раска..шься (в грехах)","answers":["1345"]},{"id":76,"question":"1) грохоч..щий (салют), (они) точ..т (детали)\n2) застел..нный, разве..нный\n3) (он) предвид..т, обмер..шь (участок)\n4) ро..щий (землю), (они) колебл..тся\n5) обезум..вший (от страха), обид..шься","answers":["34"]},{"id":77,"question":"1) загон..шь, (ветер) свищ..т\n2) тревож..вшийся, (он) наточ..т (ножницы)\n3) (они) топч..т (траву), блещ..щий (умом)\n4) надломл..нный, насто..нный (напиток)\n5) окраш..нный, улучш..нный","answers":["235"]},{"id":78,"question":"1) животрепещ..щий, (голоса) слыш..тся\n2) (кот) мурлыч..т, выгляд..шь (счастливым)\n3) хлопоч..шь, (мы) хохоч..м\n4) движ..мый, поспор..вший\n5) противореч..щий, (они) жажд..т (успеха)","answers":["34"]},{"id":79,"question":"1) осил..вший (задачу), обезвред..шь (врага)\n2) (он) постигн..т (истину), (самолёт) вылет..т\n3) (они) ропщ..т, пыш..щий (жаром)\n4) теш..щий (самолюбие), всклокоч..нные (волосы)\n5) замеш..нный (в преступление), прослуш..нный (концерт)","answers":["135"]},{"id":80,"question":"1) выдерж..шь, колебл..мый\n2) волну..щийся, (они) бор..тся\n3) раскраш..нный, замеш..нный (в скандале)\n4) (он) гон..тся (за зайцем), вытерп..вший (боль)\n5) (мы) бормоч..м, пол..шь (грядки)","answers":["25"]},{"id":81,"question":"1) зате..нный (спор), жал..щая (крапива)\n2) выгор..вший, огранич..вший\n3) скач..щий, (они) дыш..т\n4) загон..шь, подрумян..вшийся\n5) (ветер) разве..т (тучи), бор..мся","answers":["145"]},{"id":82,"question":"1) подслуш...нный (разговор), (они) держ...т\n2) противореч...щий, (они) назнач...т\n3) проветр...шь (комнату), пропол...шь (грядку)\n4) кле...щий (карандаш), мел...щий (кофе)\n5) немысл...мый (поступок), выскоч...м","answers":["125"]},{"id":83,"question":"1) клевещ...щий, дыш...щий\n2) постигн...шь (истину), замéт...вший (зайца)\n3) медл...щий, (они) высп...тся\n4) (они) высме...т, стро...щий\n5) завыш...нный, незыбл...мые (правила)","answers":["35"]},{"id":84,"question":"1) окликн..те (соседа, пожалуйста), (вы очень мелко) пиш..те\n2) вытерп..вший (всё), (вы) бормоч..те\n3) колебл..мый, обид..вшись\n4) стро..щийся (дом), ла..щий (пёс)\n5) неотъемл..мое (право), зате..вший (спор)","answers":["23"]},{"id":85,"question":"1) (прибор) выключ..тся, ненавид..мый (всеми)\n2) (чайник) выкип..т, (едва) осяза..мый\n3) облагород..в (душу трудом), (кафель) блещ..т (белизной)\n4) держ..щийся (на поверхности), смеш..нные (чувства)\n5) замолкн..те (пожалуйста), (мягко) стéл..те","answers":["14"]},{"id":86,"question":"1) увид..вший, наве..нный (музыкой)\n2) (хорошо) выгляд..шь, (всегда) выруч..те (из беды)\n3) будораж..щий, леч..щий (врач)\n4) обнаруж..шь, неприемл..мый (вариант)\n5) накол..м (дров), (ветер) колыш..т (ветви)","answers":["235","253","325","352","523","532"]},{"id":87,"question":"1) (он) предвид..т (опасность), накле..нный\n2) услыш..вший, (тени) мерещ..тся\n3) выгляд..шь, леле.. мый\n4) бор..щийся, накле..вший (марку)\n5) (розы) кол..тся, кочу..щий","answers":["25"]},{"id":88,"question":"1) ненавид..вший, засте́л..м (постель)\n2) насто..нный (чай), зала..вшая (собака)\n3) вылет..шь, слыш..м\n4) неприемл..мый, движ..мый\n5) (море) рокоч..т, (журавль) курлыч..т","answers":["1235"]},{"id":89,"question":"1) неотъемл..мая (часть), *(капибара) щипл..т (траву)\n2) (половица) скрипн..т, (сомнение) разве..тся\n3) (мне тяжело) дыш..тся, (он) гон..т (прочь)\n4) (лес) скро..тся (в тумане), стро..вший (дом)\n5) наде..вшийся, (они) раска..тся\n \n*Внешне капибара похожа на гигантскую большеголовую морскую свинку.","answers":["123"]},{"id":90,"question":"1) превыш..нная (скорость), сдержива..мый\n2) (он) лаком..тся, вы́ числ..вший\n3) (тракторы) па́ш..т, клич..щий (гусей)\n4) сыпл..щийся, (они) перебо́р..т (противника)\n5) развенч..нный (миф), (он) недолюблива..т","answers":["1234"]},{"id":91,"question":"1) (едва) колебл..мый, (орех) раскол..тся\n2) забле..т (ягнята), насто..нный (чай)\n3) (они) топч..т (траву), (ивы) плач..т\n4) блещ..щий (умом), тащ..щаяся (повозка)\n5) накорм..шь, движ..мый (сочувствием)","answers":["135"]},{"id":92,"question":"1) неотъемл..мое (право), застел..м (постель)\n2) (водопады) клокоч..т, (тракторы) паш..т\n3) увенч..нный, ненавид..вший\n4) тревож..вшийся, закле..вший\n5) надломл..нный, посе..нный","answers":["124"]},{"id":93,"question":"1) вылет..шь, (ветер) засвищ..т\n2) обгоня..мый, промасл..нный (блин)\n3) животрепещ..щий (вопрос), (куры) кудахч..т\n4) накорм..шь, зала..вшая (собака)\n5) веру..шь, отгон..шь (в сторону)","answers":["23","32"]},{"id":94,"question":"1) добыва..мый, жал..щие (пчёлы)\n2) расскаж..м (правду), незыбл..мые (законы)\n3) (студенты) труд..тся, (снегá) раста..т\n4) рокоч..щий (самолёт), лопоч..щий (ребёнок)\n5) (автомобиль) движ..тся, огранич..вший (расходы)","answers":["24","42"]},{"id":95,"question":"1) движ..мый (идеей), неотъемл..мое (право)\n2) колыш..щиеся (травы), (куры) кудахч..т\n3) кле..щий, (они) ма..тся (от жары)\n4) промасл..нный (блин), выбеж..шь\n5) завещ..нные (ценности), скач..нный (файл)","answers":["25"]},{"id":96,"question":"1) (ты) мел..шь (кофе), вымет..те (пожалуйста, мусор)\n2) (снега́) раста..т, забле..т (ягнята)\n3) (коты) мурлыч..т, движ..щаяся (колонна)\n4) зыбл..щийся (песок), стел..щийся (туман)\n5) насто..нный (чай), подстрел..нный (охотником заяц)","answers":["234"]},{"id":97,"question":"1) стел..тся (травы), (они) пока..тся (в грехах)\n2) пыш..щий (жаром), алч..щий (знаний)\n3) (он) потерп..т, (он) обре..т (голову)\n4) колебл..мый (ветром), незыбл..мый\n5) свал..нные (из шерсти валенки), предприм..шь (попытку)","answers":["124"]},{"id":98,"question":"1) необстрел..нный (боец), насто..нный (напиток)\n2) промасл..нный (блин), выкач..нная (из колодца вода)\n3) (он) высп..тся, (она) дыш..т\n4) дремл..щий, пил..щий (доски)\n5) (автомобили) движ..тся, (куры) кудахч..т","answers":["135"]},{"id":99,"question":"1) осме..нный (сверстниками), подкле..вший (конверт)\n2) затер..нный (в лесу), (они) ма..тся (от зноя)\n3) (он) выжив..т, неподража..мый\n4) недви́ж..мое (имущество), бор..шься\n5) представл..нный, (листва) осыпа..тся","answers":["35"]},{"id":100,"question":"1) танцу..шь, невид..мый\n2) мел..щий (муку), вер..щий (в мечту)\n3) (он) танцу..т, (она) захоч..т\n4) припа..нная (деталь), рассе..нное (внимание)\n5) дыш..щий (свежестью), хохоч..щий (ребёнок)","answers":["34"]},{"id":101,"question":"1) (кошка) мурлыч..т, (он) услыш..т\n2) брезж..щий (рассвет), (дети) хохоч..т\n3) скач..щий (на коне), грохоч..щая (повозка)\n4) (они) выгон..т, (снег) раста..т\n5) надломл..нный, насто..нный (отвар)","answers":["23"]},{"id":102,"question":"1) (камыш) колыш..тся, независ..мый (участник)\n2) вер..щий, почу..вший (опасность)\n3) погрыз..нный, свал..нные (в кучу игрушки)\n4) дремл..щий (в поезде), мел..щий (кофе)\n5) (курица) кудахч..т, закле..вший","answers":["234"]},{"id":103,"question":"1) произнос..шь, слыш..мый\n2) относ..шься, надума..шь\n3) засмотр..шься, реша..мый\n4) невид..мый, разгон..шься\n5) раска...ться, найд..нный","answers":["14","41"]},{"id":104,"question":"1) посвяща..щий, гас..щий\n2) жал..щие (пчёлы), стро..щие\n3) (печь) гре..т, охраня..мый\n4) сутул..щийся, бре..щий\n5) кле..щий (слой), убира..щий","answers":["23","32"]},{"id":105,"question":"1) сил..щийся, (они) стара..тся\n2) беспоко..тся (ребята), та..щий (снег)\n3) руб..щий, смотр..т (родители)\n4) леч..щий, молч..щий\n5) чита..мый, движ..мый","answers":["34","43"]},{"id":106,"question":"1) (он) вид..т, высматрива..т\n2) (уголёк) тле..т, (собака) гуля..т\n3) (он) высп..тся, почита..мый\n4) жал..щие, ман..щие\n5) (дом) стро..тся, (он) подмигива..т","answers":["24","42"]},{"id":107,"question":"1) хоч..шь, поднима..мый\n2) (родители) беспоко..тся, замес..шь\n3) руб..щий, зна..щий\n4) вышл..т (мама), ран..мый\n5) дыш..щий, слыш..вший","answers":["15","51"]},{"id":108,"question":"1) дремл..щий, (он) обижа..т\n2) кача..щий, скуча..щий\n3) (он) терп..т, завис..щий\n4) (кактус) кол..тся, (он)засоря..т\n5) ма..щийся, завива..мый","answers":["24","42"]},{"id":109,"question":"1) кол..тся (орех), почита..мый\n2) кача..щий, поко..щийся\n3) самокле..щиеся, просе..нная\n4) дремл..щий, всевид..щий\n5) (он) наве..т, (он) обид..т","answers":["13","31"]},{"id":110,"question":"1) стащ..т (кошка), (лиса) разоря..т\n2) паш..т (пахарь), стел..т (мама)\n3) (если) напиш..те, (когда) подним..те\n4) дыш..т (они), щекоч..т (они)\n5) (она) тревож..т, очищ..нная","answers":["23","32"]},{"id":111,"question":"1) во..т (ветер), вытащ..нный\n2) се..щий, ман..щие\n3) трат..тся (деньги), напиш..т (автор)\n4) (метель) присыпл..т (снежком), изготовл..нная\n5) леле..щая, стро..т","answers":["14","41"]},{"id":112,"question":"1) (он) выдерж..т, сплет..на\n2) (он) плач..т, круж..т (метель)\n3) леч..щий, подхвач..нное\n4) тревож..щийся, сыгр..нный\n5) жал..щий, стрел..ный","answers":["45","54"]},{"id":113,"question":"1) (стена) завеш..нная (картинами), выкач..нная (вода)\n2) дремл..т (они), (они) глад..т\n3) засыпл..т (они), пол..щий (огород)\n4) помн..щий, выслуш..нное\n5) клокоч..щий, увеш..нная (орденами)","answers":["13","31"]},{"id":114,"question":"1) (они) помн..т, учаща..щийся (пульс)\n2) труд..тся (сотрудник), верт..тся (Земля)\n3) (ребёнок) боле..т, обрета..мый\n4) волну..щаяся, приглаша..мый гость\n5) (он) крас..т, пиш..т (он)","answers":["23","32"]},{"id":115,"question":"1) располож..нная, замета..мая\n2) верт..тся, сожале..т\n3) плыв..т (баржи), вид..т (глаза)\n4) терп..щие, кол..щие\n5) вынес..нный, страда..т (он)","answers":["15","51"]},{"id":116,"question":"1) они улучш..т, смеш..нные (чувства)\n2) они сдерж..т, выкруч..нный\n3) они противореч..т, ремонтиру..мая (машина)\n4) он перевяж..т, угнета..мый\n5) он выдерж..т, подстёгива..мый","answers":["14","41"]},{"id":117,"question":"1) плач..щий, скач..щий\n2) (он) выдерж..т, (он)подытож..т\n3) тревож..щийся, получ..нный\n4) ропщ..т, (фермер) корм..т\n5) люб..щая, пиш..щий","answers":["12","21"]},{"id":118,"question":"1) замеч..нный, смерка..тся\n2) (тени) мерещ..тся, (печка) топ..тся\n3) (родители) отпуст..т, (друзья) выруч..т\n4) движ..мый, (крот) ро..т\n5) вер..вший (словам), размет..вший (диск)","answers":["15","51"]},{"id":119,"question":"1) посе...вший зерно, самокле..щаяся бумага\n2) провер..вший (и сдавший работу), обессил..вший от ран\n3) неприемл..мый, напиш..м письмо\n4) вы обижа..тесь, вы обид..тесь\n5) замеш...нное тесто, замеш...нный в преступлении","answers":["13"]},{"id":120,"question":"1) кол..щееся растение, они бор..тся\n2) увеш..нная орденами грудь, они выдерж...т\n3) раска..вшийся во лжи, пута...щиеся волосы\n4) раскле..лась коробка, он гоня..т по двору\n5) он верт..тся, ветер разгон..т облака","answers":["125"]},{"id":121,"question":"1) засе..нные поля, терп..щий боль\n2) она высуш..т обувь, выгор..вший на солнце\n3) удосто..н награды, засуха обезвод..т реку\n4) вынянч..вшая нас, выздоров..вшая девочка\n5) если вынес..те, (он) побре..т бороду","answers":["15"]},{"id":122,"question":"1) (он) вытерп...т, (он) услыш..т\n2) блещ..щий, блиста..щий\n3) ед..щий (по дороге), езд..щий (часто)\n4) (она) пример..т платье, измер..вший путь\n5) муч..вший котёнка, муч..мый совестью","answers":["145"]},{"id":123,"question":"1) слыш_вший (шум), выловл_нный (в реке)\n2) (товары) завоз_тся, помн_щий (прошлое)\n3) знаком_тся (студенты), стро_вшийся\n4) (родители) рассерд_тся, кле_щий (карандаш)\n5) задерж_шься, использу_мый","answers":["24"]},{"id":124,"question":"1) раскле..шь, колебл..шься\n2) (кузнечики) стрекоч..т, (снега) припорош..т\n3) рыщ..щие (волки), хлещ..щие (струи)\n4) сдерж..нное обещание, замеш..нная глина\n5) неприемл..мый, немину..мый","answers":["35"]},{"id":125,"question":"1) (она) мел..т (зёрна), обид..вшись\n2) брезж..щий (рассвет), руш..щееся (здание);\n3) рассе..нный, насто..нное (зелье)\n4) пересуш..нное бельё, зачист..вший (напильником деталь)\n5) подстрел..нный (волк), незыбл..мый","answers":["135"]},{"id":126,"question":"1) (он) выраст..т (добрым), (мы) дежур..м\n2) немысл..мый, выстрел..вший\n3) (нами) движ..т (милосердие), опротив..вший\n4) (переоденьтесь, когда) высохн..те, выйд..те (вон!)\n5) (собака) чу..т (дичь), воспева..мый","answers":["235","253","325","352","523","532"]},{"id":127,"question":"1) (травы) колыш..тся, противореч..щий\n2) выгляд..шь, обид..вшийся\n3) (кот) мурлыч..т, приемл..мый\n4) жал..щие (пчёлы), рассе..нный (человек)\n5) леч..щий (врач), (родители) тревож..тся","answers":["345","543","354","435"]},{"id":128,"question":"1) (пациенты) леч..тся, маяч..щий (вдали лес)\n2) завис..шь, подстриж..нный\n3) бор..шься, воспева..мый\n4) проед..шься, необита..мый\n5) верт..шься, обнаруж..нный","answers":["134","143","314","341","413","431"]},{"id":129,"question":"1) уполномоч..нный, слыш..мый\n2) опаса..шься, потрат..вший\n3) закле..шь, неслыш..мый\n4) посе..шь, потрач..нный\n5) помож..шь, дви ж..мый","answers":["34","43"]},{"id":130,"question":"1) встрет..шься, дви ж..мый\n2) беспоко..шься, омыва..мый\n3) пол..шь (грядки), перестро..нный\n4) выруч..шь, ран..ный (боец)\n5) ссор..щиеся (ребята), отча..нный (крик)","answers":["135","153","315","351","513","531"]},{"id":131,"question":"1) леле..шь, несгиба..мый\n2) помн..шь, вид..мый\n3) верт..шься, потрат..вший\n4) расскаж..шь, увенч..нный\n5) самокле..щиеся (обои), (зёрна) перемел..тся","answers":["123","132","231","213","321","312"]},{"id":132,"question":"1) сия..шь, закле..вший\n2) щур..щийся (от солнца), (друзья) увид..тся\n3) налад..шь, скле..нный\n4) представ..шься, независ..мый\n5) онеме..шь, ожида..мый","answers":["245"]},{"id":133,"question":"1) повер..шь, подта..вший\n2) накол..шь, движ..мый\n3) вытерп..шь, запомн..вшийся\n4) дремл..шь, предвид..вший\n5) поджар..шь, наследу..мый","answers":["34"]},{"id":134,"question":"1) пропол..шь (грядку), невид..мый\n2) (они) маж..тся (кремом), огнедыш..щий\n3) пил..шь, мысл..мый\n4) (ветер) перемен..тся, движ..мый\n5) отыщ..шь, подстрел..нный (хищник)","answers":["345"]},{"id":135,"question":"1) намаж..шь, накле..вший\n2) рассмотр..шь, оконч..вший\n3) подремл..шь, определя..мый\n4) подпрыгн..шь, невид..мый\n5) кол..щийся (предмет), (льды) та..т","answers":["235"]},{"id":136,"question":"1) клянч..щий (конфету), (дети) плач..т\n2) замет..шь, немысл..мые (последствия)\n3) (в) колыш..щейся (ржи), защебеч..т (птицы)\n4) выгон..шь, освеща..мый\n5) выкидыва..шь, обиж..нный","answers":["235"]},{"id":137,"question":"1) (собаки) чу..т, (ученики) ответ..т\n2) (враги) ка..тся, (ветра) гон..т\n3) вскоч..шь, вспен..вшийся\n4) обяж..шь, предусмотр..нный\n5) дремл..щий (дедушка), (туманы) стел..тся","answers":["345"]},{"id":138,"question":"1) дремл..щий, (они) гон..тся (за мячом)\n2) закле..шь, неслыш..мый\n3) помож..шь, дви ж..мый (желанием)\n4) засе..нное (поле), подта..вший (снег)\n5) брызж..щий (искрами), (птицы) щебеч..т","answers":["245"]},{"id":139,"question":"1) обид..шься, завис..вший\n2) высто..вший (в бою), приемл..мый\n3) увенч..нный, (люди) слыш..т\n4) (ветры) гон..т, (соловьи) засвищ..т\n5) вылеч..шься, невид..мый","answers":["35"]},{"id":140,"question":"1) повер..шь, подта..вший\n2) накол..шь, движ..мый (желанием помочь)\n3) вытерп..шь, запомн..вшийся\n4) поджар..шь (картофель), наследу..мый (титул)\n5) (они) дремл..т, бор..щийся (спортсмен)","answers":["35"]},{"id":141,"question":"1) трат..щий (накопления), (шефы) постро..т (школу)\n2) (друзья) выкро..т (время), ве..щий (ветерок)\n3) расходу..мый, кол..шь (дрова)\n4) (экскаваторы) ро..т, сме..щий (возражать)\n5) (учителя) цен..т, сия..щий (от радости)","answers":["134"]},{"id":142,"question":"1) предъявля..шь, воссоздава..мый\n2) онеме..шь, ожида..мый\n3) (он) оглядыва..тся, просуш..шь (бельё)\n4) свер..шь, укороч..нный\n5) напил..шь, закле..вший","answers":["125"]},{"id":143,"question":"1) относ..шься, распущ..нный\n2) выглян..шь, услыш..шь\n3) покаж..шь, увлека..мый\n4) отуч..шься, невид..мый\n5) животрепещ..щий (вопрос), (тракторы) паш..т","answers":["345"]}];
+const STORAGE_KEY = "ege12_trainer_state_v3";
+const $ = id => document.getElementById(id);
+const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],correct:0,completed:[],round:1,streak:0,bestStreak:0});
+function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;return s;}}catch(e){}return freshState();}
+let state=loadState(), activePane="bank";
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));updateStats();}
+function currentTask(){return TASKS.find(t=>t.id===state.order[state.index])||TASKS[0];}
+function normalize(v){return (v||"").replace(/[^1-5]/g,"").split("").sort().join("");}
+function accepted(task){return [...new Set(task.answers.map(normalize))];}
+const ACHIEVEMENTS = [
+ {id:"first",icon:"🌱",title:"Первый шаг",desc:"Решить 1 задание",test:s=>s.completed.length>=1},
+ {id:"five",icon:"⭐",title:"Разогрев",desc:"Решить 5 заданий",test:s=>s.completed.length>=5},
+ {id:"ten",icon:"📘",title:"Вошёл в ритм",desc:"Решить 10 заданий",test:s=>s.completed.length>=10},
+ {id:"twenty",icon:"✍️",title:"Уверенная рука",desc:"Решить 20 заданий",test:s=>s.completed.length>=20},
+ {id:"quarter",icon:"🏅",title:"Четверть пути",desc:"Решить 25 заданий",test:s=>s.completed.length>=25},
+ {id:"thirty",icon:"🧠",title:"Знаток форм",desc:"Решить 30 заданий",test:s=>s.completed.length>=30},
+ {id:"forty",icon:"🚀",title:"На скорости",desc:"Решить 40 заданий",test:s=>s.completed.length>=40},
+ {id:"half",icon:"🎯",title:"Половина пути",desc:"Решить 51 задание",test:s=>s.completed.length>=51},
+ {id:"sixty",icon:"💡",title:"Сильная база",desc:"Решить 60 заданий",test:s=>s.completed.length>=60},
+ {id:"seventyfive",icon:"💎",title:"Уже близко",desc:"Решить 77 заданий",test:s=>s.completed.length>=77},
+ {id:"streak10",icon:"🔥",title:"Огонь внутри",desc:"10 правильных подряд",test:s=>s.bestStreak>=10},
+ {id:"all",icon:"🏆",title:"Мастер задания 12",desc:"Решить все 143 задания",test:s=>s.completed.length>=143}
+];
+function renderAchievements(){
+ const host=$("achievementGrid");if(!host)return;
+ const unlocked=ACHIEVEMENTS.filter(a=>a.test(state)).length;
+ const total=$("achievementTotal");
+ if(total)total.textContent=`${unlocked}/${ACHIEVEMENTS.length} открыто`;
+ host.innerHTML=ACHIEVEMENTS.map((a,i)=>{
+  const yes=a.test(state);
+  return `<article class="achievement-page-card ${yes?"unlocked":""}"><div class="achievement-page-icon">${a.icon}</div><div class="achievement-page-copy"><strong>${a.title}</strong><span>${a.desc}</span></div><div class="achievement-status">${yes?"Открыто ✓":"Ещё впереди"}</div></article>`;
+ }).join("");
+}
+function updateStats(){
+ const done=state.completed.length, remaining=143-done, percent=Math.round(done/143*100);
+ $("errorCount").textContent=state.mistakes.length;$("bankCount").textContent=143;
+ if($("statDone"))$("statDone").textContent=`${done}/143`;
+ if($("statRemaining"))$("statRemaining").textContent=remaining;
+ if($("statCompletion"))$("statCompletion").textContent=percent+"%";
+ if($("statCompletionBar"))$("statCompletionBar").style.width=percent+"%";
+ if($("jarCount"))$("jarCount").textContent=`${done}/143`;
+ if($("jarPercent"))$("jarPercent").textContent=percent+"% прогресса";
+ if($("jarWater"))$("jarWater").style.height=percent+"%";
+ if($("statHint"))$("statHint").textContent=done?`Уже решено правильно ${done} из 143 заданий. Так держать!`:"Реши первое задание, чтобы начать наполнять банку.";
+ if($("streakCount"))$("streakCount").textContent=state.streak||0;
+ if($("bestStreak"))$("bestStreak").textContent=state.bestStreak||0;
+ renderAchievements();
+}
+function renderTask(){
+ const t=currentTask(), saved=state.answers[t.id]||{}, done=state.completed.includes(t.id);
+ $("taskNumber").textContent=`Задание ${state.index+1} из 143`;
+ $("progressLabel").textContent=`${Math.round(state.completed.length/143*100)}% пройдено`;
+ $("progressBar").style.width=`${state.completed.length/143*100}%`;
+ $("questionText").textContent=t.question;
+ $("answerInput").value=saved.value||"";
+ $("answerInput").className="answer-input"+(saved.status==="correct"?" correct":saved.status==="wrong"?" incorrect":"");
+ $("feedback").className="feedback"+(saved.status==="correct"?" good":saved.status==="wrong"?" bad":"");
+ $("feedback").textContent=saved.status==="correct"?"Верно! Отличная работа.":saved.status==="wrong"?"Пока неверно. Попробуй ещё раз или вернись к заданию позже.":"";
+ $("checkBtn").textContent=saved.status==="correct"?"Верно ✓":"Проверить";
+ $("prevBtn").disabled=state.index===0;
+ $("nextBtn").disabled=state.index===142 && state.completed.length!==143;
+ $("nextBtn").textContent=state.index===142 && state.completed.length===143?"Новое прохождение ↻":"Далее →";
+ updateStats();
+}
+function checkAnswer(){
+ const t=currentTask(), value=$("answerInput").value.trim(), n=normalize(value);
+ if(!n){$("feedback").textContent="Сначала введи ответ."; $("feedback").className="feedback bad";return;}
+ if(!/^[1-5]+$/.test(value.replace(/\s/g,""))){$("feedback").textContent="Используй только цифры от 1 до 5."; $("feedback").className="feedback bad";return;}
+ const ok=accepted(t).includes(n);
+ const wasCompleted=state.completed.includes(t.id);
+ state.answers[t.id]={value,status:ok?"correct":"wrong"};
+ if(ok){
+   if(!wasCompleted){state.completed.push(t.id);state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);}
+   state.mistakes=state.mistakes.filter(x=>x!==t.id);state.correct=state.completed.length;
+ } else {
+   state.streak=0;
+   if(!state.mistakes.includes(t.id))state.mistakes.push(t.id);
+ }
+ save();renderTask();
+}
+function next(){
+ if(state.index<142){state.index++;save();renderTask();return;}
+ if(state.completed.length===143){
+   if(confirm("Все 143 задания пройдены! Начать новое прохождение с перемешанным порядком?")){
+     state={...freshState(),round:state.round+1};save();renderTask();toast("Новое прохождение началось!");
+   }
+ }
+}
+function prev(){if(state.index>0){state.index--;save();renderTask();}}
+function showView(name){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===name));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="tasks")renderTask();if(name==="stats")updateStats();if(name==="achievements")renderAchievements();}
+function showPane(name){activePane=name;$("bankPane").hidden=name!=="bank";$("errorsPane").hidden=name!=="errors";$("bankTab").classList.toggle("active",name==="bank");$("errorsTab").classList.toggle("active",name==="errors");if(name==="errors")renderMistakes();}
+function renderMistakes(){
+ const host=$("mistakesList");$("errorCount").textContent=state.mistakes.length;
+ if(!state.mistakes.length){host.innerHTML='<div class="mistakes-empty"><div style="font-size:38px;margin-bottom:12px">✦</div><strong>Пока ошибок нет</strong><p>Задания, в которых будет допущена ошибка, появятся здесь.</p></div>';return;}
+ host.innerHTML="";
+ state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
+}
+const theoryHTML=`<h2>Как решать задание 12</h2>
+<p class="theory-lead">В задании проверяется <b>правописание личных окончаний глаголов</b> и <b>суффиксов причастий</b>. Сначала определи, какая это часть речи и какая форма слова, затем примени правило.</p>
+<div class="theory-visual">
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Иллюстрация книги и карандаша"><rect x="17" y="18" width="53" height="67" rx="8" fill="#fffdfa" stroke="#b44a57" stroke-width="2.5"/><path d="M27 18v67" stroke="#e4bfc0" stroke-width="2"/><path d="M37 37h23M37 48h18M37 59h20" stroke="#d7a0a3" stroke-width="3" stroke-linecap="round"/><path d="M72 18l10 5-23 49-10 5 1-11z" fill="#c65360"/><path d="M49 66l-1 11 10-5" fill="#e7c5a7"/><path d="M72 18l4-8 10 5-4 8" fill="#a93645"/></svg>
+  <div><strong>Сначала найди форму</strong><span>Глагол, причастие настоящего или прошедшего времени?</span></div>
+ </div>
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Иллюстрация карточек с буквами"><rect x="12" y="20" width="43" height="55" rx="8" fill="#fffdfa" stroke="#d7a0a3" stroke-width="2"/><rect x="43" y="12" width="43" height="55" rx="8" fill="#f3dfe0" stroke="#b44a57" stroke-width="2"/><text x="33" y="56" font-size="25" font-weight="800" text-anchor="middle" fill="#a93645">Е</text><text x="64" y="48" font-size="25" font-weight="800" text-anchor="middle" fill="#a93645">И</text><path d="M26 83h48" stroke="#d7a0a3" stroke-width="4" stroke-linecap="round"/><path d="M69 76l7 7-7 7" fill="none" stroke="#a93645" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div><strong>Потом проверь букву</strong><span>Определи спряжение или способ образования причастия.</span></div>
+ </div>
+</div>
+<h3>1. Спряжение глаголов</h3>
+<p>Ко <b>II спряжению</b> относятся глаголы на <b>-ить</b> (кроме брить, стелить и некоторых других исключений), а также глаголы-исключения: <b>гнать, держать, дышать, слышать, смотреть, видеть, ненавидеть, зависеть, терпеть, обидеть, вертеть</b>.</p>
+<ul><li><b>II спряжение:</b> в личных окончаниях обычно пишутся <b>и, а/я</b>: строишь, строят.</li><li><b>I спряжение:</b> в личных окончаниях обычно пишутся <b>е, у/ю</b>: читаешь, читают.</li></ul>
+<div class="theory-callout"><strong>Запомни:</strong> чтобы определить спряжение, поставь глагол в неопределённую форму и проверь окончание и исключения. Учитывай приставки и возвратный суффикс <b>-ся/-сь</b>.</div>
+<h3>2. Причастия настоящего времени</h3>
+<p>Суффикс зависит от <b>спряжения исходного глагола</b>:</p>
+<ul><li>От глаголов <b>I спряжения</b>: действительные причастия на <b>-ущ-/-ющ-</b>, страдательные на <b>-ем-/-ом-</b>.</li><li>От глаголов <b>II спряжения</b>: действительные причастия на <b>-ащ-/-ящ-</b>, страдательные на <b>-им-</b>.</li></ul>
+<div class="theory-visual">
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Схема первого спряжения"><circle cx="50" cy="50" r="37" fill="#fffdfa" stroke="#d7a0a3" stroke-width="3"/><text x="50" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#a93645">I</text><text x="50" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#76585b">-УЩ-</text><path d="M20 15l7 7M80 15l-7 7" stroke="#c65360" stroke-width="3" stroke-linecap="round"/></svg>
+  <div><strong>I спряжение</strong><span>Действительные: -ущ-/-ющ-<br/>Страдательные: -ем-/-ом-</span></div>
+ </div>
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Схема второго спряжения"><circle cx="50" cy="50" r="37" fill="#f3dfe0" stroke="#b44a57" stroke-width="3"/><text x="50" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#a93645">II</text><text x="50" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#76585b">-АЩ-</text><path d="M20 15l7 7M80 15l-7 7" stroke="#c65360" stroke-width="3" stroke-linecap="round"/></svg>
+  <div><strong>II спряжение</strong><span>Действительные: -ащ-/-ящ-<br/>Страдательные: -им-</span></div>
+ </div>
+</div>
+<h3>3. Причастия прошедшего времени</h3>
+<p>В <b>действительных причастиях прошедшего времени</b> перед суффиксом <b>-вш-</b> сохраняется гласная инфинитива: <b>увидеть — увидевший</b>, <b>услышать — услышавший</b>.</p>
+<div class="theory-callout"><strong>Обрати внимание:</strong> здесь важно вернуться к неопределённой форме глагола и посмотреть, какая гласная стоит перед <b>-ть</b>.</div>
+<h3>4. Краткий алгоритм</h3>
+<div class="theory-step"><em>1</em><span>Определи <b>часть речи</b> каждого слова.</span></div>
+<div class="theory-step"><em>2</em><span>Если это глагол — найди <b>инфинитив</b> и определи <b>спряжение</b>.</span></div>
+<div class="theory-step"><em>3</em><span>Если это причастие настоящего времени — определи спряжение <b>исходного глагола</b>.</span></div>
+<div class="theory-step"><em>4</em><span>Если причастие прошедшего времени — проверь гласную <b>перед суффиксом</b>.</span></div>
+<div class="theory-step"><em>5</em><span>Сравни пропущенные буквы в <b>обоих словах строки</b>.</span></div>
+<p><i>Важно: памятка краткая. Для сложных случаев проверяй исключения и способ образования конкретной формы.</i></p>`;
+$("theoryBody").innerHTML=theoryHTML;$("theoryModalContent").innerHTML=theoryHTML;
+let theoryCloseTimer=null;
+function openTheory(){
+  const overlay=$("theoryOverlay");
+  if(theoryCloseTimer){clearTimeout(theoryCloseTimer);theoryCloseTimer=null;}
+  overlay.classList.remove("closing");
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+}
+function closeTheory(){
+  const overlay=$("theoryOverlay");
+  if(!overlay.classList.contains("open"))return;
+  overlay.classList.remove("open");
+  overlay.classList.add("closing");
+  overlay.setAttribute("aria-hidden","true");
+  if(theoryCloseTimer)clearTimeout(theoryCloseTimer);
+  theoryCloseTimer=setTimeout(()=>{
+    overlay.classList.remove("closing");
+    theoryCloseTimer=null;
+  },320);
+}
+function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200);}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
+$("startBtn").onclick=()=>{showView("tasks");showPane("bank");};
+$("homeLogo").onclick=()=>showView("home");
+$("theoryStartBtn").onclick=()=>{showView("tasks");showPane("bank");};
+$("bankTab").onclick=()=>showPane("bank");$("errorsTab").onclick=()=>showPane("errors");
+$("checkBtn").onclick=checkAnswer;$("answerInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer();});
+$("answerInput").addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^1-5]/g,"").slice(0,5);});
+$("prevBtn").onclick=prev;$("nextBtn").onclick=next;
+$("openTheory").onclick=openTheory;$("closeTheory").onclick=closeTheory;
+$("theoryOverlay").addEventListener("click",e=>{if(e.target===$("theoryOverlay"))closeTheory();});
+$("theoryOverlay").addEventListener("click",e=>{if(e.target===$("theoryOverlay"))closeTheory();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTheory();});
+
+// Вода в банке не реагирует на движение курсора.
+
+if(state.order.length!==143||new Set(state.order).size!==143)state=freshState();
+if(state.index>=143)state.index=0;
+if($("statDone"))$("statDone").textContent=`${state.completed.length} / 143`;
+renderTask();updateStats();
+</script>
+
+<style>
+/* Внутренняя прокрутка окна теории в палитре сайта */
+.theory-window{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.windowbar{flex:0 0 48px;position:relative}
+.windowcontent{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#c98790 #f4e9e7;
+}
+.windowcontent::-webkit-scrollbar{width:9px}
+.windowcontent::-webkit-scrollbar-track{
+  background:#f4e9e7;
+  border-radius:12px;
+  margin:10px 4px;
+}
+.windowcontent::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#d9a3a8,#b96874);
+  border:2px solid #f4e9e7;
+  border-radius:12px;
+}
+.windowcontent::-webkit-scrollbar-thumb:hover{background:#a94c5a}
+
+/* У каждой карточки достижения — медленное и мягкое выделение */
+.achievement-page-card{
+  transition:
+    transform 1.2s cubic-bezier(.16,1,.3,1),
+    border-color 1.2s cubic-bezier(.16,1,.3,1),
+    box-shadow 1.2s cubic-bezier(.16,1,.3,1),
+    background 1.2s cubic-bezier(.16,1,.3,1);
+  will-change:transform,box-shadow;
+}
+.achievement-page-card::before{
+  transition:opacity 1.25s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover{
+  transform:translateY(-4px) scale(1.018);
+  border-color:#d5a8ad;
+  box-shadow:0 17px 34px rgba(113,53,59,.13),0 0 0 3px rgba(214,151,157,.08);
+  background:linear-gradient(135deg,#fffdfa,#fbefed);
+}
+.achievement-page-card:hover::before{opacity:1}
+.achievement-page-icon{
+  transition:
+    transform 1.25s cubic-bezier(.16,1,.3,1),
+    box-shadow 1.25s cubic-bezier(.16,1,.3,1),
+    background-color 1.25s cubic-bezier(.16,1,.3,1),
+    filter 1.25s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover .achievement-page-icon{
+  transform:translateY(-2px) scale(1.06) rotate(-2deg);
+  box-shadow:0 8px 17px rgba(169,54,69,.12);
+}
+.achievement-page-copy strong{
+  transition:color 1.2s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover .achievement-page-copy strong{color:#9f3040}
+
+/* Вода не двигается за курсором */
+.jar-water{transform:none!important;will-change:auto!important;transition:height .8s cubic-bezier(.2,.8,.2,1)!important}
+
+@media(max-width:560px){
+  .theory-window{max-height:88vh}
+  .windowcontent{padding:22px 20px 26px}
+}
+@media(prefers-reduced-motion:reduce){
+  .achievement-page-card,.achievement-page-card::before,.achievement-page-icon,
+  .achievement-page-copy strong{transition:none!important}
+}
+
+/* Плавное закрытие модального окна теории */
+.overlay.closing{
+  display:flex;
+  animation:theoryOverlayOut .3s ease forwards;
+  pointer-events:none;
+}
+.overlay.closing .theory-window{
+  animation:theoryWindowOut .3s cubic-bezier(.4,0,.8,.3) forwards;
+}
+@keyframes theoryOverlayOut{
+  from{opacity:1;backdrop-filter:blur(8px)}
+  to{opacity:0;backdrop-filter:blur(0)}
+}
+@keyframes theoryWindowOut{
+  from{opacity:1;transform:scale(1) translateY(0)}
+  to{opacity:0;transform:scale(.96) translateY(12px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .overlay.closing,.overlay.closing .theory-window{animation-duration:.01ms!important}
+}
+</style>
+
+<style>
+#home{position:relative;padding-bottom:44px}
+.home-author{position:absolute;right:4px;bottom:0;color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.15px;opacity:.88}
+@media(max-width:600px){.home-author{right:8px;font-size:11px}}
+</style>
+\n</body>
+</html>
+<style>
+/* Крышка банки остаётся неподвижной */
+.score-jar .jar-lid,
+.score-jar:hover .jar-lid{
+  transform:none !important;
+  top:-13px;
+  transition:none !important;
+}
+</style>
+
+<style>
+/* Очень плавное выделение каждой карточки достижения */
+.achievement-page-card{
+  transition:
+    transform 1.35s cubic-bezier(.16,1,.3,1),
+    border-color 1.35s cubic-bezier(.16,1,.3,1),
+    box-shadow 1.35s cubic-bezier(.16,1,.3,1),
+    background 1.35s cubic-bezier(.16,1,.3,1);
+  will-change:transform,box-shadow;
+}
+.achievement-page-card:before{
+  transition:opacity 1.4s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover{
+  transform:translateY(-4px) scale(1.018);
+  border-color:#d5a8ad;
+  box-shadow:0 16px 32px rgba(113,53,59,.12),0 0 0 3px rgba(214,151,157,.075);
+}
+.achievement-page-icon{
+  transition:
+    transform 1.4s cubic-bezier(.16,1,.3,1),
+    box-shadow 1.4s cubic-bezier(.16,1,.3,1),
+    background-color 1.4s cubic-bezier(.16,1,.3,1),
+    filter 1.4s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-copy strong{
+  transition:color 1.35s cubic-bezier(.16,1,.3,1);
+}
+.achievement-page-card:hover .achievement-page-icon{
+  transform:translateY(-2px) scale(1.07) rotate(-3deg);
+  box-shadow:0 8px 16px rgba(169,54,69,.11);
+}
+.achievement-page-card:hover .achievement-page-copy strong{color:#9f3040}
+.score-jar{
+  transition:filter 1.35s cubic-bezier(.16,1,.3,1),box-shadow 1.35s cubic-bezier(.16,1,.3,1);
+}
+.score-jar:hover{
+  filter:drop-shadow(0 10px 15px rgba(169,54,69,.20));
+}
+@media(prefers-reduced-motion:reduce){
+  .achievement-page-card,.achievement-page-card:before,.achievement-page-icon,
+  .achievement-page-copy strong,.score-jar,.score-jar:after{transition:none!important}
+}
+</style>
