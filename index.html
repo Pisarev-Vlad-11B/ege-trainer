@@ -459,6 +459,22 @@ main{position:relative;isolation:isolate}
 .profile-status{display:inline-block;margin-top:9px;padding:5px 10px;border-radius:99px;background:#f4eeee;color:var(--muted);font-size:12px;font-weight:700}
 .profile-status.is-online{background:var(--greenbg);color:var(--green)}
 .profile-auth-btn{white-space:nowrap}
+ .profile-nav-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f1dfe1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+#profileNav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
 .profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
 .profile-fields label,.auth-label{display:grid;gap:7px;font-size:13px;font-weight:700;color:var(--muted)}
 .profile-fields label:last-child{grid-column:1/-1}
@@ -495,7 +511,10 @@ main{position:relative;isolation:isolate}
     <button data-view="theory">Теория</button>
     <button data-view="stats">Статистика</button>
     <button data-view="achievements">Достижения</button>
-    <button data-view="profile" id="profileNav">Профиль</button>
+    <button data-view="profile" id="profileNav">
+  <img id="profileNavAvatar" class="profile-nav-avatar" alt="" hidden>
+  <span id="profileNavText">Профиль</span>
+</button>
   </nav>
 </header>
 <main>
@@ -1001,7 +1020,18 @@ function paintProfile(data) {
   $id("profileAvatarFallback").hidden = !!avatar;
   if (avatar) $id("profileAvatar").src = avatar;
   $id("profileAvatarFallback").textContent = (data?.firstName || data?.username || "У").slice(0, 1).toUpperCase();
-  $id("profileNav").textContent = signed ? (full.split(" ")[0] || data.username || "Профиль") : "Профиль";
+  const navAvatar = $id("profileNavAvatar");
+navAvatar.hidden = !avatar || !signed;
+
+if (avatar && signed) {
+  navAvatar.src = avatar;
+} else {
+  navAvatar.removeAttribute("src");
+}
+
+$id("profileNavText").textContent = signed
+  ? (full.split(" ")[0] || data.username || "Профиль")
+  : "Профиль";
 }
 window.__updateProfileProgress = state => {
   if (!state) return;
