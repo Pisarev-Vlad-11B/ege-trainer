@@ -1789,20 +1789,27 @@ html[data-theme="dark"] .theory-view:before {
   background: #59343e;
   opacity: .25;
 }
-/* Наведение на плашки теории в тёмной теме */
+/* Тёмная подсветка плашек теории при наведении */
 html[data-theme="dark"] .theory-view .theory-visual-card:hover,
 html[data-theme="dark"] .theory-view .theory-callout:hover,
-html[data-theme="dark"] .theory-view .theory-step:hover {
-  background: #3b363d;
-  background-color: #3b363d;
-  border-color: #66515b;
-  color: #eee7e9;
-  box-shadow: 0 9px 20px rgba(0,0,0,.25);
+html[data-theme="dark"] .theory-view .theory-step:hover,
+html[data-theme="dark"] .windowcontent .theory-visual-card:hover,
+html[data-theme="dark"] .windowcontent .theory-callout:hover,
+html[data-theme="dark"] .windowcontent .theory-step:hover {
+  background: #39343c !important;
+  background-color: #39343c !important;
+  border-color: #66515b !important;
+  color: #eee7e9 !important;
+  box-shadow: 0 9px 20px rgba(0,0,0,.3);
 }
 
-html[data-theme="dark"] .theory-view .theory-step:hover span,
-html[data-theme="dark"] .theory-view .theory-visual-card:hover span {
-  color: #ded6d9;
+html[data-theme="dark"] .theory-visual-card:hover span,
+html[data-theme="dark"] .theory-step:hover span {
+  color: #ded6d9 !important;
+}
+
+html[data-theme="dark"] .theory-visual-card:hover strong {
+  color: #ffb2bc !important;
 }
 </style>
 <div id="publicProfileOverlay" class="public-profile-overlay" hidden>
