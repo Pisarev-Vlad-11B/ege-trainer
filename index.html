@@ -926,7 +926,9 @@ document.addEventListener("click", function(e) {
     document.querySelectorAll(".nav button").forEach(b => b.classList.toggle("active", b.dataset.view === view));
     try { if (view === "tasks" && typeof renderTask === "function") renderTask();
       if (view === "stats" && typeof updateStats === "function") updateStats();
-      if (view === "achievements" && typeof renderAchievements === "function") renderAchievements(); } catch(err) { console.error(err); }
+      if (view === "achievements" && typeof renderAchievements === "function") renderAchievements();if (view === "leaderboard" && window.__renderLeaderboard) {
+  window.__renderLeaderboard();
+} } catch(err) { console.error(err); }
     return;
   }
   switch (el.id) {
@@ -1093,11 +1095,85 @@ async function loadAccount(user, fallbackUsername = "") {
 }
 async function syncCloudState(state) {
   if (!auth?.currentUser || !db || !state) return;
+
+  // Сохраняем личный прогресс
   try {
-    await setDoc(userDoc(auth.currentUser.uid), { progress: state, updatedAt: serverTimestamp() }, { merge: true });
-  } catch (e) { console.warn("Не удалось сохранить прогресс в Firebase:", e); }
+    await setDoc(userDoc(auth.currentUser.uid), {
+      progress: state,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (e) {
+    console.warn("Не удалось сохранить прогресс:", e);
+  }
+
+  // Обновляем запись в общем рейтинге
+  try {
+    const username = String(
+      profile?.username ||
+      (auth.currentUser.email || "ученик").split("@")[0]
+    ).slice(0, 40);
+
+    const streak = Math.max(0, Math.floor(Number(state.streak) || 0));
+
+    await setDoc(doc(db, "leaderboard", auth.currentUser.uid), {
+      username: username,
+      streak: streak,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+  } catch (e) {
+    console.warn("Не удалось обновить рейтинг:", e);
+  }
 }
 window.__syncCloudState = syncCloudState;
+  async function renderLeaderboard() {
+  const list = document.getElementById("leaderboardList");
+  if (!list) return;
+
+  if (!auth?.currentUser || !db) {
+    list.innerHTML = "<p>Войди в аккаунт, чтобы увидеть рейтинг.</p>";
+    return;
+  }
+
+  list.innerHTML = "<p>Загружаем рейтинг...</p>";
+
+  try {
+    const snapshot = await getDocs(collection(db, "leaderboard"));
+
+    const leaders = snapshot.docs
+      .map(item => item.data())
+      .sort((a, b) => (Number(b.streak) || 0) - (Number(a.streak) || 0));
+
+    if (leaders.length === 0) {
+      list.innerHTML = "<p>Пока никто не попал в рейтинг.</p>";
+      return;
+    }
+
+    list.innerHTML = leaders.map((item, index) => {
+      const username = String(item.username || "Ученик")
+        .replace(/[&<>"']/g, ch => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[ch]));
+
+      return `
+        <div style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd">
+          <span>${index + 1}. ${username}</span>
+          <strong>🔥 ${Number(item.streak) || 0}</strong>
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Ошибка загрузки рейтинга:", error);
+    list.innerHTML = "<p>Не удалось загрузить рейтинг.</p>";
+  }
+}
+
+window.__renderLeaderboard = renderLeaderboard;
 async function restoreAccount(user, username = "") {
   const data = await loadAccount(user, username);
   paintProfile(data);
