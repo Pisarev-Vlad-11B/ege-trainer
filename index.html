@@ -1295,19 +1295,17 @@ document.addEventListener("click", function(e) {
       case "developerAccessBtn": {
   if (window.__isDeveloper === true) {
     showView("developer");
+    window.__startDeveloperOnlineMonitor?.();
   } else {
     alert("У этого аккаунта нет доступа разработчика.");
   }
   break;
 }
 
-      
-
-      
-
-    case "developerGear":
+case "developerGear":
   if (window.__isDeveloper === true) {
     showView("developer");
+    window.__startDeveloperOnlineMonitor?.();
   }
   break;
     case "startBtn": case "theoryStartBtn":
