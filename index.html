@@ -2064,6 +2064,7 @@ document.addEventListener("keydown", (e) => {
 });
 async function restoreAccount(user, username = "") {
   window.__currentFirebaseUid = user.uid;
+  startOnlineHeartbeat();
   const data = await loadAccount(user, username);
   const developerDoc = await getDoc(
     doc(db, "developerAccess", user.uid)
