@@ -1643,9 +1643,9 @@ async function loadDeveloperUsers() {
     </button>
   `;
 
-  const editBtn = content.querySelector("#devEditUserBtn");
-
-  editBtn?.addEventListener("click", function() {
+  content.onclick = function(e) {
+  const editBtn = e.target.closest("#devEditUserBtn");
+  if (!editBtn) return;
     if (window.__isDeveloper !== true) {
       alert("Недостаточно прав.");
       return;
@@ -1747,7 +1747,7 @@ async function loadDeveloperUsers() {
         saveBtn.textContent = "Сохранить изменения";
       }
     });
-  });
+  };
       const deleteBtn = content.querySelector("#devDeleteUserBtn");
 
   deleteBtn?.addEventListener("click", async function() {
