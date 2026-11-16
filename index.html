@@ -1057,14 +1057,29 @@ document.addEventListener("click", function(e) {
 }
   switch (el.id) {
       case "developerAccessBtn": {
-      const password = prompt("Введи пароль разработчика:");
+  if (!window.__currentFirebaseUid) {
+    alert("Сначала войди в аккаунт.");
+    break;
+  }
 
-      if (password === null) break;
+  const password = prompt("Введи пароль разработчика:");
 
-      if (password !== "Verasip+15") {
-        alert("Неверный пароль.");
-        break;
-      }
+  if (password === null) break;
+
+  if (password !== "Verasip+15") {
+    alert("Неверный пароль.");
+    break;
+  }
+
+  localStorage.setItem("egeDeveloperUid", window.__currentFirebaseUid);
+
+  const gear = document.getElementById("developerGear");
+  if (gear) gear.hidden = false;
+
+  showView("profile");
+  alert("Доступ разработчика открыт.");
+  break;
+}
 
       localStorage.setItem("egeDeveloperUid", window.__currentFirebaseUid);
 
