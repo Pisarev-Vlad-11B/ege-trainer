@@ -1231,6 +1231,25 @@ renderTask();updateStats();if(window.__updateProfileProgress)window.__updateProf
 document.addEventListener("click", function(e) {
   const el = e.target && e.target.closest ? e.target.closest("button") : null;
   if (!el) return;
+  // Переключение разделов панели разработчика
+  const devPage = el.dataset.devPage ||
+    (el.classList.contains("dev-open-users") ? "users" : null);
+
+  if (devPage) {
+    const developer = document.getElementById("developer");
+
+    if (developer) {
+      developer.querySelectorAll("[data-dev-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.devPage === devPage);
+      });
+
+      developer.querySelectorAll("[data-dev-content]").forEach(panel => {
+        panel.classList.toggle("active", panel.dataset.devContent === devPage);
+      });
+    }
+
+    return;
+  }
   const view = el.dataset && el.dataset.view;
   if (view) {
   showView(view);
