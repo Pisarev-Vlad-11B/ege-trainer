@@ -1655,7 +1655,7 @@ async function loadDeveloperUsers() {
     const targetUser = users.find(item => item.uid === uid);
     if (!targetUser) return;
 
-    if (content.querySelector("#devEditForm")) return;
+    if (document.getElementById("devEditForm")) return;
 
     document.body.insertAdjacentHTML("beforeend", `
       <div id="devEditForm" class="dev-edit-window">
