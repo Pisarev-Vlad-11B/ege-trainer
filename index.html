@@ -1607,6 +1607,24 @@ async function loadDeveloperUsers() {
     </div>
     <button
       type="button"
+      id="devEditUserBtn"
+      data-user-id="${escapeDevHTML(user.uid)}"
+      style="
+        width:100%;
+        margin-top:22px;
+        padding:13px;
+        border:1px solid var(--accent);
+        border-radius:13px;
+        background:var(--accent);
+        color:white;
+        font-weight:700;
+        cursor:pointer;
+      "
+    >
+      ✏️ Редактировать профиль
+    </button>
+    <button
+      type="button"
       id="devDeleteUserBtn"
       data-user-id="${escapeDevHTML(user.uid)}"
       style="
