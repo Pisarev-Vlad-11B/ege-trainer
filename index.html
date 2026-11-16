@@ -1874,6 +1874,30 @@ async function loadDeveloperUsers() {
 }
 
 window.__loadDeveloperUsers = loadDeveloperUsers;
+  async function updateDeveloperOnlineCount() {
+  const counter = document.getElementById("devOnlineUsersCount");
+
+  if (!counter || window.__isDeveloper !== true || !db) return;
+
+  try {
+    const snapshot = await getDocs(collection(db, "users"));
+    const now = Date.now();
+
+    const onlineCount = snapshot.docs.filter(item => {
+      const lastActive = item.data().lastActiveAt;
+
+      return lastActive &&
+        now - lastActive.toMillis() <= 60000;
+    }).length;
+
+    counter.textContent = onlineCount;
+  } catch (error) {
+    console.error("Ошибка подсчёта онлайн:", error);
+    counter.textContent = "—";
+  }
+}
+
+window.__updateDeveloperOnlineCount = updateDeveloperOnlineCount;
 async function syncPublicProfile(data = profile, state = window.__getLocalState?.()) {
   if (!auth?.currentUser || !db || !data) return;
 
