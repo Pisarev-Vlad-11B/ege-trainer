@@ -1223,6 +1223,10 @@ document.addEventListener("click", function(e) {
       });
     }
 
+    if (devPage === "users" && window.__loadDeveloperUsers) {
+      window.__loadDeveloperUsers();
+    }
+
     return;
   }
   const view = el.dataset && el.dataset.view;
@@ -1433,6 +1437,88 @@ async function loadAccount(user, fallbackUsername = "") {
   await setDoc(ref, initial, { merge: true });
   return { ...initial, username };
 }
+  function escapeDevHTML(value) {
+  return String(value || "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[ch]));
+}
+
+async function loadDeveloperUsers() {
+  const list = $id("devUsersList");
+  const count = $id("devUsersCount");
+  const search = $id("devUsersSearch");
+
+  if (window.__isDeveloper !== true || !db) return;
+
+  count.textContent = "Обновляем список…";
+
+  try {
+    const snapshot = await getDocs(collection(db, "users"));
+
+    const users = snapshot.docs.map(item => ({
+      uid: item.id,
+      ...item.data()
+    }));
+
+    function render() {
+      const query = search.value.trim().toLowerCase();
+
+      const filtered = users.filter(user => {
+        const text = [
+          user.username,
+          user.firstName,
+          user.lastName
+        ].join(" ").toLowerCase();
+
+        return text.includes(query);
+      });
+
+      count.textContent =
+        `Всего аккаунтов: ${users.length} · Найдено: ${filtered.length}`;
+
+      if (!filtered.length) {
+        list.innerHTML = `
+          <p style="color:var(--muted);padding:12px 0;">
+            ${users.length ? "Ничего не найдено." : "Пока нет зарегистрированных пользователей."}
+          </p>
+        `;
+        return;
+      }
+
+      list.innerHTML = filtered.map(user => {
+        const name = [user.firstName, user.lastName]
+          .filter(Boolean).join(" ");
+
+        return `
+          <button type="button"
+            class="dev-users-card"
+            data-dev-user-id="${escapeDevHTML(user.uid)}">
+            <div class="dev-users-icon">👤</div>
+            <div class="dev-users-info">
+              <strong>${escapeDevHTML(name || "Имя не указано")}</strong>
+              <small>Логин: ${escapeDevHTML(user.username || "—")}</small>
+            </div>
+            <span>›</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    search.oninput = render;
+    render();
+
+  } catch (error) {
+    console.error("Ошибка загрузки пользователей:", error);
+    count.textContent = "Ошибка загрузки. Проверь доступ к Firestore.";
+    list.innerHTML = "";
+  }
+}
+
+window.__loadDeveloperUsers = loadDeveloperUsers;
 async function syncPublicProfile(data = profile, state = window.__getLocalState?.()) {
   if (!auth?.currentUser || !db || !data) return;
 
