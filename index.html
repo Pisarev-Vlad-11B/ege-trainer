@@ -2250,6 +2250,10 @@ paintProfile(null);
   $id("signOutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
+    if (onlineHeartbeatTimer) {
+  clearInterval(onlineHeartbeatTimer);
+  onlineHeartbeatTimer = null;
+}
 window.__isDeveloper = false;
 window.__currentFirebaseUid = null;
 lastHandledUid = null;
