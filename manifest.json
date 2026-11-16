@@ -1,0 +1,20 @@
+{
+  "id": "/ege-trainer/",
+  "name": "ЕГЭ — Русский язык",
+  "short_name": "ЕГЭ Тренажёр",
+  "description": "Тренажёр для подготовки к ЕГЭ по русскому языку",
+  "start_url": "/ege-trainer/",
+  "scope": "/ege-trainer/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f2ef",
+  "theme_color": "#a93645",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
