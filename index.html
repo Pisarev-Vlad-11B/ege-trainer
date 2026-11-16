@@ -1605,6 +1605,24 @@ async function loadDeveloperUsers() {
         <span>серия ответов</span>
       </div>
     </div>
+    <button
+      type="button"
+      id="devDeleteUserBtn"
+      data-user-id="${escapeDevHTML(user.uid)}"
+      style="
+        width:100%;
+        margin-top:22px;
+        padding:13px;
+        border:1px solid #e45b68;
+        border-radius:13px;
+        background:rgba(228,91,104,.10);
+        color:#d94b5a;
+        font-weight:700;
+        cursor:pointer;
+      "
+    >
+      🗑 Удалить аккаунт
+    </button>
   `;
 
   overlay.hidden = false;
