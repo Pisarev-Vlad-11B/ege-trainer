@@ -801,7 +801,9 @@ max-height: 55px;
       <button class="dev-menu-item" type="button" data-dev-page="users">
         <span>♙</span> Пользователи
       </button>
-      
+      <button class="dev-menu-item" type="button" data-dev-page="rating">
+        <span>♛</span> Рейтинг
+      </button>
       <button class="dev-menu-item" type="button" data-dev-page="journal">
         <span>◷</span> Журнал действий
       </button>
@@ -822,11 +824,11 @@ max-height: 55px;
     </aside>
 
     <div class="dev-main">
-<div class="dev-page-panel active" data-dev-content="home">
-  <div class="dev-topbar">
-    <div>
-      <div class="dev-breadcrumb">CONTROL CENTER / OVERVIEW</div>
-      <h2>Главная</h2>
+
+      <div class="dev-topbar">
+        <div>
+          <div class="dev-breadcrumb">CONTROL CENTER / OVERVIEW</div>
+          <h2>Главная</h2>
           <p>Добро пожаловать в панель управления тренажёром.</p>
         </div>
         <div class="dev-top-actions">
@@ -907,39 +909,6 @@ max-height: 55px;
       <div class="dev-footer">
         DEVELOPER CONTROL CENTER <span>·</span> EGE TRAINER
       </div>
-  </div>
-
-
-
-
-
-<div class="dev-page-panel" data-dev-content="journal">
-  <div class="dev-topbar">
-    <div>
-      <div class="dev-breadcrumb">CONTROL CENTER / JOURNAL</div>
-      <h2>Журнал действий</h2>
-      <p>История событий и действий на платформе.</p>
-    </div>
-  </div>
-  <div class="dev-journal-card">
-    <strong>Журнал действий</strong>
-    <p>Здесь будут отображаться события системы.</p>
-  </div>
-</div>
-
-<div class="dev-page-panel" data-dev-content="settings">
-  <div class="dev-topbar">
-    <div>
-      <div class="dev-breadcrumb">CONTROL CENTER / SETTINGS</div>
-      <h2>Настройки</h2>
-      <p>Параметры панели разработчика.</p>
-    </div>
-  </div>
-  <div class="dev-journal-card">
-    <strong>Настройки системы</strong>
-    <p>Здесь появятся настройки панели.</p>
-  </div>
-</div>
 
     </div>
   </div>
@@ -1202,25 +1171,6 @@ renderTask();updateStats();if(window.__updateProfileProgress)window.__updateProf
 document.addEventListener("click", function(e) {
   const el = e.target && e.target.closest ? e.target.closest("button") : null;
   if (!el) return;
-  // Переключение разделов панели разработчика
-  const devPage = el.dataset.devPage ||
-    (el.classList.contains("dev-open-users") ? "users" : null);
-
-  if (devPage) {
-    const developer = document.getElementById("developer");
-
-    if (developer) {
-      developer.querySelectorAll("[data-dev-page]").forEach(button => {
-        button.classList.toggle("active", button.dataset.devPage === devPage);
-      });
-
-      developer.querySelectorAll("[data-dev-content]").forEach(panel => {
-        panel.classList.toggle("active", panel.dataset.devContent === devPage);
-      });
-    }
-
-    return;
-  }
   const view = el.dataset && el.dataset.view;
   if (view) {
   showView(view);
@@ -2341,26 +2291,6 @@ html[data-theme="dark"] .leaderboard-entry.is-me {
 #developer .dev-main {
   min-width: 0;
   padding: 7px 0;
-}
-  /* Переключение страниц панели разработчика */
-#developer .dev-page-panel {
-  display: none;
-}
-
-#developer .dev-page-panel.active {
-  display: block;
-  animation: devPageAppear .25s ease;
-}
-
-@keyframes devPageAppear {
-  from {
-    opacity: 0;
-    transform: translateY(7px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 #developer .dev-topbar {
