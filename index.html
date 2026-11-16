@@ -782,14 +782,135 @@ max-height: 55px;
 </section>
 
 <section id="developer" class="view">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">Служебный раздел</div>
-      <h2>Панель разработчика</h2>
-      <p>Управление тренажёром.</p>
+  <div class="dev-layout">
+
+    <aside class="dev-sidebar">
+      <div class="dev-brand">
+        <div class="dev-brand-icon">✦</div>
+        <div>
+          <strong>DEVELOPER</strong>
+          <span>CONTROL CENTER</span>
+        </div>
+      </div>
+
+      <div class="dev-menu-label">УПРАВЛЕНИЕ</div>
+
+      <button class="dev-menu-item active" type="button" data-dev-page="home">
+        <span>▦</span> Главная
+      </button>
+      <button class="dev-menu-item" type="button" data-dev-page="users">
+        <span>♙</span> Пользователи
+      </button>
+      <button class="dev-menu-item" type="button" data-dev-page="rating">
+        <span>♛</span> Рейтинг
+      </button>
+      <button class="dev-menu-item" type="button" data-dev-page="journal">
+        <span>◷</span> Журнал действий
+      </button>
+
+      <div class="dev-menu-label dev-menu-label-bottom">СИСТЕМА</div>
+
+      <button class="dev-menu-item" type="button" data-dev-page="settings">
+        <span>⚙</span> Настройки
+      </button>
+
+      <div class="dev-sidebar-bottom">
+        <div class="dev-status-dot"></div>
+        <div>
+          <strong>Режим разработчика</strong>
+          <span>Панель управления</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dev-main">
+
+      <div class="dev-topbar">
+        <div>
+          <div class="dev-breadcrumb">CONTROL CENTER / OVERVIEW</div>
+          <h2>Главная</h2>
+          <p>Добро пожаловать в панель управления тренажёром.</p>
+        </div>
+        <div class="dev-top-actions">
+          <span class="dev-live-indicator"><i></i> SYSTEM ONLINE</span>
+          <div class="dev-avatar">Р</div>
+        </div>
+      </div>
+
+      <div class="dev-welcome">
+        <div>
+          <span class="dev-welcome-label">ADMINISTRATION PANEL</span>
+          <h3>Всё под контролем.</h3>
+          <p>Управляй пользователями и следи за работой тренажёра.</p>
+        </div>
+        <div class="dev-welcome-symbol">✦</div>
+      </div>
+
+      <div class="dev-section-title">
+        <div>
+          <h3>Обзор системы</h3>
+          <p>Основные показатели платформы</p>
+        </div>
+        <span>LIVE MONITORING</span>
+      </div>
+
+      <div class="dev-stats-grid">
+        <div class="dev-stat-card">
+          <div class="dev-stat-top">
+            <span>Всего пользователей</span>
+            <div class="dev-stat-icon purple">♙</div>
+          </div>
+          <strong>—</strong>
+          <small>Зарегистрировано аккаунтов</small>
+        </div>
+
+        <div class="dev-stat-card">
+          <div class="dev-stat-top">
+            <span>Сейчас онлайн</span>
+            <div class="dev-stat-icon green">◉</div>
+          </div>
+          <strong>—</strong>
+          <small>Активных пользователей</small>
+        </div>
+      </div>
+
+      <div class="dev-section-title">
+        <div>
+          <h3>Управление аккаунтами</h3>
+          <p>Просмотр и управление пользователями сайта</p>
+        </div>
+      </div>
+
+      <div class="dev-users-card">
+        <div class="dev-users-icon">♙</div>
+        <div class="dev-users-info">
+          <strong>Пользователи</strong>
+          <span>Список аккаунтов, профили и управление доступом</span>
+        </div>
+        <button type="button" class="dev-open-users">
+          Открыть список <span>→</span>
+        </button>
+      </div>
+
+      <div class="dev-section-title dev-journal-heading">
+        <div>
+          <h3>Журнал действий</h3>
+          <p>Последние события на платформе</p>
+        </div>
+        <span class="dev-journal-live"><i></i> LIVE</span>
+      </div>
+
+      <div class="dev-journal-card">
+        <div class="dev-journal-empty-icon">◷</div>
+        <strong>Журнал пока пуст</strong>
+        <p>Здесь будут отображаться действия пользователей и события системы.</p>
+      </div>
+
+      <div class="dev-footer">
+        DEVELOPER CONTROL CENTER <span>·</span> EGE TRAINER
+      </div>
+
     </div>
-  </div>
-  <div class="profile-form-card" style="min-height:220px;">
   </div>
 </section>
 </main>
@@ -2005,6 +2126,662 @@ html[data-theme="dark"] .leaderboard-entry.is-me {
 }
 #developerGear[hidden] {
   display: none !important;
+}
+
+/* =====================================
+   DEVELOPER CONTROL CENTER
+   ===================================== */
+
+#developer {
+  --dev-accent: #8957e8;
+  --dev-accent-light: #a77af5;
+  --dev-purple-soft: rgba(137, 87, 232, .12);
+  --dev-green: #32bd83;
+  --dev-radius: 18px;
+}
+
+#developer .dev-layout {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr);
+  gap: 25px;
+  align-items: stretch;
+  min-height: 780px;
+}
+
+/* Боковое меню */
+
+#developer .dev-sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 23px 15px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--paper);
+  min-height: 780px;
+  overflow: hidden;
+}
+
+#developer .dev-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 7px 28px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+
+#developer .dev-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  color: white;
+  font-size: 25px;
+  background: linear-gradient(135deg, #8957e8, #b17af8);
+  box-shadow: 0 6px 18px rgba(137, 87, 232, .3);
+}
+
+#developer .dev-brand strong,
+#developer .dev-brand span {
+  display: block;
+}
+
+#developer .dev-brand strong {
+  color: var(--ink);
+  font-size: 13px;
+  letter-spacing: 1.4px;
+}
+
+#developer .dev-brand span {
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+
+#developer .dev-menu-label {
+  padding: 8px 10px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+#developer .dev-menu-label-bottom {
+  margin-top: 19px;
+}
+
+#developer .dev-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+  transition: background .22s ease, color .22s ease,
+    border-color .22s ease, transform .22s ease;
+}
+
+#developer .dev-menu-item span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  font-size: 19px;
+}
+
+#developer .dev-menu-item:hover {
+  color: var(--dev-accent);
+  background: var(--dev-purple-soft);
+  transform: translateX(3px);
+}
+
+#developer .dev-menu-item.active {
+  color: var(--dev-accent);
+  background: var(--dev-purple-soft);
+  border-color: rgba(137, 87, 232, .2);
+}
+
+#developer .dev-sidebar-bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 15px 10px 5px;
+  border-top: 1px solid var(--line);
+}
+
+#developer .dev-status-dot,
+#developer .dev-live-indicator i,
+#developer .dev-journal-live i {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--dev-green);
+  box-shadow: 0 0 10px rgba(50, 189, 131, .55);
+}
+
+#developer .dev-sidebar-bottom strong,
+#developer .dev-sidebar-bottom span {
+  display: block;
+}
+
+#developer .dev-sidebar-bottom strong {
+  color: var(--ink);
+  font-size: 11px;
+}
+
+#developer .dev-sidebar-bottom span {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+/* Основная область */
+
+#developer .dev-main {
+  min-width: 0;
+  padding: 7px 0;
+}
+
+#developer .dev-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+#developer .dev-breadcrumb {
+  color: var(--dev-accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+#developer .dev-topbar h2 {
+  color: var(--ink);
+  font-size: 27px;
+  margin: 0;
+}
+
+#developer .dev-topbar p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 7px 0 0;
+}
+
+#developer .dev-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#developer .dev-live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+#developer .dev-live-indicator i,
+#developer .dev-journal-live i {
+  display: inline-block;
+}
+
+#developer .dev-avatar {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 14px;
+  color: white;
+  font-size: 19px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8957e8, #b17af8);
+  box-shadow: 0 5px 16px rgba(137, 87, 232, .25);
+}
+
+/* Приветственный баннер */
+
+#developer .dev-welcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 190px;
+  padding: 30px 34px;
+  overflow: hidden;
+  border-radius: 21px;
+  color: white;
+  background: linear-gradient(115deg, #6840c3, #8957e8 58%, #a77af5);
+  box-shadow: 0 12px 30px rgba(112, 69, 195, .2);
+}
+
+#developer .dev-welcome::after {
+  content: "";
+  position: absolute;
+  width: 270px;
+  height: 270px;
+  right: 55px;
+  top: -145px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 50%;
+  box-shadow: 0 0 0 30px rgba(255,255,255,.035),
+    0 0 0 65px rgba(255,255,255,.025);
+}
+
+#developer .dev-welcome-label {
+  color: rgba(255,255,255,.75);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+#developer .dev-welcome h3 {
+  color: white;
+  font-size: clamp(24px, 3vw, 34px);
+  margin: 13px 0 9px;
+}
+
+#developer .dev-welcome p {
+  color: rgba(255,255,255,.82);
+  font-size: 13px;
+  margin: 0;
+}
+
+#developer .dev-welcome-symbol {
+  position: relative;
+  z-index: 1;
+  color: rgba(255,255,255,.22);
+  font-size: 100px;
+  line-height: 1;
+}
+
+/* Заголовки секций */
+
+#developer .dev-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 30px 0 15px;
+}
+
+#developer .dev-section-title h3 {
+  color: var(--ink);
+  font-size: 17px;
+  margin: 0;
+}
+
+#developer .dev-section-title p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 5px 0 0;
+}
+
+#developer .dev-section-title > span {
+  color: var(--dev-accent);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Карточки статистики */
+
+#developer .dev-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+#developer .dev-stat-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--dev-radius);
+  background: var(--paper);
+  transition: transform .22s ease, border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+#developer .dev-stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(137, 87, 232, .45);
+  box-shadow: 0 9px 24px rgba(80, 50, 130, .08);
+}
+
+#developer .dev-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#developer .dev-stat-icon {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border-radius: 12px;
+  font-size: 19px;
+}
+
+#developer .dev-stat-icon.purple {
+  color: #8957e8;
+  background: rgba(137, 87, 232, .13);
+}
+
+#developer .dev-stat-icon.green {
+  color: #24a978;
+  background: rgba(50, 189, 131, .13);
+}
+
+#developer .dev-stat-card > strong {
+  display: block;
+  color: var(--ink);
+  font-size: 34px;
+  margin-top: 16px;
+}
+
+#developer .dev-stat-card > small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* Карточка пользователей */
+
+#developer .dev-users-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--line);
+  border-radius: var(--dev-radius);
+  background: var(--paper);
+  transition: border-color .2s ease, transform .2s ease;
+}
+
+#developer .dev-users-card:hover {
+  border-color: rgba(137, 87, 232, .5);
+  transform: translateY(-2px);
+}
+
+#developer .dev-users-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  color: var(--dev-accent);
+  background: var(--dev-purple-soft);
+  font-size: 23px;
+}
+
+#developer .dev-users-info {
+  min-width: 0;
+  flex: 1;
+}
+
+#developer .dev-users-info strong,
+#developer .dev-users-info span {
+  display: block;
+}
+
+#developer .dev-users-info strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+#developer .dev-users-info span {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+#developer .dev-open-users {
+  padding: 10px 13px;
+  border: 1px solid rgba(137, 87, 232, .3);
+  border-radius: 10px;
+  color: var(--dev-accent);
+  background: var(--dev-purple-soft);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+
+#developer .dev-open-users:hover {
+  color: white;
+  background: var(--dev-accent);
+}
+
+/* Журнал */
+
+#developer .dev-journal-heading {
+  margin-top: 31px;
+}
+
+#developer .dev-journal-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--dev-green) !important;
+}
+
+#developer .dev-journal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 155px;
+  padding: 22px;
+  border: 1px dashed var(--line);
+  border-radius: var(--dev-radius);
+  background: var(--paper);
+  text-align: center;
+}
+
+#developer .dev-journal-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 14px;
+  color: var(--dev-accent);
+  background: var(--dev-purple-soft);
+  font-size: 23px;
+  margin-bottom: 11px;
+}
+
+#developer .dev-journal-card strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+#developer .dev-journal-card p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 6px 0 0;
+}
+
+#developer .dev-footer {
+  padding: 25px 0 8px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.3px;
+  text-align: center;
+}
+
+#developer .dev-footer span {
+  color: var(--dev-accent);
+  padding: 0 5px;
+}
+
+/* Адаптация под мобильные устройства */
+
+@media (max-width: 850px) {
+  #developer .dev-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  #developer .dev-sidebar {
+    padding: 17px 10px;
+  }
+
+  #developer .dev-menu-item {
+    gap: 8px;
+    padding: 0 9px;
+    font-size: 12px;
+  }
+
+  #developer .dev-brand {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 620px) {
+  #developer .dev-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    min-height: 0;
+  }
+
+  #developer .dev-sidebar {
+    min-height: 0;
+    padding: 13px;
+    border-radius: 17px;
+  }
+
+  #developer .dev-brand {
+    padding-bottom: 12px;
+    margin-bottom: 5px;
+  }
+
+  #developer .dev-menu-label {
+    padding: 5px 7px;
+  }
+
+  #developer .dev-sidebar .dev-menu-item {
+    min-height: 40px;
+  }
+
+  #developer .dev-menu-label-bottom,
+  #developer .dev-sidebar-bottom {
+    display: none;
+  }
+
+  #developer .dev-topbar {
+    align-items: flex-start;
+    margin-bottom: 17px;
+  }
+
+  #developer .dev-topbar h2 {
+    font-size: 23px;
+  }
+
+  #developer .dev-topbar p {
+    font-size: 11px;
+  }
+
+  #developer .dev-live-indicator {
+    display: none;
+  }
+
+  #developer .dev-avatar {
+    width: 37px;
+    height: 37px;
+  }
+
+  #developer .dev-welcome {
+    min-height: 155px;
+    padding: 23px 20px;
+    border-radius: 17px;
+  }
+
+  #developer .dev-welcome-symbol {
+    font-size: 65px;
+  }
+
+  #developer .dev-welcome p {
+    max-width: 230px;
+    line-height: 1.5;
+  }
+
+  #developer .dev-stats-grid {
+    gap: 10px;
+  }
+
+  #developer .dev-stat-card {
+    padding: 14px;
+  }
+
+  #developer .dev-stat-top {
+    align-items: flex-start;
+    font-size: 10px;
+  }
+
+  #developer .dev-stat-icon {
+    width: 31px;
+    height: 31px;
+  }
+
+  #developer .dev-stat-card > strong {
+    font-size: 28px;
+  }
+
+  #developer .dev-users-card {
+    flex-wrap: wrap;
+    padding: 14px;
+  }
+
+  #developer .dev-users-info span {
+    line-height: 1.5;
+  }
+
+  #developer .dev-open-users {
+    width: 100%;
+  }
+
+  #developer .dev-section-title {
+    margin-top: 23px;
+  }
+}
+
+@media (max-width: 370px) {
+  #developer .dev-stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 <div id="publicProfileOverlay" class="public-profile-overlay" hidden>
