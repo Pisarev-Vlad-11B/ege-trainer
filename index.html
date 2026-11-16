@@ -1625,6 +1625,51 @@ async function loadDeveloperUsers() {
     </button>
   `;
 
+  content.onclick = async function(e) {
+    const deleteBtn = e.target.closest("#devDeleteUserBtn");
+    if (!deleteBtn) return;
+
+    if (window.__isDeveloper !== true) {
+      alert("Недостаточно прав.");
+      return;
+    }
+
+    const uid = deleteBtn.dataset.userId;
+
+    if (!uid || uid === auth.currentUser?.uid) {
+      alert("Нельзя удалить собственный аккаунт разработчика.");
+      return;
+    }
+
+    const targetUser = users.find(item => item.uid === uid);
+    if (!targetUser) return;
+
+    const username = targetUser.username || "без логина";
+
+    if (!confirm(
+      `Удалить данные пользователя «${username}»?\n\nБудут удалены профиль, прогресс и запись рейтинга. Сам вход в Firebase Authentication останется.`
+    )) return;
+
+    deleteBtn.disabled = true;
+    deleteBtn.textContent = "Удаление…";
+
+    try {
+      await deleteDoc(doc(db, "users", uid));
+      await deleteDoc(doc(db, "publicProfiles", uid));
+      await deleteDoc(doc(db, "leaderboard", uid));
+
+      overlay.hidden = true;
+      alert(`Данные пользователя «${username}» удалены.`);
+      await loadDeveloperUsers();
+
+    } catch (error) {
+      console.error("Ошибка удаления данных:", error);
+      alert("Не удалось удалить данные. Проверьте права Firestore.");
+      deleteBtn.disabled = false;
+      deleteBtn.textContent = "🗑 Удалить аккаунт";
+    }
+  };
+
   overlay.hidden = false;
 };
 
