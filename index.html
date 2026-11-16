@@ -1625,10 +1625,9 @@ async function loadDeveloperUsers() {
     </button>
   `;
 
-  content.onclick = async function(e) {
-    const deleteBtn = e.target.closest("#devDeleteUserBtn");
-    if (!deleteBtn) return;
+  const deleteBtn = content.querySelector("#devDeleteUserBtn");
 
+  deleteBtn?.addEventListener("click", async function() {
     if (window.__isDeveloper !== true) {
       alert("Недостаточно прав.");
       return;
@@ -1668,7 +1667,7 @@ async function loadDeveloperUsers() {
       deleteBtn.disabled = false;
       deleteBtn.textContent = "🗑 Удалить аккаунт";
     }
-  };
+  });
 
   overlay.hidden = false;
 };
