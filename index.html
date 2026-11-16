@@ -883,7 +883,7 @@ max-height: 55px;
         <p>Управление аккаунтами платформы.</p>
       </div>
     </div>
-    <div class="dev-journal-card">
+    <div class="dev-users-panel-card">
       <strong>Все аккаунты</strong>
       <p>Список зарегистрированных пользователей платформы.</p>
 
@@ -2682,6 +2682,107 @@ html[data-theme="dark"] .leaderboard-entry.is-me {
   color: var(--muted);
   font-size: 11px;
   margin: 6px 0 0;
+}
+  /* Карточка списка пользователей */
+#developer .dev-users-panel-card {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 25px;
+  border: 1px solid var(--line);
+  border-radius: var(--dev-radius);
+  background: var(--paper);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+#developer .dev-users-panel-card > strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 750;
+}
+
+#developer .dev-users-panel-card > p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 7px 0 0;
+}
+
+/* Поиск */
+#developer #devUsersSearch {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+#developer #devUsersSearch:focus {
+  border-color: var(--dev-accent);
+  box-shadow: 0 0 0 3px var(--dev-purple-soft);
+}
+
+/* Счётчик */
+#developer #devUsersCount {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+/* Список */
+#developer #devUsersList {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+#developer .dev-users-card {
+  width: 100%;
+  min-height: 76px;
+  padding: 14px 17px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--bg);
+  text-align: left;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+
+#developer .dev-users-card:hover {
+  border-color: var(--dev-accent);
+  background: var(--paper);
+  transform: translateY(-2px);
+}
+
+#developer .dev-users-info strong {
+  display: block;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+#developer .dev-users-info small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  #developer .dev-users-panel-card {
+    padding: 17px;
+  }
+
+  #developer .dev-users-card {
+    padding: 12px;
+    min-height: 68px;
+  }
 }
 
 #developer .dev-footer {
