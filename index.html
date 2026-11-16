@@ -919,7 +919,29 @@ function next(){
  }
 }
 function prev(){if(state.index>0){state.index--;save();renderTask();}}
-function showView(name){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===name));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="tasks")renderTask();if(name==="stats")updateStats();if(name==="achievements")renderAchievements();}
+function showView(name) {
+  const protectedViews = ["leaderboard", "tasks", "theory", "stats", "achievements"];
+
+  if (protectedViews.includes(name) && !window.__isTrainerAuthenticated?.()) {
+    name = "profile";
+    window.__openTrainerAuth?.("login");
+  }
+
+  document.querySelectorAll(".view").forEach(v => {
+    v.classList.toggle("active", v.id === name);
+  });
+
+  document.querySelectorAll(".nav button").forEach(b => {
+    b.classList.toggle("active", b.dataset.view === name);
+  });
+
+  if (name === "tasks") renderTask();
+  if (name === "stats") updateStats();
+  if (name === "achievements") renderAchievements();
+  if (name === "leaderboard" && window.__renderLeaderboard) {
+    window.__renderLeaderboard();
+  }
+}
 function showPane(name){activePane=name;$("bankPane").hidden=name!=="bank";$("errorsPane").hidden=name!=="errors";$("bankTab").classList.toggle("active",name==="bank");$("errorsTab").classList.toggle("active",name==="errors");if(name==="errors")renderMistakes();}
 function renderMistakes(){
  const host=$("mistakesList");$("errorCount").textContent=state.mistakes.length;
@@ -1006,21 +1028,22 @@ document.addEventListener("click", function(e) {
   if (!el) return;
   const view = el.dataset && el.dataset.view;
   if (view) {
-    document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === view));
-    document.querySelectorAll(".nav button").forEach(b => b.classList.toggle("active", b.dataset.view === view));
-    try { if (view === "tasks" && typeof renderTask === "function") renderTask();
-      if (view === "stats" && typeof updateStats === "function") updateStats();
-      if (view === "achievements" && typeof renderAchievements === "function") renderAchievements();if (view === "leaderboard" && window.__renderLeaderboard) {
-  window.__renderLeaderboard();
-} } catch(err) { console.error(err); }
-    return;
-  }
+  showView(view);
+  return;
+}
   switch (el.id) {
     case "startBtn": case "theoryStartBtn":
-      document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === "tasks"));
-      document.querySelectorAll(".nav button").forEach(b => b.classList.toggle("active", b.dataset.view === "tasks"));
-      try { showPane("bank"); renderTask(); } catch(err) { console.error(err); }
-      break;
+  showView("tasks");
+
+  if (window.__isTrainerAuthenticated?.()) {
+    try {
+      showPane("bank");
+      renderTask();
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  break;
     case "homeLogo":
       document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === "home"));
       document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
@@ -1110,6 +1133,8 @@ const closeAuth = () => {
   $id("authOverlay").classList.remove("open");
   $id("authOverlay").setAttribute("aria-hidden", "true");
 };
+  window.__isTrainerAuthenticated = () => !!auth?.currentUser;
+window.__openTrainerAuth = openAuth;
 const usernameToEmail = username => `${username.toLowerCase()}@login.ege-trainer.example.com`;
 const userDoc = uid => doc(db, "users", uid);
 const errorText = error => {
@@ -1133,6 +1158,9 @@ const setProfileEnabled = enabled => {
 function paintProfile(data) {
   profile = data || null;
   const signed = !!data;
+  document.querySelectorAll('.nav button[data-protected="true"]').forEach(button => {
+    button.hidden = !signed;
+  });
   setProfileEnabled(signed);
   $id("profileStatus").textContent = signed ? "Вход выполнен" : "Не авторизован";
   $id("profileStatus").classList.toggle("is-online", signed);
