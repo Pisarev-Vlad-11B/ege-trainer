@@ -1645,8 +1645,9 @@ console.log("Публичный профиль удалён");
   $id("signOutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
-    lastHandledUid = null;
-    paintProfile(null);
+window.__currentFirebaseUid = null;
+lastHandledUid = null;
+paintProfile(null);
     if (window.__resetLocalState) window.__resetLocalState();
     showView("home");
     toast("Ты вышел из аккаунта.");
