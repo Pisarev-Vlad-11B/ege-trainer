@@ -1729,6 +1729,7 @@ async function loadDeveloperUsers() {
         targetUser.lastName = lastName;
         targetUser.about = about;
 
+        form.remove();
         overlay.hidden = true;
         await loadDeveloperUsers();
 
