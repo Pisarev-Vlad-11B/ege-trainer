@@ -617,6 +617,7 @@ max-height: 55px;
     <span id="profileNavText">Профиль</span>
   </button>
   <button id="themeToggle" class="secondary" type="button">🌙</button>
+    <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
 </nav>
 </header>
 <main>
@@ -771,6 +772,24 @@ max-height: 55px;
       <p class="profile-privacy-note">Мы не запрашиваем номер телефона, электронную почту или дату рождения. Указывай только ту информацию о себе, которой готов поделиться.</p>
     </div>
     <div class="profile-progress-card"><h3>Твой прогресс</h3><div class="profile-progress-grid"><div><strong id="profileDone">0</strong><span>решено заданий</span></div><div><strong id="profileAccuracy">—</strong><span>точность</span></div><div><strong id="profileStreak">0</strong><span>серия ответов</span></div></div><p>После подключения сервера твой прогресс будет храниться в аккаунте и синхронизироваться между устройствами.</p></div>
+  </div>
+
+  <div style="text-align:center;margin-top:35px;">
+    <button id="developerAccessBtn" type="button" style="border:0;background:transparent;color:var(--muted);opacity:.45;font-size:11px;cursor:pointer;">
+      стать разработчиком
+    </button>
+  </div>
+</section>
+
+<section id="developer" class="view">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Служебный раздел</div>
+      <h2>Панель разработчика</h2>
+      <p>Управление тренажёром.</p>
+    </div>
+  </div>
+  <div class="profile-form-card" style="min-height:220px;">
   </div>
 </section>
 </main>
@@ -1037,6 +1056,31 @@ document.addEventListener("click", function(e) {
   return;
 }
   switch (el.id) {
+      case "developerAccessBtn": {
+      const password = prompt("Введи пароль разработчика:");
+
+      if (password === null) break;
+
+      if (password !== "Verasip+15") {
+        alert("Неверный пароль.");
+        break;
+      }
+
+      sessionStorage.setItem("egeDeveloperUnlocked", "1");
+
+      const gear = document.getElementById("developerGear");
+      if (gear) gear.hidden = false;
+
+      showView("profile");
+      alert("Доступ разработчика открыт.");
+      break;
+    }
+
+    case "developerGear":
+      if (sessionStorage.getItem("egeDeveloperUnlocked") === "1") {
+        showView("developer");
+      }
+      break;
     case "startBtn": case "theoryStartBtn":
   showView("tasks");
 
