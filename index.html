@@ -1662,7 +1662,12 @@ if (FIREBASE_CONFIG_READY) {
     db = getFirestore(app);
     onAuthStateChanged(auth, async user => {
       if (authActionInProgress) return;
-      if (!user) { lastHandledUid = null; paintProfile(null); return; }
+      if (!user) {
+  window.__currentFirebaseUid = null;
+  lastHandledUid = null;
+  paintProfile(null);
+  return;
+}
       if (lastHandledUid === user.uid) return;
       lastHandledUid = user.uid;
       try { await restoreAccount(user); }
