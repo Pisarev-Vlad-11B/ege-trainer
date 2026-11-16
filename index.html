@@ -1077,10 +1077,13 @@ document.addEventListener("click", function(e) {
     }
 
     case "developerGear":
-      if (sessionStorage.getItem("egeDeveloperUnlocked") === "1") {
-        showView("developer");
-      }
-      break;
+  if (
+    window.__currentFirebaseUid &&
+    localStorage.getItem("egeDeveloperUid") === window.__currentFirebaseUid
+  ) {
+    showView("developer");
+  }
+  break;
     case "startBtn": case "theoryStartBtn":
   showView("tasks");
 
@@ -1208,6 +1211,12 @@ const setProfileEnabled = enabled => {
 function paintProfile(data) {
   profile = data || null;
   const signed = !!data;
+  const gear = document.getElementById("developerGear");
+
+if (gear) {
+  gear.hidden = !signed ||
+    localStorage.getItem("egeDeveloperUid") !== window.__currentFirebaseUid;
+}
   document.querySelectorAll('.nav button[data-protected="true"]').forEach(button => {
     button.hidden = !signed;
   });
