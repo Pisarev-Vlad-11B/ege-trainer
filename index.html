@@ -1874,30 +1874,75 @@ async function loadDeveloperUsers() {
 }
 
 window.__loadDeveloperUsers = loadDeveloperUsers;
-  async function updateDeveloperOnlineCount() {
+  let developerOnlineUnsubscribe = null;
+let developerOnlineTimer = null;
+let developerOnlineUsers = [];
+
+function renderDeveloperOnlineCount() {
   const counter = document.getElementById("devOnlineUsersCount");
 
-  if (!counter || window.__isDeveloper !== true || !db) return;
+  if (!counter || window.__isDeveloper !== true) return;
 
-  try {
-    const snapshot = await getDocs(collection(db, "users"));
-    const now = Date.now();
+  const now = Date.now();
 
-    const onlineCount = snapshot.docs.filter(item => {
-      const lastActive = item.data().lastActiveAt;
+  const onlineCount = developerOnlineUsers.filter(user => {
+    const lastActive = user.lastActiveAt;
 
-      return lastActive &&
-        now - lastActive.toMillis() <= 60000;
-    }).length;
+    return lastActive &&
+      now - lastActive.toMillis() <= 60000;
+  }).length;
 
-    counter.textContent = onlineCount;
-  } catch (error) {
-    console.error("Ошибка подсчёта онлайн:", error);
-    counter.textContent = "—";
-  }
+  counter.textContent = onlineCount;
 }
 
-window.__updateDeveloperOnlineCount = updateDeveloperOnlineCount;
+function startDeveloperOnlineMonitor() {
+  if (window.__isDeveloper !== true || !db) return;
+
+  if (developerOnlineUnsubscribe) {
+    developerOnlineUnsubscribe();
+  }
+
+  if (developerOnlineTimer) {
+    clearInterval(developerOnlineTimer);
+  }
+
+  const counter = document.getElementById("devOnlineUsersCount");
+  if (counter) counter.textContent = "…";
+
+  developerOnlineUnsubscribe = onSnapshot(
+    collection(db, "users"),
+    snapshot => {
+      developerOnlineUsers = snapshot.docs.map(item => item.data());
+      renderDeveloperOnlineCount();
+    },
+    error => {
+      console.error("Ошибка подписки на онлайн:", error);
+      if (counter) counter.textContent = "—";
+    }
+  );
+
+  developerOnlineTimer = setInterval(
+    renderDeveloperOnlineCount,
+    15000
+  );
+}
+
+function stopDeveloperOnlineMonitor() {
+  if (developerOnlineUnsubscribe) {
+    developerOnlineUnsubscribe();
+    developerOnlineUnsubscribe = null;
+  }
+
+  if (developerOnlineTimer) {
+    clearInterval(developerOnlineTimer);
+    developerOnlineTimer = null;
+  }
+
+  developerOnlineUsers = [];
+}
+
+window.__startDeveloperOnlineMonitor = startDeveloperOnlineMonitor;
+window.__stopDeveloperOnlineMonitor = stopDeveloperOnlineMonitor;
 async function syncPublicProfile(data = profile, state = window.__getLocalState?.()) {
   if (!auth?.currentUser || !db || !data) return;
 
