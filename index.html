@@ -1463,6 +1463,87 @@ async function loadDeveloperUsers() {
       uid: item.id,
       ...item.data()
     }));
+    list.onclick = function(e) {
+  const card = e.target.closest("[data-dev-user-id]");
+  if (!card) return;
+
+  const user = users.find(item => item.uid === card.dataset.devUserId);
+  if (!user) return;
+
+  const overlay = $id("publicProfileOverlay");
+  const content = $id("publicProfileContent");
+  const progress = user.progress || {};
+
+  const completed = Array.isArray(progress.completed)
+    ? progress.completed.length
+    : 0;
+
+  const correct = Number(progress.correct) || 0;
+  const accuracy = completed
+    ? Math.round(correct / completed * 100)
+    : 0;
+
+  const streak = Number(progress.streak) || 0;
+
+  const fullName = [
+    user.firstName,
+    user.lastName
+  ].filter(Boolean).join(" ") || "Имя не указано";
+
+  const createdAt = user.createdAt?.toDate
+    ? user.createdAt.toDate().toLocaleDateString("ru-RU")
+    : "Нет данных";
+
+  content.innerHTML = `
+    <div style="text-align:center;padding:10px 0 20px;">
+      ${user.avatarUrl
+        ? `<img class="public-profile-avatar"
+             src="${escapeDevHTML(user.avatarUrl)}"
+             alt="Аватар">`
+        : `<div class="dev-users-icon"
+             style="margin:0 auto 12px;width:88px;height:88px;
+             border-radius:50%;font-size:34px;">👤</div>`
+      }
+
+      <h2>${escapeDevHTML(fullName)}</h2>
+
+      <p style="color:var(--muted);">
+        @${escapeDevHTML(user.username || "—")}
+      </p>
+
+      <span class="profile-status">Аккаунт пользователя</span>
+    </div>
+
+    <div class="public-profile-about">
+      <strong style="color:var(--ink);">О себе</strong>
+      <p>${escapeDevHTML(user.about || "Пользователь пока ничего не рассказал о себе.")}</p>
+    </div>
+
+    <div class="public-profile-about">
+      <strong style="color:var(--ink);">Дата регистрации</strong>
+      <p>${createdAt}</p>
+    </div>
+
+    <h3 style="margin-top:22px;">Статистика ученика</h3>
+
+    <div class="profile-progress-grid">
+      <div>
+        <strong>${completed}</strong>
+        <span>решено заданий</span>
+      </div>
+      <div>
+        <strong>${accuracy}%</strong>
+        <span>точность</span>
+      </div>
+      <div>
+        <strong>${streak}</strong>
+        <span>серия ответов</span>
+      </div>
+    </div>
+  `;
+
+  overlay.hidden = false;
+};
 
     function render() {
       const query = search.value.trim().toLowerCase();
