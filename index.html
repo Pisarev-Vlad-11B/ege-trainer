@@ -1657,14 +1657,8 @@ async function loadDeveloperUsers() {
 
     if (content.querySelector("#devEditForm")) return;
 
-    content.insertAdjacentHTML("beforeend", `
-      <div id="devEditForm" style="
-        margin-top:22px;
-        padding:18px;
-        border:1px solid var(--border);
-        border-radius:16px;
-        background:var(--panel);
-      ">
+    document.body.insertAdjacentHTML("beforeend", `
+      <div id="devEditForm" class="dev-edit-window">
         <h3 style="margin:0 0 16px;">✏️ Редактирование профиля</h3>
 
         <label>Имя</label>
@@ -1693,17 +1687,17 @@ async function loadDeveloperUsers() {
       </div>
     `);
 
-    const form = content.querySelector("#devEditForm");
-    const saveBtn = content.querySelector("#devSaveProfileBtn");
+    const form = document.getElementById("devEditForm");
+    const saveBtn = form.querySelector("#devSaveProfileBtn");
 
-    content.querySelector("#devCancelEditBtn").addEventListener("click", () => {
+    form.querySelector("#devCancelEditBtn").addEventListener("click", () => {
       form.remove();
     });
 
     saveBtn.addEventListener("click", async function() {
-      const firstName = content.querySelector("#devEditFirstName").value.trim();
-      const lastName = content.querySelector("#devEditLastName").value.trim();
-      const about = content.querySelector("#devEditAbout").value.trim();
+      const firstName = form.querySelector("#devEditFirstName").value.trim();
+      const lastName = form.querySelector("#devEditLastName").value.trim();
+      const about = form.querySelector("#devEditAbout").value.trim();
 
       if (firstName.length > 40 || lastName.length > 50 || about.length > 300) {
         alert("Проверьте длину введённых данных.");
