@@ -1643,7 +1643,112 @@ async function loadDeveloperUsers() {
     </button>
   `;
 
-  const deleteBtn = content.querySelector("#devDeleteUserBtn");
+  const editBtn = content.querySelector("#devEditUserBtn");
+
+  editBtn?.addEventListener("click", function() {
+    if (window.__isDeveloper !== true) {
+      alert("Недостаточно прав.");
+      return;
+    }
+
+    const uid = editBtn.dataset.userId;
+    const targetUser = users.find(item => item.uid === uid);
+    if (!targetUser) return;
+
+    if (content.querySelector("#devEditForm")) return;
+
+    content.insertAdjacentHTML("beforeend", `
+      <div id="devEditForm" style="
+        margin-top:22px;
+        padding:18px;
+        border:1px solid var(--border);
+        border-radius:16px;
+        background:var(--panel);
+      ">
+        <h3 style="margin:0 0 16px;">✏️ Редактирование профиля</h3>
+
+        <label>Имя</label>
+        <input id="devEditFirstName" maxlength="40"
+          value="${escapeDevHTML(targetUser.firstName || "")}"
+          style="width:100%;margin:7px 0 14px;padding:12px;border-radius:10px;">
+
+        <label>Фамилия</label>
+        <input id="devEditLastName" maxlength="50"
+          value="${escapeDevHTML(targetUser.lastName || "")}"
+          style="width:100%;margin:7px 0 14px;padding:12px;border-radius:10px;">
+
+        <label>О себе</label>
+        <textarea id="devEditAbout" maxlength="300" rows="4"
+          style="width:100%;margin:7px 0 14px;padding:12px;border-radius:10px;resize:vertical;">${escapeDevHTML(targetUser.about || "")}</textarea>
+
+        <button type="button" id="devSaveProfileBtn"
+          style="width:100%;padding:12px;border:0;border-radius:11px;background:var(--accent);color:white;font-weight:700;">
+          Сохранить изменения
+        </button>
+
+        <button type="button" id="devCancelEditBtn"
+          style="width:100%;margin-top:8px;padding:12px;border:1px solid var(--border);border-radius:11px;background:transparent;color:var(--text);">
+          Отмена
+        </button>
+      </div>
+    `);
+
+    const form = content.querySelector("#devEditForm");
+    const saveBtn = content.querySelector("#devSaveProfileBtn");
+
+    content.querySelector("#devCancelEditBtn").addEventListener("click", () => {
+      form.remove();
+    });
+
+    saveBtn.addEventListener("click", async function() {
+      const firstName = content.querySelector("#devEditFirstName").value.trim();
+      const lastName = content.querySelector("#devEditLastName").value.trim();
+      const about = content.querySelector("#devEditAbout").value.trim();
+
+      if (firstName.length > 40 || lastName.length > 50 || about.length > 300) {
+        alert("Проверьте длину введённых данных.");
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Сохранение…";
+
+      try {
+        await setDoc(doc(db, "users", uid), {
+          firstName,
+          lastName,
+          about
+        }, { merge: true });
+
+        const publicRef = doc(db, "publicProfiles", uid);
+        const publicSnap = await getDoc(publicRef);
+
+        if (publicSnap.exists()) {
+          await setDoc(publicRef, {
+            firstName,
+            lastName,
+            about
+          }, { merge: true });
+        }
+
+        targetUser.firstName = firstName;
+        targetUser.lastName = lastName;
+        targetUser.about = about;
+
+        overlay.hidden = true;
+        await loadDeveloperUsers();
+
+        alert("Профиль успешно обновлён.");
+
+      } catch (error) {
+        console.error("Ошибка редактирования профиля:", error);
+        alert("Не удалось сохранить изменения. Проверьте правила Firestore.");
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Сохранить изменения";
+      }
+    });
+  });
+      const deleteBtn = content.querySelector("#devDeleteUserBtn");
 
   deleteBtn?.addEventListener("click", async function() {
     if (window.__isDeveloper !== true) {
