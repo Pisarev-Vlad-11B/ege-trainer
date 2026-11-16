@@ -1622,8 +1622,9 @@ console.log("Публичный профиль удалён");
 
     await deleteUser(user);
 
-    lastHandledUid = null;
-    paintProfile(null);
+window.__currentFirebaseUid = null;
+lastHandledUid = null;
+paintProfile(null);
 
     if (window.__resetLocalState) {
       window.__resetLocalState();
