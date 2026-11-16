@@ -1571,14 +1571,22 @@ async function loadDeveloperUsers() {
       <span class="profile-status">Аккаунт пользователя</span>
     </div>
 
-    <div class="public-profile-about">
-      <strong style="color:var(--ink);">О себе</strong>
-      <p>${escapeDevHTML(user.about || "Пользователь пока ничего не рассказал о себе.")}</p>
-    </div>
+   <div class="dev-profile-info">
+      <div class="dev-profile-info-row">
+        <span class="dev-profile-info-icon">✦</span>
+        <div>
+          <strong>О себе</strong>
+          <p>${escapeDevHTML(user.about || "Пользователь пока ничего не рассказал о себе.")}</p>
+        </div>
+      </div>
 
-    <div class="public-profile-about">
-      <strong style="color:var(--ink);">Дата регистрации</strong>
-      <p>${createdAt}</p>
+      <div class="dev-profile-info-row">
+        <span class="dev-profile-info-icon">📅</span>
+        <div>
+          <strong>Дата регистрации</strong>
+          <p>${createdAt}</p>
+        </div>
+      </div>
     </div>
 
     <h3 style="margin-top:22px;">Статистика ученика</h3>
