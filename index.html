@@ -1969,5 +1969,14 @@ themeToggle.addEventListener("click", () => {
   const currentTheme = document.documentElement.getAttribute("data-theme");
   setTheme(currentTheme === "dark" ? "light" : "dark");
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/ege-trainer/sw.js")
+      .then(() => console.log("Приложение готово к установке"))
+      .catch(error => console.error("Ошибка Service Worker:", error));
+  });
+}
+</script>
 </script>
 </html>
