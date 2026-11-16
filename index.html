@@ -1106,7 +1106,13 @@ document.addEventListener("click", function(e) {
     case "closeTheory": try { closeTheory(); } catch(err) { console.error(err); } break;
   }
 });
-document.addEventListener("keydown", function(e) {
+const savedDeveloperAccess = sessionStorage.getItem("egeDeveloperUnlocked");
+const developerGear = document.getElementById("developerGear");
+
+if (savedDeveloperAccess === "1" && developerGear) {
+  developerGear.hidden = false;
+}
+  document.addEventListener("keydown", function(e) {
   if (e.key === "Enter" && e.target && e.target.id === "answerInput") { try { checkAnswer(); } catch(err) { console.error(err); } }
   if (e.key === "Escape") { try { closeTheory(); } catch(err) {} }
 });
