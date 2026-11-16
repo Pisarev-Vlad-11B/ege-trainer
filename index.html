@@ -1416,6 +1416,35 @@ const closeAuth = () => {
 window.__openTrainerAuth = openAuth;
 const usernameToEmail = username => `${username.toLowerCase()}@login.ege-trainer.example.com`;
 const userDoc = uid => doc(db, "users", uid);
+  let onlineHeartbeatTimer = null;
+
+async function updateOnlineHeartbeat() {
+  const user = auth?.currentUser;
+  if (!user || !db || document.visibilityState !== "visible") return;
+
+  try {
+    await setDoc(userDoc(user.uid), {
+      lastActiveAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.warn("Не удалось обновить онлайн-статус:", error);
+  }
+}
+
+function startOnlineHeartbeat() {
+  if (onlineHeartbeatTimer) {
+    clearInterval(onlineHeartbeatTimer);
+  }
+
+  updateOnlineHeartbeat();
+  onlineHeartbeatTimer = setInterval(updateOnlineHeartbeat, 15000);
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    updateOnlineHeartbeat();
+  }
+});
 const errorText = error => {
   const code = error?.code || "";
   if (code === "auth/email-already-in-use") return "Этот логин уже занят. Придумай другой.";
