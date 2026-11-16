@@ -2301,6 +2301,25 @@ html[data-theme="dark"] .leaderboard-entry.is-me {
   min-width: 0;
   padding: 7px 0;
 }
+  #developer .dev-page-panel {
+  display: none;
+}
+
+#developer .dev-page-panel.active {
+  display: block;
+  animation: devPageAppear .25s ease;
+}
+
+@keyframes devPageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 #developer .dev-topbar {
   display: flex;
