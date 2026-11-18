@@ -1911,6 +1911,7 @@ document.addEventListener("click", function(e) {
   if (window.__isDeveloper === true) {
     showView("developer");
     window.__startDeveloperOnlineMonitor?.();
+    window.__startDeveloperSupport?.();
   } else {
     alert("У этого аккаунта нет доступа разработчика.");
   }
@@ -1921,6 +1922,7 @@ case "developerGear":
   if (window.__isDeveloper === true) {
     showView("developer");
     window.__startDeveloperOnlineMonitor?.();
+    window.__startDeveloperSupport?.();
   }
   break;
     case "startBtn": case "theoryStartBtn":
@@ -3129,7 +3131,8 @@ function renderDeveloperSupport(){
 }
 function startDeveloperSupport(){
  if(window.__isDeveloper!==true||!db)return;
- if(supportAdminUnsubscribe)supportAdminUnsubscribe();
+ // Если realtime-подписка уже работает, не перезапускаем её при переходах между вкладками.
+ if(supportAdminUnsubscribe)return;
  $id("devSupportStatus").textContent="Загружаем обращения…";
  const q=query(collection(db,"supportTickets"),orderBy("createdAt","desc"),limit(200));
  supportAdminFirstSnapshot=true;
@@ -3149,6 +3152,7 @@ function startDeveloperSupport(){
    $id("devSupportList").innerHTML='<p class="support-muted">Не удалось загрузить обращения. Проверь правила Firestore для supportTickets.</p>';
  });
 }
+window.__startDeveloperSupport = startDeveloperSupport;
 function openSupportTicket(ticket){
  activeSupportTicket=ticket;
  $id("supportTicketTitle").textContent=ticket.topic||"Обращение";
