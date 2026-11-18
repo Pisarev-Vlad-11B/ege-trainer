@@ -1306,7 +1306,7 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
     <section class="dev-support-waiting-card">
       <div class="dev-support-waiting-head">
         <div><span class="dev-support-waiting-kicker">ОБРАТНАЯ СВЯЗЬ</span><h3>Ждут ответа</h3><p>Обращения, по которым ещё не отправлен ответ</p></div>
-        <strong id="devHomeSupportWaitingCount">—</strong>
+        <strong id="devHomeSupportWaitingCount">0</strong>
       </div>
       <div id="devHomeSupportWaitingList" class="dev-home-support-list"><p>Загрузка обращений…</p></div>
       <button type="button" class="dev-support-open-all" data-dev-page="support">Открыть все обращения <span>→</span></button>
@@ -3104,20 +3104,26 @@ function startMySupportListener(){
 }
 function renderDeveloperSupport(){
  const list=$id("devSupportList"),filter=$id("devSupportFilter")?.value||"all";
- if(!list)return;
- const items=filter==="all"?supportTicketsCache:supportTicketsCache.filter(t=>(t.status||"new")===filter);
  const fresh=supportTicketsCache.filter(t=>(t.status||"new")==="new").length;
- $id("devSupportTotal").textContent=supportTicketsCache.length;
- $id("devSupportNew").textContent=fresh;
  const waiting=supportTicketsCache.filter(t=>(t.status||"new")!=="answered");
- $id("devSupportPending").textContent=waiting.length;
  const homeWaitingCount=$id("devHomeSupportWaitingCount"),homeWaitingList=$id("devHomeSupportWaitingList");
- if(homeWaitingCount)homeWaitingCount.textContent=waiting.length;
+
+ // Главный экран обновляется независимо от того, открыта ли вкладка «Поддержка».
+ if(homeWaitingCount)homeWaitingCount.textContent=String(waiting.length);
  if(homeWaitingList){
    const recentWaiting=waiting.slice(0,4);
    homeWaitingList.innerHTML=recentWaiting.length?recentWaiting.map(t=>`<button type="button" class="dev-home-support-item" data-home-support-ticket-id="${supportEsc(t.id)}"><span class="dev-home-support-item-icon">✉</span><span class="dev-home-support-item-copy"><strong>${supportEsc(t.topic||"Обращение")}</strong><small>${supportEsc(t.username||"Пользователь")} · ${supportDate(t.createdAt)}</small><span>${supportEsc(t.message||"")}</span></span><i>›</i></button>`).join(""):'<p class="dev-home-support-empty">Все обращения получили ответ. Отличная работа!</p>';
  }
- const badge=$id("devSupportNewBadge");badge.hidden=!fresh;badge.textContent=fresh>9?"9+":String(fresh);
+
+ const total=$id("devSupportTotal"),newCount=$id("devSupportNew"),pending=$id("devSupportPending"),badge=$id("devSupportNewBadge");
+ if(total)total.textContent=String(supportTicketsCache.length);
+ if(newCount)newCount.textContent=String(fresh);
+ if(pending)pending.textContent=String(waiting.length);
+ if(badge){badge.hidden=!fresh;badge.textContent=fresh>9?"9+":String(fresh);}
+
+ // Список и фильтр нужны только для содержимого отдельной вкладки.
+ if(!list)return;
+ const items=filter==="all"?supportTicketsCache:supportTicketsCache.filter(t=>(t.status||"new")===filter);
  if(!items.length){list.innerHTML='<div class="support-muted" style="padding:22px;border:1px dashed var(--border);border-radius:14px;">Обращений в этой категории пока нет.</div>';return;}
  list.innerHTML=items.map(t=>`<article class="dev-support-ticket" data-support-ticket-id="${supportEsc(t.id)}"><div class="dev-support-ticket-icon">✉</div><div class="dev-support-ticket-main"><strong>${supportEsc(t.topic||"Обращение")}</strong><p>${supportEsc(t.message||"")}</p><div class="dev-support-ticket-meta"><span>${supportEsc(t.username||"Пользователь")}</span><span>${supportDate(t.createdAt)}</span></div></div><span class="dev-support-status ${t.status==="answered"?"is-answered":""}">${t.status==="answered"?"Отвечено":t.status==="in_progress"?"В работе":"Новое"}</span></article>`).join("");
 }
