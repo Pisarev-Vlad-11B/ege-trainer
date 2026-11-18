@@ -978,8 +978,11 @@ max-height: 55px;
       </div>
     </div>
     <div class="dev-journal-card">
-      <strong>Журнал пока пуст</strong>
-      <p>Здесь будут отображаться события системы.</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div><strong>История событий</strong><p id="devJournalStatus" style="margin:6px 0 0;color:var(--muted);">Подключаем журнал…</p></div>
+        <span id="devJournalCount" style="font-size:13px;color:var(--muted);">—</span>
+      </div>
+      <div id="devJournalList" style="display:grid;gap:10px;margin-top:18px;"><p style="color:var(--muted);">Загрузка событий…</p></div>
     </div>
   </div>
 
@@ -1356,7 +1359,7 @@ signOut, onAuthStateChanged, deleteUser,
 EmailAuthProvider, reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, getDocs, collection, setDoc, deleteDoc, serverTimestamp, onSnapshot
+  getFirestore, doc, getDoc, getDocs, collection, setDoc, deleteDoc, serverTimestamp, onSnapshot, addDoc, query, orderBy, limit
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 /*
@@ -1530,6 +1533,74 @@ async function loadAccount(user, fallbackUsername = "") {
     "'": "&#39;"
   }[ch]));
 }
+
+let developerJournalUnsubscribe = null;
+
+async function logActivity(action, details = "") {
+  try {
+    const user = auth?.currentUser;
+    if (!user || !db) return;
+    await addDoc(collection(db, "activityLogs"), {
+      uid: user.uid,
+      username: String(profile?.username || user.email?.split("@")[0] || "Пользователь").slice(0, 40),
+      action: String(action).slice(0, 60),
+      details: String(details).slice(0, 240),
+      createdAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.warn("Не удалось записать событие в журнал:", error);
+  }
+}
+
+function startDeveloperJournal() {
+  if (window.__isDeveloper !== true || !db) return;
+  const list = $id("devJournalList");
+  const status = $id("devJournalStatus");
+  const count = $id("devJournalCount");
+  if (!list) return;
+  if (developerJournalUnsubscribe) developerJournalUnsubscribe();
+  if (status) status.textContent = "Загружаем последние события…";
+  list.innerHTML = '<p style="color:var(--muted);">Загрузка событий…</p>';
+  const journalQuery = query(collection(db, "activityLogs"), orderBy("createdAt", "desc"), limit(100));
+  developerJournalUnsubscribe = onSnapshot(journalQuery, snapshot => {
+    const events = snapshot.docs.map(item => item.data());
+    if (count) count.textContent = `${events.length} последних событий`;
+    if (status) status.textContent = "Обновляется автоматически";
+    if (!events.length) {
+      list.innerHTML = '<div style="padding:18px;border:1px dashed var(--border);border-radius:14px;color:var(--muted);">Пока событий нет. Новые действия будут появляться здесь автоматически.</div>';
+      return;
+    }
+    list.innerHTML = events.map(event => {
+      const date = event.createdAt?.toDate
+        ? event.createdAt.toDate().toLocaleString("ru-RU", { dateStyle: "short", timeStyle: "medium" })
+        : "Время не определено";
+      return `<div style="display:flex;align-items:flex-start;gap:13px;padding:14px 15px;border:1px solid var(--border);border-radius:14px;">
+        <div style="width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:11px;background:rgba(164,67,87,.12);color:var(--accent,#a44357);">◷</div>
+        <div style="min-width:0;flex:1;">
+          <strong style="display:block;font-size:14px;">${escapeDevHTML(event.action || "Событие")}</strong>
+          <span style="display:block;margin-top:3px;font-size:13px;color:var(--muted);">${escapeDevHTML(event.username || "Пользователь")}${event.details ? " · " + escapeDevHTML(event.details) : ""}</span>
+          <time style="display:block;margin-top:7px;font-size:12px;color:var(--muted);">${date}</time>
+        </div></div>`;
+    }).join("");
+  }, error => {
+    console.error("Ошибка загрузки журнала:", error);
+    if (status) status.textContent = "Не удалось загрузить журнал";
+    list.innerHTML = '<p style="color:var(--muted);">Нет доступа к журналу. Проверь правила Firestore для activityLogs.</p>';
+  });
+}
+
+function stopDeveloperJournal() {
+  if (developerJournalUnsubscribe) {
+    developerJournalUnsubscribe();
+    developerJournalUnsubscribe = null;
+  }
+}
+
+document.querySelectorAll('[data-dev-page="journal"]').forEach(button => {
+  button.addEventListener("click", () => {
+    if (window.__isDeveloper === true) startDeveloperJournal();
+  });
+});
 
 async function loadDeveloperUsers() {
   const list = $id("devUsersList");
@@ -1755,6 +1826,7 @@ async function loadDeveloperUsers() {
         targetUser.firstName = firstName;
         targetUser.lastName = lastName;
         targetUser.about = about;
+        await logActivity("Изменение профиля пользователя", `Аккаунт @${targetUser.username || "без логина"}`);
 
         form.remove();
         overlay.hidden = true;
@@ -1798,6 +1870,7 @@ async function loadDeveloperUsers() {
     deleteBtn.textContent = "Удаление…";
 
     try {
+      await logActivity("Удаление данных пользователя", `Аккаунт @${username}`);
       await deleteDoc(doc(db, "users", uid));
       await deleteDoc(doc(db, "publicProfiles", uid));
       await deleteDoc(doc(db, "leaderboard", uid));
@@ -2202,6 +2275,7 @@ $id("authForm").addEventListener("submit", async e => {
     const data = await loadAccount(credential.user, username);
     lastHandledUid = credential.user.uid;
     await restoreAccount(credential.user, username);
+    await logActivity(authMode === "login" ? "Вход в аккаунт" : "Регистрация", `Логин @${username}`);
     $id("authPassword").value = "";
     toast(authMode === "login" ? "Ты вошёл в аккаунт." : "Аккаунт создан!");
   } catch (err) {
@@ -2238,6 +2312,7 @@ await setDoc(doc(db, "publicProfiles", auth.currentUser.uid), {
   updatedAt: serverTimestamp()
 });
     paintProfile({ ...profile, firstName, lastName, about });
+    await logActivity("Изменение собственного профиля", `Логин @${profile.username || "пользователь"}`);
     toast("Профиль сохранён!");
   } catch (e) { toast(errorText(e)); }
 });
