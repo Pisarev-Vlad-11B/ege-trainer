@@ -541,23 +541,14 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
 }
 
 
-/* Раздел 2: дословно повторяем параметры hover-анимации карточек раздела 3 */
-:is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card{
-  transition:transform .28s cubic-bezier(.2,.75,.25,1),
-             box-shadow .28s ease,border-color .28s ease,
-             background-color .28s ease!important;
-}
-:is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card:hover{
-  transform:translateY(-4px) scale(1.015)!important;
-  box-shadow:0 12px 25px rgba(48,28,34,.10)!important;
-  border-color:var(--theory-accent)!important;
-}
-/* Раздел 4: те же параметры плавной анимации, что у плашек раздела 2 */
+/* Разделы 2 и 4: один и тот же скопированный код анимации плашек */
+:is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card,
 :is(#theory,.windowcontent) .theory-algorithm>div{
   transition:transform .28s cubic-bezier(.2,.75,.25,1),
              box-shadow .28s ease,border-color .28s ease,
              background-color .28s ease!important;
 }
+:is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card:hover,
 :is(#theory,.windowcontent) .theory-algorithm>div:hover{
   transform:translateY(-4px) scale(1.015)!important;
   box-shadow:0 12px 25px rgba(48,28,34,.10)!important;
