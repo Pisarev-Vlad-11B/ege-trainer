@@ -2132,17 +2132,35 @@ document.addEventListener("keydown", (e) => {
 async function restoreAccount(user, username = "") {
   window.__currentFirebaseUid = user.uid;
   startOnlineHeartbeat();
-  const data = await loadAccount(user, username);
-  const developerDoc = await getDoc(
-    doc(db, "developerAccess", user.uid)
-  );
 
-  window.__isDeveloper =
-    developerDoc.exists() &&
-    developerDoc.data().role === "developer";
+  // Сначала загружаем и сразу отображаем личный профиль
+  const data = await loadAccount(user, username);
+
+  window.__isDeveloper = false;
   paintProfile(data);
-  if (data.progress && window.__restoreCloudState) window.__restoreCloudState(data.progress);
-  else if (window.__getLocalState) await syncCloudState(window.__getLocalState());
+
+  // Проверяем права разработчика отдельно
+  try {
+    const developerDoc = await getDoc(
+      doc(db, "developerAccess", user.uid)
+    );
+
+    window.__isDeveloper =
+      developerDoc.exists() &&
+      developerDoc.data().role === "developer";
+  } catch (error) {
+    console.warn("Не удалось проверить права разработчика:", error);
+  }
+
+  // Обновляем профиль с учётом статуса разработчика
+  paintProfile(data);
+
+  if (data.progress && window.__restoreCloudState) {
+    window.__restoreCloudState(data.progress);
+  } else if (window.__getLocalState) {
+    await syncCloudState(window.__getLocalState());
+  }
+
   closeAuth();
   showView("profile");
   message("");
@@ -2351,9 +2369,14 @@ if (FIREBASE_CONFIG_READY) {
   return;
 }
       if (lastHandledUid === user.uid) return;
-      lastHandledUid = user.uid;
-      try { await restoreAccount(user); }
-      catch (e) { console.error("Не удалось загрузить аккаунт:", e); message(errorText(e)); }
+
+try {
+  await restoreAccount(user);
+  lastHandledUid = user.uid;
+} catch (e) {
+  console.error("Не удалось загрузить аккаунт:", e);
+  message(errorText(e));
+}
     });
   } catch (e) {
     console.error("Firebase initialization error:", e);
