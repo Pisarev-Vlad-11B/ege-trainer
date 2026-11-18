@@ -784,26 +784,36 @@ max-height: 55px;
   </div>
 </section>
 <section id="theory" class="view theory-page">
-  <div class="theory-hero">
-    <div class="theory-hero-copy">
-      <span class="theory-kicker"><span class="theory-kicker-dot"></span> БАЗА ЗНАНИЙ · РУССКИЙ ЯЗЫК</span>
-      <h2>Теория, которая<br><em>помогает разобраться.</em></h2>
-      <p>Всё необходимое для задания № 12 — коротко, наглядно и по шагам.</p>
-      <div class="theory-hero-tags"><span>ЕГЭ</span><span>Задание 12</span><span>Орфография</span></div>
+  <div class="theory-masthead">
+    <div class="theory-masthead-top"><span class="theory-overline">РУССКИЙ ЯЗЫК <i></i> ПОДГОТОВКА К ЕГЭ</span><span class="theory-edition">УЧЕБНЫЙ РАЗДЕЛ / 01</span></div>
+    <div class="theory-masthead-main">
+      <div class="theory-masthead-copy">
+        <div class="theory-label"><span></span> ТВОЯ БАЗА ЗНАНИЙ</div>
+        <h2>Понимай<br>правила. <em>Пиши</em><br><em>уверенно.</em></h2>
+        <p>Всё, что нужно для задания № 12: от спряжений до суффиксов причастий. Без лишнего — только понятные объяснения и рабочий алгоритм.</p>
+        <button class="theory-jump" type="button" onclick="document.getElementById('theoryBody').scrollIntoView({behavior:'smooth',block:'start'})">Перейти к материалам <span>↓</span></button>
+      </div>
+      <div class="theory-number-art" aria-hidden="true">
+        <div class="theory-orbit theory-orbit-a"></div><div class="theory-orbit theory-orbit-b"></div>
+        <div class="theory-big-number">12</div>
+        <div class="theory-art-caption">ОРФОГРАФИЯ<br><b>ЕГЭ · РУССКИЙ</b></div>
+        <div class="theory-sticker">ЗНАЙ<br>ПРАВИЛО</div>
+      </div>
     </div>
-    <div class="theory-hero-art" aria-hidden="true">
-      <div class="theory-art-sheet"><span>12</span><i></i><i></i><i></i><b>А / Я</b></div>
-      <div class="theory-art-spark spark-one">✦</div>
-      <div class="theory-art-spark spark-two">✳</div>
-      <div class="theory-art-note">учись<br/>уверенно</div>
-    </div>
+    <div class="theory-masthead-bottom"><span>ТЕОРИЯ И ПРАКТИКА</span><span>01 — 04 <b>●</b> 5 ШАГОВ АЛГОРИТМА</span></div>
   </div>
-  <div class="theory-content-heading">
-    <div><span class="theory-content-kicker">КОНСПЕКТ</span><h3>Разберём правила</h3></div>
-    <span class="theory-content-meta">4 темы <b>·</b> 1 алгоритм</span>
+  <div class="theory-index-strip">
+    <div><span class="theory-index-num">01</span><span><b>Спряжение</b><small>личные окончания</small></span></div>
+    <div><span class="theory-index-num">02</span><span><b>Причастия</b><small>настоящее время</small></span></div>
+    <div><span class="theory-index-num">03</span><span><b>Суффиксы</b><small>прошедшее время</small></span></div>
+    <div><span class="theory-index-num">04</span><span><b>Алгоритм</b><small>порядок решения</small></span></div>
+  </div>
+  <div class="theory-workspace-heading">
+    <div><span class="theory-section-overline">ТВОЙ КОНСПЕКТ</span><h3>Разложим всё по полочкам</h3><p>Изучай последовательно или возвращайся к нужному правилу.</p></div>
+    <div class="theory-progress-mark"><b>12</b><span>ЗАДАНИЕ<br>ЕГЭ</span></div>
   </div>
   <div class="theory-view" id="theoryBody"></div>
-  <div class="theory-actions"><button class="primary" id="theoryStartBtn">Закрепить знания в заданиях <span>→</span></button></div>
+  <div class="theory-actions"><button class="primary" id="theoryStartBtn">Перейти к тренировке <span>→</span></button></div>
 </section>
 
 <section id="profile" class="view">
@@ -3856,6 +3866,115 @@ html[data-theme="dark"] #theory .theory-view{background:var(--paper);border-colo
 @media(prefers-reduced-motion:reduce){
   #theory .theory-art-sheet,#theory .theory-art-note{transition:none!important}
 }
+
+/* Полный редакционный редизайн раздела «Теория» */
+#theory.theory-page{max-width:1160px;margin:0 auto;padding-bottom:55px}
+#theory .theory-masthead{position:relative;overflow:hidden;padding:25px 34px 19px;border-radius:8px 8px 28px 8px;background:#252126;color:#fff;box-shadow:0 22px 55px rgba(38,25,30,.17);isolation:isolate}
+#theory .theory-masthead:before{content:"";position:absolute;z-index:-1;width:570px;height:570px;right:-135px;top:-300px;border:1px solid #ffffff17;border-radius:50%;box-shadow:0 0 0 45px #ffffff08,0 0 0 100px #ffffff06,0 0 0 160px #ffffff04}
+#theory .theory-masthead-top,#theory .theory-masthead-bottom{display:flex;justify-content:space-between;align-items:center;gap:14px;color:#b9aeb4;font-size:9px;font-weight:850;letter-spacing:1.7px}
+#theory .theory-overline{display:flex;align-items:center;gap:10px}
+#theory .theory-overline i{width:4px;height:4px;border-radius:50%;background:#d88a96}
+#theory .theory-edition{color:#897e85}
+#theory .theory-masthead-main{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;min-height:345px;gap:20px;padding:17px 0 22px}
+#theory .theory-masthead-copy{position:relative;z-index:2;max-width:580px}
+#theory .theory-label{display:flex;align-items:center;gap:9px;color:#dca0a8;font-size:10px;font-weight:900;letter-spacing:2px}
+#theory .theory-label span{width:23px;height:2px;background:#c96c7a}
+#theory .theory-masthead h2{margin:20px 0 15px;color:#fff;font-size:clamp(43px,6.2vw,76px);line-height:.98;letter-spacing:-4px;font-weight:850}
+#theory .theory-masthead h2 em{font-style:normal;color:#e69aa5}
+#theory .theory-masthead-copy>p{max-width:460px;margin:0;color:#c3b8bd;font-size:14px;line-height:1.8}
+#theory .theory-jump{display:inline-flex;align-items:center;gap:25px;margin-top:25px;padding:12px 16px;border:1px solid #ffffff30;border-radius:5px;background:#ffffff0c;color:#fff;font-size:11px;font-weight:800;letter-spacing:.3px;transition:background .2s,border-color .2s,transform .2s}
+#theory .theory-jump:hover{background:#ffffff18;border-color:#d88a96;transform:translateY(-2px)}
+#theory .theory-jump span{color:#e69aa5;font-size:17px}
+#theory .theory-number-art{height:300px;position:relative;display:grid;place-items:center;isolation:isolate}
+#theory .theory-big-number{position:relative;z-index:1;color:#f2dfe2;font-size:clamp(190px,27vw,310px);font-weight:900;line-height:.8;letter-spacing:-25px;text-shadow:12px 16px 0 #b95c6b35;transform:rotate(-8deg)}
+#theory .theory-orbit{position:absolute;z-index:-1;width:270px;height:270px;border:1px solid #e5a0aa55;border-radius:50%}
+#theory .theory-orbit-a{transform:scaleX(1.4) rotate(-28deg)}
+#theory .theory-orbit-b{width:205px;height:205px;border-style:dashed;transform:rotate(35deg)}
+#theory .theory-art-caption{position:absolute;right:0;bottom:24px;padding:10px 13px;border-left:2px solid #d77c89;color:#b9aeb4;font-size:9px;line-height:1.7;letter-spacing:1.2px}
+#theory .theory-art-caption b{color:#f0c4ca}
+#theory .theory-sticker{position:absolute;left:5px;top:37px;display:grid;place-content:center;width:66px;height:66px;border-radius:50%;background:#d88a96;color:#2c2227;text-align:center;font-size:9px;font-weight:950;line-height:1.3;letter-spacing:.8px;transform:rotate(-13deg);box-shadow:0 8px 25px #0004}
+#theory .theory-masthead-bottom{padding-top:15px;border-top:1px solid #ffffff20;color:#968a91}
+#theory .theory-masthead-bottom b{color:#d88a96;margin:0 7px}
+#theory .theory-index-strip{display:grid;grid-template-columns:repeat(4,1fr);margin:17px 0 43px;border:1px solid var(--line);border-radius:7px;background:var(--paper);overflow:hidden}
+#theory .theory-index-strip>div{display:flex;align-items:center;gap:13px;min-height:78px;padding:14px 17px;border-right:1px solid var(--line)}
+#theory .theory-index-strip>div:last-child{border-right:0}
+#theory .theory-index-num{color:#bd6c78;font-size:23px;font-weight:900;letter-spacing:-1px}
+#theory .theory-index-strip b{display:block;color:var(--ink);font-size:12px}
+#theory .theory-index-strip small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+#theory .theory-workspace-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 2px 17px}
+#theory .theory-section-overline{color:#b66b77;font-size:9px;font-weight:900;letter-spacing:2px}
+#theory .theory-workspace-heading h3{margin:7px 0 5px;color:var(--ink);font-size:clamp(23px,3vw,31px);letter-spacing:-1px}
+#theory .theory-workspace-heading p{margin:0;color:var(--muted);font-size:12px}
+#theory .theory-progress-mark{display:flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;color:var(--muted)}
+#theory .theory-progress-mark b{color:#bd6c78;font-size:23px;letter-spacing:-1px}
+#theory .theory-progress-mark span{font-size:8px;font-weight:900;letter-spacing:1px;line-height:1.45}
+#theory .theory-view{max-width:none;margin:0;padding:clamp(23px,4vw,48px);border:1px solid var(--line);border-radius:8px;background:var(--paper);box-shadow:0 13px 40px rgba(45,30,34,.045);line-height:1.8}
+#theory .theory-view:before{display:none}
+#theory .theory-view>h2{margin:0 0 20px;padding-bottom:17px;border-bottom:1px solid var(--line);color:var(--ink);font-size:clamp(22px,3vw,29px);letter-spacing:-.8px}
+#theory .theory-view>h3{display:flex;align-items:center;gap:13px;margin:36px 0 13px;padding:0;color:var(--ink);font-size:19px;letter-spacing:-.4px}
+#theory .theory-view>h3:before{content:counter(theory-section,decimal-leading-zero);counter-increment:theory-section;display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:5px;background:#f2e4e5;color:#a34453;font-size:10px;font-weight:950;letter-spacing:.5px}
+#theory .theory-view{counter-reset:theory-section}
+#theory .theory-view p,#theory .theory-view li{color:var(--muted);font-size:14px;line-height:1.9}
+#theory .theory-view b,#theory .theory-view strong{color:#a34453}
+#theory .theory-view .theory-lead{padding:19px 22px;border:0;border-left:3px solid #bd6c78;border-radius:0 6px 6px 0;background:var(--paper2);color:var(--ink);font-size:14px}
+#theory .theory-view .theory-visual{gap:13px;margin:22px 0 28px}
+#theory .theory-view .theory-visual-card{min-height:130px;padding:17px;border:1px solid var(--line);border-radius:6px;background:var(--paper2)}
+#theory .theory-view .theory-visual-card strong{color:var(--ink);background:none}
+#theory .theory-view .theory-visual-card span{color:var(--muted)}
+#theory .theory-view .theory-callout{margin:22px 0;padding:17px 20px;border:1px solid var(--line);border-left:3px solid #bd6c78;border-radius:0 6px 6px 0;background:var(--paper2)}
+#theory .theory-view .theory-callout strong{color:#a34453;background:none}
+#theory .theory-view .theory-step{align-items:center;gap:14px;margin:9px 0;padding:13px 15px;border:1px solid var(--line);border-radius:6px;background:var(--paper2)}
+#theory .theory-view .theory-step em{flex-basis:29px;width:29px;height:29px;border-radius:5px;background:#f0dfe1;color:#a34453}
+#theory .theory-view .theory-step span{color:var(--muted);font-size:13px}
+#theory .theory-actions{max-width:none;justify-content:flex-start;margin:17px 0 0}
+#theory .theory-actions .primary{padding:15px 21px;border-radius:5px;background:#a93645;box-shadow:none}
+#theory .theory-actions .primary:hover{background:#c65360}
+html[data-theme="dark"] #theory .theory-index-strip{background:var(--paper);border-color:var(--line)}
+html[data-theme="dark"] #theory .theory-index-strip>div{border-color:var(--line)}
+html[data-theme="dark"] #theory .theory-view{background:var(--paper);border-color:var(--line)}
+html[data-theme="dark"] #theory .theory-view>h3:before,html[data-theme="dark"] #theory .theory-view .theory-step em{background:#493039;color:#e7a6b0}
+html[data-theme="dark"] #theory .theory-view .theory-lead,html[data-theme="dark"] #theory .theory-view .theory-visual-card,html[data-theme="dark"] #theory .theory-view .theory-callout,html[data-theme="dark"] #theory .theory-view .theory-step{background:var(--paper2);border-color:var(--line)}
+@media(max-width:760px){
+ #theory .theory-masthead{padding:20px 22px 16px;border-radius:7px 7px 20px 7px}
+ #theory .theory-masthead-main{grid-template-columns:1fr .72fr;min-height:300px;gap:0}
+ #theory .theory-masthead h2{font-size:clamp(39px,8vw,59px);letter-spacing:-2.8px}
+ #theory .theory-number-art{height:240px}
+ #theory .theory-big-number{font-size:clamp(150px,28vw,220px);letter-spacing:-17px}
+ #theory .theory-orbit{width:190px;height:190px}
+ #theory .theory-orbit-b{width:145px;height:145px}
+ #theory .theory-sticker{width:53px;height:53px;font-size:8px;left:-5px}
+ #theory .theory-index-strip{grid-template-columns:1fr 1fr;margin-bottom:32px}
+ #theory .theory-index-strip>div{min-height:68px;border-bottom:1px solid var(--line)}
+ #theory .theory-index-strip>div:nth-child(2){border-right:0}
+ #theory .theory-index-strip>div:nth-child(n+3){border-bottom:0}
+}
+@media(max-width:520px){
+ #theory .theory-masthead{padding:17px 17px 14px}
+ #theory .theory-masthead-top,#theory .theory-masthead-bottom{font-size:7px;letter-spacing:1px}
+ #theory .theory-edition{display:none}
+ #theory .theory-masthead-main{grid-template-columns:1fr;min-height:0;padding:27px 0 22px}
+ #theory .theory-masthead h2{font-size:clamp(43px,12vw,61px);margin:15px 0}
+ #theory .theory-masthead-copy>p{font-size:12px;max-width:330px}
+ #theory .theory-jump{margin-top:17px}
+ #theory .theory-number-art{position:absolute;right:-17px;top:85px;width:125px;height:135px;opacity:.2;pointer-events:none}
+ #theory .theory-big-number{font-size:145px}
+ #theory .theory-orbit,#theory .theory-sticker,#theory .theory-art-caption{display:none}
+ #theory .theory-masthead-bottom{gap:8px}
+ #theory .theory-index-strip>div{gap:9px;padding:11px 10px}
+ #theory .theory-index-num{font-size:19px}
+ #theory .theory-index-strip b{font-size:11px}
+ #theory .theory-index-strip small{font-size:9px}
+ #theory .theory-workspace-heading{align-items:flex-start}
+ #theory .theory-progress-mark{padding:6px 8px}
+ #theory .theory-workspace-heading p{max-width:270px;line-height:1.5}
+ #theory .theory-view{padding:20px 16px}
+ #theory .theory-view>h3{font-size:16px;gap:9px;margin-top:29px}
+ #theory .theory-view>h3:before{flex-basis:31px;width:31px;height:31px}
+ #theory .theory-view .theory-visual{grid-template-columns:1fr}
+ #theory .theory-view .theory-visual-card{min-height:108px}
+}
+@media(prefers-reduced-motion:reduce){#theory .theory-jump{transition:none}}
+
 </style>
 </body>
   <script>
