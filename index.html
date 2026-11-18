@@ -4525,6 +4525,24 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-details{
   :is(#theory,.windowcontent) .theory-algorithm>div{transition:none!important}
 }
 
+
+/* Большие карточки тем: та же реакция на курсор, что и плашки раздела 3 */
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+  :is(#theory,.windowcontent) .theory-topic-card{
+    transition:background .22s ease,color .22s ease,border-color .22s ease,
+      box-shadow .22s ease,transform .22s ease!important;
+  }
+  :is(#theory,.windowcontent) .theory-topic-card:hover{
+    background:var(--theory-hover)!important;
+    border-color:#d5a0a7!important;
+    transform:translateY(-2px)!important;
+    box-shadow:0 8px 20px rgba(71,30,37,.08)!important;
+  }
+  html[data-theme="dark"] :is(#theory,.windowcontent) .theory-topic-card:hover{
+    border-color:#a85b68!important;
+  }
+}
+
 </style>
 </body>
   <script>
