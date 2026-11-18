@@ -4526,11 +4526,11 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-details{
 }
 
 
-/* Большие карточки тем: та же реакция на курсор, что и плашки раздела 3 */
+/* Большие карточки тем: плавная реакция на курсор длительностью около 1,2 секунды */
 @media(hover:hover) and (prefers-reduced-motion:no-preference){
   :is(#theory,.windowcontent) .theory-topic-card{
-    transition:background .22s ease,color .22s ease,border-color .22s ease,
-      box-shadow .22s ease,transform .22s ease!important;
+    transition:background 1.2s ease,color 1.2s ease,border-color 1.2s ease,
+      box-shadow 1.2s ease,transform 1.2s ease!important;
   }
   :is(#theory,.windowcontent) .theory-topic-card:hover{
     background:var(--theory-hover)!important;
