@@ -1212,45 +1212,73 @@ function renderMistakes(){
  host.innerHTML="";
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
-const theoryHTML=`<h2>Как решать задание 12</h2>
-<p class="theory-lead">В задании проверяется <b>правописание личных окончаний глаголов</b> и <b>суффиксов причастий</b>. Сначала определи, какая это часть речи и какая форма слова, затем примени правило.</p>
-<div class="theory-visual">
- <div class="theory-visual-card">
-  <svg viewBox="0 0 100 100" role="img" aria-label="Иллюстрация книги и карандаша"><rect x="17" y="18" width="53" height="67" rx="8" fill="#fffdfa" stroke="#b44a57" stroke-width="2.5"/><path d="M27 18v67" stroke="#e4bfc0" stroke-width="2"/><path d="M37 37h23M37 48h18M37 59h20" stroke="#d7a0a3" stroke-width="3" stroke-linecap="round"/><path d="M72 18l10 5-23 49-10 5 1-11z" fill="#c65360"/><path d="M49 66l-1 11 10-5" fill="#e7c5a7"/><path d="M72 18l4-8 10 5-4 8" fill="#a93645"/></svg>
-  <div><strong>Сначала найди форму</strong><span>Глагол, причастие настоящего или прошедшего времени?</span></div>
- </div>
- <div class="theory-visual-card">
-  <svg viewBox="0 0 100 100" role="img" aria-label="Иллюстрация карточек с буквами"><rect x="12" y="20" width="43" height="55" rx="8" fill="#fffdfa" stroke="#d7a0a3" stroke-width="2"/><rect x="43" y="12" width="43" height="55" rx="8" fill="#f3dfe0" stroke="#b44a57" stroke-width="2"/><text x="33" y="56" font-size="25" font-weight="800" text-anchor="middle" fill="#a93645">Е</text><text x="64" y="48" font-size="25" font-weight="800" text-anchor="middle" fill="#a93645">И</text><path d="M26 83h48" stroke="#d7a0a3" stroke-width="4" stroke-linecap="round"/><path d="M69 76l7 7-7 7" fill="none" stroke="#a93645" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  <div><strong>Потом проверь букву</strong><span>Определи спряжение или способ образования причастия.</span></div>
- </div>
+const theoryHTML=`<div class="theory-intro-card">
+ <div class="theory-intro-symbol">12</div>
+ <div><span class="theory-block-eyebrow">ГЛАВНОЕ ПРАВИЛО</span><h2>Сначала определи форму — потом выбирай букву</h2>
+ <p>В этом задании важно не угадывать окончание, а понять, от какого слова образована форма и какое правило к ней относится.</p></div>
 </div>
-<h3>1. Спряжение глаголов</h3>
-<p>Ко <b>II спряжению</b> относятся глаголы на <b>-ить</b> (кроме брить, стелить и некоторых других исключений), а также глаголы-исключения: <b>гнать, держать, дышать, слышать, смотреть, видеть, ненавидеть, зависеть, терпеть, обидеть, вертеть</b>.</p>
-<ul><li><b>II спряжение:</b> в личных окончаниях обычно пишутся <b>и, а/я</b>: строишь, строят.</li><li><b>I спряжение:</b> в личных окончаниях обычно пишутся <b>е, у/ю</b>: читаешь, читают.</li></ul>
-<div class="theory-callout"><strong>Запомни:</strong> чтобы определить спряжение, поставь глагол в неопределённую форму и проверь окончание и исключения. Учитывай приставки и возвратный суффикс <b>-ся/-сь</b>.</div>
-<h3>2. Причастия настоящего времени</h3>
-<p>Суффикс зависит от <b>спряжения исходного глагола</b>:</p>
-<ul><li>От глаголов <b>I спряжения</b>: действительные причастия на <b>-ущ-/-ющ-</b>, страдательные на <b>-ем-/-ом-</b>.</li><li>От глаголов <b>II спряжения</b>: действительные причастия на <b>-ащ-/-ящ-</b>, страдательные на <b>-им-</b>.</li></ul>
-<div class="theory-visual">
- <div class="theory-visual-card">
-  <svg viewBox="0 0 100 100" role="img" aria-label="Схема первого спряжения"><circle cx="50" cy="50" r="37" fill="#fffdfa" stroke="#d7a0a3" stroke-width="3"/><text x="50" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#a93645">I</text><text x="50" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#76585b">-УЩ-</text><path d="M20 15l7 7M80 15l-7 7" stroke="#c65360" stroke-width="3" stroke-linecap="round"/></svg>
-  <div><strong>I спряжение</strong><span>Действительные: -ущ-/-ющ-<br/>Страдательные: -ем-/-ом-</span></div>
- </div>
- <div class="theory-visual-card">
-  <svg viewBox="0 0 100 100" role="img" aria-label="Схема второго спряжения"><circle cx="50" cy="50" r="37" fill="#f3dfe0" stroke="#b44a57" stroke-width="3"/><text x="50" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#a93645">II</text><text x="50" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#76585b">-АЩ-</text><path d="M20 15l7 7M80 15l-7 7" stroke="#c65360" stroke-width="3" stroke-linecap="round"/></svg>
-  <div><strong>II спряжение</strong><span>Действительные: -ащ-/-ящ-<br/>Страдательные: -им-</span></div>
- </div>
+<div class="theory-roadmap">
+ <span><b>01</b> Глаголы</span><i></i><span><b>02</b> Причастия</span><i></i><span><b>03</b> Проверка</span>
 </div>
-<h3>3. Причастия прошедшего времени</h3>
-<p>В <b>действительных причастиях прошедшего времени</b> перед суффиксом <b>-вш-</b> сохраняется гласная инфинитива: <b>увидеть — увидевший</b>, <b>услышать — услышавший</b>.</p>
-<div class="theory-callout"><strong>Обрати внимание:</strong> здесь важно вернуться к неопределённой форме глагола и посмотреть, какая гласная стоит перед <b>-ть</b>.</div>
-<h3>4. Краткий алгоритм</h3>
-<div class="theory-step"><em>1</em><span>Определи <b>часть речи</b> каждого слова.</span></div>
-<div class="theory-step"><em>2</em><span>Если это глагол — найди <b>инфинитив</b> и определи <b>спряжение</b>.</span></div>
-<div class="theory-step"><em>3</em><span>Если это причастие настоящего времени — определи спряжение <b>исходного глагола</b>.</span></div>
-<div class="theory-step"><em>4</em><span>Если причастие прошедшего времени — проверь гласную <b>перед суффиксом</b>.</span></div>
-<div class="theory-step"><em>5</em><span>Сравни пропущенные буквы в <b>обоих словах строки</b>.</span></div>
-<p><i>Важно: памятка краткая. Для сложных случаев проверяй исключения и способ образования конкретной формы.</i></p>`;
+
+<section class="theory-topic-card">
+ <div class="theory-topic-head"><span class="theory-topic-number">01</span><div><span class="theory-block-eyebrow">ЛИЧНЫЕ ОКОНЧАНИЯ</span><h3>Спряжение глаголов</h3></div><span class="theory-topic-mark">ГЛАГОЛ</span></div>
+ <p>Спряжение помогает выбрать гласную в безударном личном окончании глагола.</p>
+ <div class="theory-two-columns">
+  <div class="theory-rule-panel"><div class="theory-rule-title">I спряжение</div><strong>Е, Ё</strong><p>В личных окончаниях: -ешь, -ет, -ем, -ете, -ут / -ют.</p><div class="theory-example">читать → чита<strong>ешь</strong><br>бороться → бор<strong>ются</strong></div></div>
+  <div class="theory-rule-panel accent"><div class="theory-rule-title">II спряжение</div><strong>И</strong><p>В личных окончаниях: -ишь, -ит, -им, -ите, -ат / -ят.</p><div class="theory-example">строить → стро<strong>ишь</strong><br>дышать → дыш<strong>ат</strong></div></div>
+ </div>
+ <div class="theory-note"><b>Как определить?</b> Если личное окончание безударное, поставь глагол в неопределённую форму. Большинство глаголов на -ить относятся ко II спряжению, остальные — к I, но обязательно проверь исключения.</div>
+ <details class="theory-details"><summary>Какие исключения нужно запомнить?</summary><div class="theory-details-content">
+  <p><b>Ко II спряжению</b> относятся 11 глаголов-исключений: <b>гнать, держать, дышать, слышать, смотреть, видеть, ненавидеть, зависеть, терпеть, обидеть, вертеть</b>.</p>
+  <p><b>К I спряжению</b> относятся исключения <b>брить, стелить</b> (и образованные от них формы).</p>
+ </div></details>
+ <div class="theory-example-line"><span>МИНИ-ПРИМЕР</span><b>они бор…тся</b><span>бороться → I спряжение → бор<strong>ю</strong>тся</span></div>
+</section>
+
+<section class="theory-topic-card">
+ <div class="theory-topic-head"><span class="theory-topic-number">02</span><div><span class="theory-block-eyebrow">СУФФИКСЫ НАСТОЯЩЕГО ВРЕМЕНИ</span><h3>Причастия настоящего времени</h3></div><span class="theory-topic-mark">ПРИЧАСТИЕ</span></div>
+ <p>Чтобы выбрать суффикс причастия настоящего времени, найди исходный глагол и определи его спряжение.</p>
+ <div class="theory-suffix-grid">
+  <div class="theory-suffix-card"><span>I СПРЯЖЕНИЕ</span><b>-ущ- / -ющ-</b><small>действительные</small><div>читают → чита<strong>ющ</strong>ий</div></div>
+  <div class="theory-suffix-card"><span>II СПРЯЖЕНИЕ</span><b>-ащ- / -ящ-</b><small>действительные</small><div>строят → стро<strong>ящ</strong>ий</div></div>
+  <div class="theory-suffix-card soft"><span>I СПРЯЖЕНИЕ</span><b>-ем- / -ом-</b><small>страдательные</small><div>уважают → уважа<strong>ем</strong>ый</div></div>
+  <div class="theory-suffix-card soft"><span>II СПРЯЖЕНИЕ</span><b>-им-</b><small>страдательные</small><div>хранят → хран<strong>им</strong>ый</div></div>
+ </div>
+ <div class="theory-note"><b>Подсказка:</b> действительное причастие обозначает признак того, кто сам выполняет действие; страдательное — того, на кого действие направлено.</div>
+ <details class="theory-details"><summary>Проверь себя: почему «строящий» пишется с Я?</summary><div class="theory-details-content"><p>Исходный глагол — <b>строить</b>. Это II спряжение, поэтому в действительном причастии настоящего времени используется суффикс <b>-ящ-</b>: стро<strong>ящ</strong>ий.</p></div></details>
+</section>
+
+<section class="theory-topic-card">
+ <div class="theory-topic-head"><span class="theory-topic-number">03</span><div><span class="theory-block-eyebrow">СУФФИКСЫ ПРОШЕДШЕГО ВРЕМЕНИ</span><h3>Причастия прошедшего времени</h3></div><span class="theory-topic-mark">ПРОШЕДШЕЕ</span></div>
+ <p>В действительных причастиях прошедшего времени перед суффиксом <b>-вш-</b> сохраняется та же гласная, что и перед <b>-ть</b> в инфинитиве.</p>
+ <div class="theory-pair-examples">
+  <div><span>ИНФИНИТИВ</span><b>увидеть</b><i>↓</i><span>ПРИЧАСТИЕ</span><strong>увидевший</strong></div>
+  <div><span>ИНФИНИТИВ</span><b>услышать</b><i>↓</i><span>ПРИЧАСТИЕ</span><strong>услышавший</strong></div>
+  <div><span>ИНФИНИТИВ</span><b>клеить</b><i>↓</i><span>ПРИЧАСТИЕ</span><strong>клеивший</strong></div>
+ </div>
+ <div class="theory-note"><b>Не перепутай:</b> здесь не нужно определять спряжение. Вернись к инфинитиву и посмотри на гласную перед -ть.</div>
+ <details class="theory-details"><summary>Ещё один пример с разбором</summary><div class="theory-details-content"><p>Посе…вший. Начальная форма — <b>посеять</b>. Перед -ть стоит Я, значит, пишем: посе<strong>я</strong>вший.</p></div></details>
+</section>
+
+<section class="theory-topic-card theory-algorithm-card">
+ <div class="theory-topic-head"><span class="theory-topic-number">04</span><div><span class="theory-block-eyebrow">ПЛАН ДЕЙСТВИЙ</span><h3>Алгоритм решения задания</h3></div><span class="theory-topic-mark">5 ШАГОВ</span></div>
+ <div class="theory-algorithm">
+  <div><b>1</b><span><strong>Определи часть речи</strong><small>Глагол это или причастие?</small></span></div>
+  <div><b>2</b><span><strong>Найди исходный глагол</strong><small>Для глагола — инфинитив, для причастия — производящий глагол.</small></span></div>
+  <div><b>3</b><span><strong>Выбери нужное правило</strong><small>Спряжение или гласная перед суффиксом -вш-.</small></span></div>
+  <div><b>4</b><span><strong>Вставь букву</strong><small>Проверь окончание или суффикс по правилу.</small></span></div>
+  <div><b>5</b><span><strong>Сравни слова в строке</strong><small>Убедись, что оба слова подходят под условие задания.</small></span></div>
+ </div>
+</section>
+
+<div class="theory-practice-box">
+ <div><span class="theory-block-eyebrow">ЗАКРЕПИМ МАТЕРИАЛ</span><h3>Проверь себя перед тренировкой</h3><p>Попробуй ответить, а затем открой объяснение.</p></div>
+ <details class="theory-quiz"><summary>Почему пишется «они видят»?</summary><div class="theory-details-content">Глагол <b>видеть</b> — исключение, относится ко II спряжению. Поэтому окончание -ят: вид<strong>ят</strong>.</div></details>
+ <details class="theory-quiz"><summary>Как написать «та…щий» от глагола «таять»?</summary><div class="theory-details-content">«Таять» — I спряжение. Действительное причастие настоящего времени: та<strong>ющ</strong>ий.</div></details>
+ <details class="theory-quiz"><summary>От чего зависит буква в слове «клеивший»?</summary><div class="theory-details-content">От гласной перед -ть в инфинитиве «клеить». Перед -ть стоит И, поэтому пишем кле<strong>и</strong>вший.</div></details>
+</div>
+<p class="theory-footnote">Это краткий конспект по основным орфографическим моделям задания № 12. В спорных случаях дополнительно проверяй словари и полный список исключений.</p>`;;
 $("theoryBody").innerHTML=theoryHTML;$("theoryModalContent").innerHTML=theoryHTML;
 let theoryCloseTimer=null;
 function openTheory(){
@@ -3974,6 +4002,88 @@ html[data-theme="dark"] #theory .theory-view .theory-lead,html[data-theme="dark"
  #theory .theory-view .theory-visual-card{min-height:108px}
 }
 @media(prefers-reduced-motion:reduce){#theory .theory-jump{transition:none}}
+
+
+/* Учебные блоки, микроанимации и раскрывающиеся пояснения */
+#theory .theory-intro-card{display:grid;grid-template-columns:105px 1fr;gap:22px;align-items:center;padding:25px;margin-bottom:19px;border:1px solid var(--line);border-radius:9px;background:var(--paper2);animation:theoryRise .55s both}
+#theory .theory-intro-symbol{display:grid;place-items:center;aspect-ratio:1;border-radius:8px;background:#29232a;color:#f0aab3;font-size:48px;font-weight:950;letter-spacing:-5px;box-shadow:7px 7px 0 #bd6c7833}
+#theory .theory-block-eyebrow{display:block;color:#b66b77;font-size:9px;font-weight:950;letter-spacing:1.8px}
+#theory .theory-intro-card h2{margin:7px 0 8px;color:var(--ink);font-size:clamp(20px,3vw,27px);letter-spacing:-.7px}
+#theory .theory-intro-card p{max-width:690px;margin:0;color:var(--muted);font-size:13px;line-height:1.75}
+#theory .theory-roadmap{display:flex;align-items:center;gap:12px;margin:22px 3px 28px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.4px}
+#theory .theory-roadmap span{display:flex;align-items:center;gap:7px;white-space:nowrap}
+#theory .theory-roadmap b{color:#bd6c78;font-size:13px}
+#theory .theory-roadmap i{height:1px;flex:1;background:var(--line)}
+#theory .theory-topic-card{margin:17px 0;padding:clamp(19px,3vw,30px);border:1px solid var(--line);border-radius:9px;background:var(--paper);box-shadow:0 8px 28px #30202708;animation:theoryRise .6s both;transition:transform .25s,box-shadow .25s,border-color .25s}
+#theory .theory-topic-card:nth-of-type(2){animation-delay:.06s}
+#theory .theory-topic-card:nth-of-type(3){animation-delay:.12s}
+#theory .theory-topic-card:nth-of-type(4){animation-delay:.18s}
+#theory .theory-topic-card:hover{transform:translateY(-3px);border-color:#d6a0a6;box-shadow:0 15px 35px #30202712}
+#theory .theory-topic-head{display:flex;align-items:center;gap:14px;margin-bottom:17px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+#theory .theory-topic-number{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:7px;background:#f3e5e6;color:#a34453;font-size:18px;font-weight:950}
+#theory .theory-topic-head h3{margin:4px 0 0;color:var(--ink);font-size:clamp(18px,2.5vw,23px);letter-spacing:-.6px}
+#theory .theory-topic-mark{margin-left:auto;padding:6px 9px;border:1px solid var(--line);border-radius:4px;color:var(--muted);font-size:8px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+#theory .theory-topic-card>p{margin:0 0 17px;color:var(--muted);font-size:13px;line-height:1.8}
+#theory .theory-two-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#theory .theory-rule-panel{padding:18px;border:1px solid var(--line);border-radius:7px;background:var(--paper2)}
+#theory .theory-rule-panel.accent{border-color:#d7b0b5;background:linear-gradient(145deg,var(--paper2),#f5e9e9)}
+#theory .theory-rule-title{color:var(--muted);font-size:10px;font-weight:900;letter-spacing:1px}
+#theory .theory-rule-panel>strong{display:block;margin:8px 0;color:#a34453;font-size:36px;line-height:1}
+#theory .theory-rule-panel>p{margin:0;color:var(--muted);font-size:11px;line-height:1.65}
+#theory .theory-example{margin-top:13px;padding-top:11px;border-top:1px solid var(--line);color:var(--ink);font-size:12px;line-height:1.9}
+#theory .theory-example strong{color:#a34453}
+#theory .theory-note{margin-top:15px;padding:14px 17px;border-left:3px solid #bd6c78;border-radius:0 6px 6px 0;background:var(--paper2);color:var(--muted);font-size:12px;line-height:1.8}
+#theory .theory-note b{color:var(--ink)}
+#theory .theory-details{margin-top:12px;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+#theory .theory-details summary,#theory .theory-quiz summary{position:relative;cursor:pointer;list-style:none;padding:13px 42px 13px 15px;color:var(--ink);font-size:12px;font-weight:800;transition:background .2s}
+#theory .theory-details summary::-webkit-details-marker,#theory .theory-quiz summary::-webkit-details-marker{display:none}
+#theory .theory-details summary:after,#theory .theory-quiz summary:after{content:"+";position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#b66b77;font-size:20px;font-weight:500;transition:transform .2s}
+#theory .theory-details[open] summary:after,#theory .theory-quiz[open] summary:after{content:"−";transform:translateY(-50%) rotate(180deg)}
+#theory .theory-details summary:hover,#theory .theory-quiz summary:hover{background:var(--paper2)}
+#theory .theory-details-content{padding:2px 16px 14px;color:var(--muted);font-size:12px;line-height:1.8;animation:theoryReveal .25s ease both}
+#theory .theory-details-content p{margin:9px 0;color:var(--muted);font-size:12px}
+#theory .theory-details-content b{color:#a34453}
+#theory .theory-example-line{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:15px;padding:13px 15px;border-radius:6px;background:#29232a;color:#fff;font-size:12px}
+#theory .theory-example-line>span:first-child{margin-right:auto;color:#d99ba5;font-size:9px;font-weight:900;letter-spacing:1px}
+#theory .theory-example-line>b{font-size:14px}
+#theory .theory-example-line>span:last-child{color:#d7cbd0}
+#theory .theory-suffix-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+#theory .theory-suffix-card{display:flex;flex-direction:column;gap:7px;min-width:0;padding:14px 12px;border:1px solid #e8d4d7;border-radius:6px;background:#fbf2f2;transition:transform .2s,box-shadow .2s}
+#theory .theory-suffix-card:hover{transform:translateY(-4px);box-shadow:0 9px 18px #74374312}
+#theory .theory-suffix-card.soft{background:var(--paper2);border-color:var(--line)}
+#theory .theory-suffix-card>span{color:#a56c75;font-size:8px;font-weight:950;letter-spacing:.7px}
+#theory .theory-suffix-card>b{color:#a34453;font-size:clamp(15px,2vw,20px);white-space:nowrap}
+#theory .theory-suffix-card>small{color:var(--muted);font-size:9px}
+#theory .theory-suffix-card>div{margin-top:5px;padding-top:8px;border-top:1px solid #dfc8cb;color:var(--ink);font-size:10px;line-height:1.6}
+#theory .theory-suffix-card>div strong{color:#a34453}
+#theory .theory-pair-examples{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+#theory .theory-pair-examples>div{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper2)}
+#theory .theory-pair-examples span{color:var(--muted);font-size:8px;font-weight:900;letter-spacing:1px}
+#theory .theory-pair-examples b{color:var(--ink);font-size:14px}
+#theory .theory-pair-examples i{color:#bd6c78;font-style:normal}
+#theory .theory-pair-examples strong{color:#a34453;font-size:14px}
+#theory .theory-algorithm-card{background:linear-gradient(145deg,var(--paper),var(--paper2))}
+#theory .theory-algorithm{display:grid;gap:8px}
+#theory .theory-algorithm>div{display:flex;align-items:center;gap:13px;padding:11px 13px;border:1px solid var(--line);border-radius:6px;background:var(--paper);transition:transform .2s,border-color .2s}
+#theory .theory-algorithm>div:hover{transform:translateX(5px);border-color:#d6a0a6}
+#theory .theory-algorithm>div>b{display:grid;place-items:center;flex:0 0 29px;width:29px;height:29px;border-radius:50%;background:#f1e1e3;color:#a34453;font-size:12px}
+#theory .theory-algorithm strong{display:block;color:var(--ink);font-size:12px}
+#theory .theory-algorithm small{display:block;margin-top:3px;color:var(--muted);font-size:10px;line-height:1.5}
+#theory .theory-practice-box{margin:22px 0;padding:clamp(20px,3vw,29px);border-radius:8px;background:#29232a;color:#fff;animation:theoryRise .6s .2s both}
+#theory .theory-practice-box h3{margin:6px 0;color:#fff;font-size:22px;letter-spacing:-.5px}
+#theory .theory-practice-box>div>p{margin:0 0 16px;color:#c4b8be;font-size:12px}
+#theory .theory-practice-box .theory-block-eyebrow{color:#e5a0aa}
+#theory .theory-quiz{margin-top:8px;border:1px solid #ffffff25;border-radius:5px;background:#ffffff08}
+#theory .theory-quiz summary{color:#fff}
+#theory .theory-quiz summary:hover{background:#ffffff0c}
+#theory .theory-quiz .theory-details-content{color:#ded2d7}
+#theory .theory-quiz .theory-details-content b{color:#f0aab3}
+#theory .theory-footnote{margin:17px 3px;color:var(--muted);font-size:10px;line-height:1.7}
+@keyframes theoryRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes theoryReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){#theory .theory-suffix-grid{grid-template-columns:1fr 1fr}#theory .theory-topic-mark{font-size:7px}}
+@media(max-width:520px){#theory .theory-intro-card{grid-template-columns:65px 1fr;gap:13px;padding:15px}#theory .theory-intro-symbol{font-size:33px;letter-spacing:-3px}#theory .theory-intro-card h2{font-size:18px}#theory .theory-intro-card p{font-size:11px}#theory .theory-roadmap{gap:6px;font-size:8px}#theory .theory-topic-card{padding:16px 13px}#theory .theory-topic-head{gap:9px}#theory .theory-topic-number{flex-basis:35px;width:35px;height:35px;font-size:15px}#theory .theory-topic-head h3{font-size:16px}#theory .theory-topic-mark{display:none}#theory .theory-two-columns{grid-template-columns:1fr 1fr;gap:7px}#theory .theory-rule-panel{padding:12px 10px}#theory .theory-rule-panel>strong{font-size:29px}#theory .theory-rule-panel>p{font-size:10px}#theory .theory-suffix-grid{gap:6px}#theory .theory-suffix-card{padding:11px 9px}#theory .theory-pair-examples{grid-template-columns:1fr}#theory .theory-pair-examples>div{display:grid;grid-template-columns:1fr auto 1fr;gap:5px;text-align:center}#theory .theory-example-line{font-size:10px}}
+@media(prefers-reduced-motion:reduce){#theory .theory-topic-card,#theory .theory-intro-card,#theory .theory-practice-box{animation:none}#theory .theory-topic-card,#theory .theory-suffix-card,#theory .theory-algorithm>div{transition:none}}
 
 </style>
 </body>
