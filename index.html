@@ -1071,8 +1071,9 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
         <div><span>Серия правильных ответов</span><strong id="streakCount">0</strong><small>подряд · рекорд: <b id="bestStreak">0</b></small></div>
       </article>
       <article class="stat-card practice-days-card">
-        <div class="practice-days-icon" aria-hidden="true">📅</div>
-        <div><span>Дни занятий подряд</span><strong id="practiceDaysCount">0</strong><small id="practiceDaysHint">Реши хотя бы одно задание сегодня</small></div>
+        <span>Дни занятий подряд</span>
+        <strong id="practiceDaysCount">0</strong>
+        <small id="practiceDaysHint">Реши хотя бы одно задание сегодня</small>
       </article>
     </div>
   </div>
@@ -5101,11 +5102,8 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 
 
 /* Карточка серии дней занятий в статистике */
-.practice-days-card{display:flex;align-items:center;gap:12px;grid-column:span 2;min-height:88px}
-.practice-days-card>div:last-child{display:flex;flex-direction:column;gap:2px}
-.practice-days-card strong{font-size:27px;margin:0;color:var(--red);font-variant-numeric:tabular-nums}
-.practice-days-card small{font-size:11px;color:var(--muted)}
-.practice-days-icon{width:43px;height:43px;display:grid;place-items:center;flex:0 0 43px;font-size:30px;filter:drop-shadow(0 4px 5px #e28a3b25)}
+.practice-days-card{grid-column:2;grid-row:2}
+.practice-days-card strong{color:var(--red);font-variant-numeric:tabular-nums}
 </style>
 </body>
   <script>
