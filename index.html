@@ -1451,6 +1451,24 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
         </label>
       </div>
 
+      <div class="dev-setting-card dev-notification-settings">
+        <div class="dev-setting-heading">
+          <span class="dev-setting-icon">♢</span>
+          <div><strong>Уведомления поддержки</strong><p>Узнавай сразу, когда ученик отправляет новое обращение</p></div>
+        </div>
+        <label class="dev-setting-switch">
+          <span><strong>Звуковой сигнал</strong><small>Короткий звук при поступлении нового обращения</small></span>
+          <input type="checkbox" id="devSupportSound">
+          <i></i>
+        </label>
+        <label class="dev-setting-switch">
+          <span><strong>Уведомления браузера</strong><small>Показывать уведомление, даже если открыта другая вкладка</small></span>
+          <input type="checkbox" id="devSupportBrowserNotifications">
+          <i></i>
+        </label>
+        <div class="dev-notification-permission-row"><small id="devNotificationPermissionStatus">Разрешение браузера не запрошено</small><button type="button" id="devRequestNotificationPermission" class="dev-settings-reset">Разрешить уведомления</button></div>
+      </div>
+
       <div class="dev-setting-card">
         <div class="dev-setting-heading">
           <span class="dev-setting-icon">⚠</span>
@@ -3040,6 +3058,31 @@ let supportAdminUnsubscribe = null;
 let supportUserUnsubscribe = null;
 let activeSupportTicket = null;
 let supportTicketsCache = [];
+let supportAdminFirstSnapshot = true;
+function playSupportNotificationSound(){
+ if(!window.__devSettings?.supportSound)return;
+ try{
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)return;
+  const context=new AudioContextClass();
+  const oscillator=context.createOscillator(),gain=context.createGain();
+  oscillator.type="sine";oscillator.frequency.setValueAtTime(880,context.currentTime);
+  oscillator.frequency.setValueAtTime(1175,context.currentTime+0.12);
+  gain.gain.setValueAtTime(0.0001,context.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.12,context.currentTime+0.025);
+  gain.gain.exponentialRampToValueAtTime(0.0001,context.currentTime+0.38);
+  oscillator.connect(gain);gain.connect(context.destination);oscillator.start();oscillator.stop(context.currentTime+0.4);
+  oscillator.onended=()=>context.close();
+ }catch(error){console.warn("Не удалось воспроизвести сигнал поддержки:",error);}
+}
+function notifyNewSupportTicket(ticket){
+ playSupportNotificationSound();
+ if(!window.__devSettings?.supportBrowserNotifications||!("Notification" in window)||Notification.permission!=="granted")return;
+ try{
+  const notification=new Notification("Новое обращение в поддержку",{body:(ticket.username||"Ученик")+" · "+(ticket.topic||"Обращение")+"\n"+String(ticket.message||"").slice(0,110),tag:"support-"+ticket.id});
+  notification.onclick=()=>{window.focus();const current=supportTicketsCache.find(item=>item.id===ticket.id);if(current)openSupportTicket(current);notification.close();};
+ }catch(error){console.warn("Не удалось показать уведомление:",error);}
+}
 const supportEsc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const supportDate = value => { try { return value?.toDate ? value.toDate().toLocaleString("ru-RU",{dateStyle:"short",timeStyle:"short"}) : "Дата не определена"; } catch(e){ return "Дата не определена"; } };
 function closeSupportOverlays(){ $id("supportUserOverlay").hidden=true; $id("supportTicketOverlay").hidden=true; }
@@ -3083,8 +3126,15 @@ function startDeveloperSupport(){
  if(supportAdminUnsubscribe)supportAdminUnsubscribe();
  $id("devSupportStatus").textContent="Загружаем обращения…";
  const q=query(collection(db,"supportTickets"),orderBy("createdAt","desc"),limit(200));
+ supportAdminFirstSnapshot=true;
  supportAdminUnsubscribe=onSnapshot(q,snap=>{
-   supportTicketsCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+   const incoming=snap.docs.map(d=>({id:d.id,...d.data()}));
+   if(!supportAdminFirstSnapshot){
+    const previousIds=new Set(supportTicketsCache.map(ticket=>ticket.id));
+    incoming.filter(ticket=>!previousIds.has(ticket.id)&&(ticket.status||"new")==="new").forEach(notifyNewSupportTicket);
+   }
+   supportAdminFirstSnapshot=false;
+   supportTicketsCache=incoming;
    $id("devSupportStatus").textContent="Обновляется автоматически";
    renderDeveloperSupport();
  },err=>{
@@ -5348,6 +5398,11 @@ html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz .theory-detail
 .dev-support-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:25px 0 13px}.dev-support-toolbar>div{display:grid;gap:4px}.dev-support-toolbar strong{font-size:17px}.dev-support-toolbar small{font-size:11px;color:var(--muted)}.dev-support-toolbar select{padding:10px 12px;border:1px solid var(--border);border-radius:11px;background:var(--paper);color:var(--text)}
 .dev-support-list{display:grid;gap:10px}.dev-support-ticket{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--border);border-radius:15px;background:var(--paper);cursor:pointer;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}.dev-support-ticket:hover{transform:translateY(-2px);border-color:#c98b98;box-shadow:0 9px 22px rgba(90,45,55,.09)}.dev-support-ticket-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:13px;background:rgba(169,54,69,.1);color:var(--red);font-size:19px}.dev-support-ticket-main{flex:1;min-width:0}.dev-support-ticket-main strong{display:block;font-size:13px}.dev-support-ticket-main p{margin:4px 0 0;overflow:hidden;color:var(--muted);font-size:11px;text-overflow:ellipsis;white-space:nowrap}.dev-support-ticket-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;color:var(--muted);font-size:10px}.dev-support-status{padding:5px 8px;border-radius:20px;background:var(--soft);color:var(--red);font-size:10px;font-weight:850;white-space:nowrap}
 .dev-support-status.is-answered{background:#e4f4e9;color:#247a4d;border:1px solid #bfe2ca}
+.dev-notification-settings .dev-setting-switch{margin-top:13px}
+.dev-notification-permission-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:13px;border-top:1px solid var(--border)}
+.dev-notification-permission-row small{color:var(--muted);font-size:11px;line-height:1.4}
+.dev-notification-permission-row button:disabled{opacity:.55;cursor:default}
+@media(max-width:600px){.dev-notification-permission-row{align-items:stretch;flex-direction:column}.dev-notification-permission-row button{width:100%}}
 html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,103,.19);color:#82d6a2;border-color:rgba(104,204,145,.3)}
 .dev-support-waiting-card{margin-top:24px;padding:22px;border:1px solid var(--border);border-radius:20px;background:var(--card-bg,var(--paper));box-shadow:var(--shadow);overflow:hidden}
 .dev-support-waiting-head{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:16px}
@@ -5375,14 +5430,16 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
   <script>
 // Локальные настройки панели разработчика
 const DEV_SETTINGS_KEY = "egeDeveloperSettings";
-const DEV_SETTINGS_DEFAULTS = { onlineRefreshMs: 15000, compactMode: false, confirmUserDelete: true };
+const DEV_SETTINGS_DEFAULTS = { onlineRefreshMs: 15000, compactMode: false, confirmUserDelete: true, supportSound: true, supportBrowserNotifications: false };
 function loadDeveloperSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem(DEV_SETTINGS_KEY) || "{}");
     return {
       onlineRefreshMs: [5000, 15000, 30000, 60000].includes(Number(saved.onlineRefreshMs)) ? Number(saved.onlineRefreshMs) : DEV_SETTINGS_DEFAULTS.onlineRefreshMs,
       compactMode: saved.compactMode === true,
-      confirmUserDelete: saved.confirmUserDelete !== false
+      confirmUserDelete: saved.confirmUserDelete !== false,
+      supportSound: saved.supportSound !== false,
+      supportBrowserNotifications: saved.supportBrowserNotifications === true
     };
   } catch (error) {
     return { ...DEV_SETTINGS_DEFAULTS };
@@ -5406,9 +5463,17 @@ function applyDeveloperSettings() {
   const interval = document.getElementById("devOnlineRefresh");
   const compact = document.getElementById("devCompactMode");
   const confirmDelete = document.getElementById("devConfirmDelete");
+  const supportSound = document.getElementById("devSupportSound");
+  const supportBrowser = document.getElementById("devSupportBrowserNotifications");
   if (interval) interval.value = String(window.__devSettings.onlineRefreshMs);
   if (compact) compact.checked = window.__devSettings.compactMode;
   if (confirmDelete) confirmDelete.checked = window.__devSettings.confirmUserDelete;
+  if (supportSound) supportSound.checked = window.__devSettings.supportSound;
+  if (supportBrowser) supportBrowser.checked = window.__devSettings.supportBrowserNotifications;
+  const permissionStatus = document.getElementById("devNotificationPermissionStatus");
+  const permissionButton = document.getElementById("devRequestNotificationPermission");
+  if (permissionStatus) permissionStatus.textContent = !("Notification" in window) ? "Браузер не поддерживает уведомления" : Notification.permission === "granted" ? "Разрешение получено" : Notification.permission === "denied" ? "Уведомления заблокированы в настройках браузера" : "Разрешение браузера не запрошено";
+  if (permissionButton) permissionButton.disabled = !("Notification" in window) || Notification.permission === "granted";
 }
 function initDeveloperSettings() {
   applyDeveloperSettings();
@@ -5427,6 +5492,31 @@ function initDeveloperSettings() {
   document.getElementById("devConfirmDelete")?.addEventListener("change", event => {
     window.__devSettings.confirmUserDelete = event.target.checked;
     saveDeveloperSettings();
+  });
+  document.getElementById("devSupportSound")?.addEventListener("change", event => {
+    window.__devSettings.supportSound = event.target.checked;
+    saveDeveloperSettings();
+  });
+  document.getElementById("devSupportBrowserNotifications")?.addEventListener("change", event => {
+    window.__devSettings.supportBrowserNotifications = event.target.checked;
+    if (event.target.checked && (!("Notification" in window) || Notification.permission !== "granted")) {
+      event.target.checked = false;
+      window.__devSettings.supportBrowserNotifications = false;
+      applyDeveloperSettings();
+      document.getElementById("devNotificationPermissionStatus").textContent = "Сначала нажми «Разрешить уведомления»";
+    }
+    saveDeveloperSettings();
+  });
+  document.getElementById("devRequestNotificationPermission")?.addEventListener("click", async () => {
+    if (!("Notification" in window)) return;
+    try {
+      const permission = await Notification.requestPermission();
+      window.__devSettings.supportBrowserNotifications = permission === "granted";
+      applyDeveloperSettings();
+      saveDeveloperSettings();
+    } catch (error) {
+      console.warn("Не удалось запросить разрешение на уведомления:", error);
+    }
   });
   document.getElementById("devSettingsReset")?.addEventListener("click", () => {
     window.__devSettings = { ...DEV_SETTINGS_DEFAULTS };
