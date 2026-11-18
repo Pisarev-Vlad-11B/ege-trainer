@@ -462,6 +462,59 @@ main{position:relative;isolation:isolate}
   }
 }
 
+
+/* Наведение на учебные плашки — по тому же принципу, что и верхняя навигация */
+:root{--theory-hover:#f7e9e9}
+html[data-theme="dark"]{--theory-hover:#39272c}
+:is(#theory,.windowcontent) .theory-intro-card,
+:is(#theory,.windowcontent) .theory-topic-card,
+:is(#theory,.windowcontent) .theory-rule-panel,
+:is(#theory,.windowcontent) .theory-suffix-card,
+:is(#theory,.windowcontent) .theory-pair-examples>div,
+:is(#theory,.windowcontent) .theory-algorithm>div,
+:is(#theory,.windowcontent) .theory-details,
+:is(#theory,.windowcontent) .theory-quiz{
+  transition:
+    background .22s ease,
+    color .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .22s ease!important;
+}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+  :is(#theory,.windowcontent) .theory-intro-card:hover,
+  :is(#theory,.windowcontent) .theory-topic-card:hover{
+    background:var(--theory-hover)!important;
+    border-color:#d5a0a7!important;
+    transform:translateY(-2px)!important;
+    box-shadow:0 10px 25px rgba(71,30,37,.10)!important;
+  }
+  :is(#theory,.windowcontent) .theory-rule-panel:hover,
+  :is(#theory,.windowcontent) .theory-suffix-card:hover,
+  :is(#theory,.windowcontent) .theory-pair-examples>div:hover,
+  :is(#theory,.windowcontent) .theory-algorithm>div:hover{
+    background:var(--theory-hover)!important;
+    border-color:#d5a0a7!important;
+    transform:translateY(-2px)!important;
+    box-shadow:0 8px 20px rgba(71,30,37,.08)!important;
+  }
+  :is(#theory,.windowcontent) .theory-details:hover,
+  :is(#theory,.windowcontent) .theory-quiz:hover{
+    background:var(--theory-hover)!important;
+    border-color:#d5a0a7!important;
+  }
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-intro-card:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-topic-card:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-rule-panel:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-suffix-card:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-details:hover,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz:hover{
+  border-color:#a85b68!important;
+}
+
 </style>
 <style>
 /* Крышка банки остаётся неподвижной */
