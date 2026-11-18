@@ -1410,25 +1410,45 @@ function renderMistakes(){
 }
 window.scrollToTheoryMaterials=function(){
   const target=document.getElementById("theoryBody");
-  const scroller=document.scrollingElement||document.documentElement;
-  if(!target||!scroller)return;
-  const reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const startY=scroller.scrollTop;
+  if(!target)return;
+
+  /* Отключаем глобальный scroll-behavior:smooth на время собственной анимации,
+     иначе браузер сглаживает каждый кадр отдельно и прокрутка не видна. */
+  if(window.__theoryScrollFrame)cancelAnimationFrame(window.__theoryScrollFrame);
+  const root=document.documentElement;
+  const body=document.body;
+  const oldRootBehavior=root.style.scrollBehavior;
+  const oldBodyBehavior=body.style.scrollBehavior;
+  root.style.scrollBehavior="auto";
+  body.style.scrollBehavior="auto";
+
+  const startY=window.scrollY||window.pageYOffset||0;
   const targetY=Math.max(0,target.getBoundingClientRect().top+startY-20);
   const distance=targetY-startY;
-  if(reduceMotion||Math.abs(distance)<2){
-    scroller.scrollTop=targetY;
-    return;
-  }
   const duration=4000;
   const startTime=performance.now();
   const easeInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+  if(Math.abs(distance)<2){
+    root.style.scrollBehavior=oldRootBehavior;
+    body.style.scrollBehavior=oldBodyBehavior;
+    return;
+  }
+
   function step(now){
     const progress=Math.min(1,(now-startTime)/duration);
-    scroller.scrollTop=startY+distance*easeInOutCubic(progress);
-    if(progress<1)requestAnimationFrame(step);
+    const nextY=startY+distance*easeInOutCubic(progress);
+    window.scrollTo(0,nextY);
+    if(progress<1){
+      window.__theoryScrollFrame=requestAnimationFrame(step);
+    }else{
+      window.__theoryScrollFrame=null;
+      root.style.scrollBehavior=oldRootBehavior;
+      body.style.scrollBehavior=oldBodyBehavior;
+      window.scrollTo(0,targetY);
+    }
   }
-  requestAnimationFrame(step);
+  window.__theoryScrollFrame=requestAnimationFrame(step);
 };
 const theoryHTML=`<div class="theory-intro-card">
  <div class="theory-intro-symbol">12</div>
