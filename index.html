@@ -4526,24 +4526,26 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-details{
 }
 
 
-/* Большие карточки разделов: движение как у плашек суффиксов из раздела 3.
-   Отдельная анимация появления без transform — иначе она блокирует hover-подъём карточки. */
-@keyframes theoryCardFadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
+/* Для больших карточек разделов используем ТОЧНО ту же реакцию на курсор,
+   что и у верхней плашки «Главное правило» (.theory-intro-card). */
 :is(#theory,.windowcontent) .theory-topic-card{
-  animation:theoryCardFadeIn .5s ease both;
+  transition:
+    background .22s ease,
+    color .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .22s ease!important;
 }
 @media(hover:hover) and (prefers-reduced-motion:no-preference){
-  :is(#theory,.windowcontent) .theory-topic-card{
-    transition:transform 1.2s ease,box-shadow 1.2s ease,
-      border-color 1.2s ease,background-color 1.2s ease!important;
-  }
   :is(#theory,.windowcontent) .theory-topic-card:hover{
-    transform:translateY(-4px)!important;
-    box-shadow:0 9px 18px #74374312!important;
+    background:var(--theory-hover)!important;
+    border-color:#d5a0a7!important;
+    transform:translateY(-2px)!important;
+    box-shadow:0 10px 25px rgba(71,30,37,.10)!important;
   }
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-topic-card:hover{
+  border-color:#a85b68!important;
 }
 
 </style>
