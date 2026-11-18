@@ -540,6 +540,29 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
   border-color:#a85b68!important;
 }
 
+
+/* Карточки раздела 2 повторяют hover-поведение примеров из раздела 3 */
+:is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card{
+  transition:background .22s ease,color .22s ease,transform .22s ease,
+             box-shadow .22s ease,border-color .22s ease!important;
+}
+:is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card:hover{
+  background:var(--theory-hover)!important;
+  color:var(--theory-text)!important;
+  border-color:#d5a0a7!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 8px 20px rgba(71,30,37,.08)!important;
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card:hover{
+  background:var(--theory-hover)!important;
+  border-color:#a85b68!important;
+}
+@media(prefers-reduced-motion:reduce){
+  :is(#theory,.windowcontent) .theory-suffix-grid .theory-suffix-card{
+    transition:none!important;
+  }
+}
+
 </style>
 <style>
 /* Крышка банки остаётся неподвижной */
