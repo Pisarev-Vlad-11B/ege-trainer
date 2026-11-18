@@ -783,10 +783,27 @@ max-height: 55px;
     <article><span>03 / РОСТ</span><p>«Каждое усилие сегодня — это больше уверенности в себе завтра».</p></article>
   </div>
 </section>
-<section id="theory" class="view">
-  <div class="section-head"><div><div class="eyebrow">Краткая памятка</div><h2>Теория к заданию № 12</h2><p>Правописание личных окончаний глаголов и суффиксов причастий.</p></div></div>
+<section id="theory" class="view theory-page">
+  <div class="theory-hero">
+    <div class="theory-hero-copy">
+      <span class="theory-kicker"><span class="theory-kicker-dot"></span> БАЗА ЗНАНИЙ · РУССКИЙ ЯЗЫК</span>
+      <h2>Теория, которая<br><em>помогает разобраться.</em></h2>
+      <p>Всё необходимое для задания № 12 — коротко, наглядно и по шагам.</p>
+      <div class="theory-hero-tags"><span>ЕГЭ</span><span>Задание 12</span><span>Орфография</span></div>
+    </div>
+    <div class="theory-hero-art" aria-hidden="true">
+      <div class="theory-art-sheet"><span>12</span><i></i><i></i><i></i><b>А / Я</b></div>
+      <div class="theory-art-spark spark-one">✦</div>
+      <div class="theory-art-spark spark-two">✳</div>
+      <div class="theory-art-note">учись<br/>уверенно</div>
+    </div>
+  </div>
+  <div class="theory-content-heading">
+    <div><span class="theory-content-kicker">КОНСПЕКТ</span><h3>Разберём правила</h3></div>
+    <span class="theory-content-meta">4 темы <b>·</b> 1 алгоритм</span>
+  </div>
   <div class="theory-view" id="theoryBody"></div>
-  <div class="theory-actions"><button class="primary" id="theoryStartBtn">Перейти к заданиям <span>→</span></button></div>
+  <div class="theory-actions"><button class="primary" id="theoryStartBtn">Закрепить знания в заданиях <span>→</span></button></div>
 </section>
 
 <section id="profile" class="view">
@@ -3759,6 +3776,85 @@ html[data-theme="dark"] .achievement-page-card.unlocked .achievement-page-icon {
   #achievementGrid .achievement-page-copy strong {
     transition: none !important;
   }
+}
+
+/* Редизайн вкладки «Теория» */
+#theory.theory-page{max-width:1120px;margin:0 auto}
+#theory .theory-hero{
+  min-height:255px;display:flex;align-items:center;justify-content:space-between;gap:28px;
+  position:relative;overflow:hidden;padding:clamp(25px,4vw,43px);
+  border:1px solid #ead7d5;border-radius:28px;
+  background:linear-gradient(112deg,#fffaf7 0%,#f8e9e8 58%,#f1e5ed 100%);
+  box-shadow:0 15px 38px rgba(83,43,51,.055);
+}
+#theory .theory-hero:after{content:"";position:absolute;width:310px;height:310px;border-radius:50%;right:105px;top:-205px;border:1px solid rgba(169,54,69,.12);box-shadow:0 0 0 28px rgba(169,54,69,.025),0 0 0 58px rgba(169,54,69,.02);pointer-events:none}
+#theory .theory-hero-copy{position:relative;z-index:2;max-width:650px}
+#theory .theory-kicker,.theory-content-kicker{display:inline-flex;align-items:center;gap:9px;color:#9d5360;font-size:10px;font-weight:900;letter-spacing:1.7px}
+#theory .theory-kicker-dot{width:7px;height:7px;border-radius:50%;background:#b65b68;box-shadow:0 0 0 4px rgba(182,91,104,.12)}
+#theory .theory-hero h2{margin:17px 0 12px;color:#503a40;font-size:clamp(30px,4.5vw,49px);line-height:1.08;letter-spacing:-1.8px}
+#theory .theory-hero h2 em{font-style:normal;color:#a64b5b}
+#theory .theory-hero p{margin:0;color:#76666a;font-size:14px;line-height:1.65;max-width:500px}
+#theory .theory-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:21px}
+#theory .theory-hero-tags span{padding:7px 11px;border:1px solid rgba(169,91,101,.18);border-radius:30px;background:rgba(255,255,255,.52);color:#89525a;font-size:10px;font-weight:800}
+#theory .theory-hero-art{width:210px;height:190px;flex:0 0 210px;position:relative;display:grid;place-items:center}
+#theory .theory-art-sheet{width:124px;height:150px;position:relative;display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid #e5c7c7;border-radius:15px;background:#fffdfa;box-shadow:0 18px 35px rgba(115,57,66,.15);transform:rotate(7deg)}
+#theory .theory-art-sheet span{font-size:35px;line-height:1;color:#ad5965;font-weight:900;letter-spacing:-2px}
+#theory .theory-art-sheet i{height:4px;width:75%;border-radius:4px;background:#ead8d6}
+#theory .theory-art-sheet i:nth-of-type(2){width:90%}
+#theory .theory-art-sheet i:nth-of-type(3){width:58%}
+#theory .theory-art-sheet b{margin-top:auto;align-self:flex-end;color:#a64b5b;font-size:15px;letter-spacing:1px}
+#theory .theory-art-spark{position:absolute;color:#b96d79}
+#theory .spark-one{top:8px;right:18px;font-size:30px}
+#theory .spark-two{bottom:12px;left:12px;font-size:23px}
+#theory .theory-art-note{position:absolute;right:-2px;bottom:13px;padding:9px 12px;border:1px solid #ecd9d7;border-radius:12px;background:#fffaf7;color:#98616a;font-size:10px;font-weight:850;line-height:1.25;box-shadow:0 7px 18px rgba(115,57,66,.08);transform:rotate(-5deg)}
+#theory .theory-content-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin:29px 2px 13px}
+#theory .theory-content-heading h3{margin:5px 0 0;color:var(--ink);font-size:22px;letter-spacing:-.6px}
+#theory .theory-content-meta{color:var(--muted);font-size:11px;font-weight:750}
+#theory .theory-content-meta b{color:#b56b75;margin:0 4px}
+#theory .theory-view{
+  max-width:none;margin:0;padding:clamp(20px,3.5vw,36px);
+  border-radius:24px;background:var(--paper);border:1px solid var(--line);
+  box-shadow:0 12px 34px rgba(60,35,39,.045);line-height:1.75
+}
+#theory .theory-view:before{display:none}
+#theory .theory-view>h2{margin:0 0 17px;padding-bottom:16px;border-bottom:1px solid var(--line);font-size:clamp(22px,3vw,29px);letter-spacing:-.8px}
+#theory .theory-view>h3{display:flex;align-items:center;gap:12px;margin:31px 0 12px;padding-top:4px;font-size:18px}
+#theory .theory-view>h3:before{content:counter(theory-section,decimal-leading-zero);counter-increment:theory-section;display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:var(--soft);color:var(--red);font-size:10px;font-weight:900;letter-spacing:.4px}
+#theory .theory-view{counter-reset:theory-section}
+#theory .theory-view p,#theory .theory-view li{font-size:14px;line-height:1.8}
+#theory .theory-view .theory-lead{padding:18px 20px;border-radius:16px;background:var(--paper2);border:1px solid var(--line);font-size:14px}
+#theory .theory-view .theory-visual{gap:12px;margin:18px 0 25px}
+#theory .theory-view .theory-visual-card{border-radius:17px;min-height:130px;padding:16px;background:var(--paper2);border-color:var(--line)}
+#theory .theory-view .theory-callout{border:1px solid var(--line);border-left:4px solid var(--red);border-radius:0 15px 15px 0;background:var(--paper2);padding:16px 19px}
+#theory .theory-view .theory-step{padding:13px 15px;border-radius:14px;background:var(--paper2);border-color:var(--line)}
+#theory .theory-actions{max-width:none;justify-content:flex-start;margin:18px 0 0}
+#theory .theory-actions .primary{padding:14px 20px;border-radius:14px;box-shadow:0 8px 20px rgba(169,54,69,.14)}
+html[data-theme="dark"] #theory .theory-hero{background:linear-gradient(112deg,#29252b,#30252d 60%,#282630);border-color:#51404a;box-shadow:0 15px 38px rgba(0,0,0,.16)}
+html[data-theme="dark"] #theory .theory-hero h2{color:#f0e5e6}
+html[data-theme="dark"] #theory .theory-hero h2 em{color:#e19aa5}
+html[data-theme="dark"] #theory .theory-hero p{color:#c0b2b7}
+html[data-theme="dark"] #theory .theory-hero-tags span{background:#ffffff08;border-color:#654751;color:#e0b7be}
+html[data-theme="dark"] #theory .theory-art-sheet,html[data-theme="dark"] #theory .theory-art-note{background:#383039;border-color:#5a414a;color:#e2b3bb}
+html[data-theme="dark"] #theory .theory-art-sheet i{background:#61454e}
+html[data-theme="dark"] #theory .theory-content-heading h3{color:var(--ink)}
+html[data-theme="dark"] #theory .theory-view{background:var(--paper);border-color:var(--line)}
+@media(max-width:650px){
+  #theory .theory-hero{min-height:0;padding:23px 20px;border-radius:22px}
+  #theory .theory-hero-art{width:105px;height:130px;flex:0 0 105px;transform:scale(.78);transform-origin:center right;margin-right:-8px}
+  #theory .theory-hero h2{font-size:clamp(26px,7vw,35px);letter-spacing:-1.2px}
+  #theory .theory-hero p{font-size:12px}
+  #theory .theory-hero-tags{gap:6px;margin-top:15px}
+  #theory .theory-hero-tags span{font-size:9px;padding:6px 8px}
+  #theory .theory-content-heading{align-items:flex-start;flex-direction:column;margin-top:23px}
+  #theory .theory-view{padding:19px 16px;border-radius:19px}
+  #theory .theory-view .theory-visual-card{min-height:112px}
+}
+@media(max-width:420px){
+  #theory .theory-hero-art{display:none}
+  #theory .theory-view>h3{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  #theory .theory-art-sheet,#theory .theory-art-note{transition:none!important}
 }
 </style>
 </body>
