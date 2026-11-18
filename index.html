@@ -5013,6 +5013,57 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 .dev-announcement-row small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
 .dev-announcement-delete{flex:0 0 auto;border:1px solid #d99aa2;border-radius:8px;background:transparent;color:#b4233a;padding:7px 9px;font-size:11px;cursor:pointer}
 @media(max-width:650px){.announcement-widget{top:78px;right:12px;width:min(300px,calc(100vw - 24px))}.announcement-toggle{padding:8px 11px}.announcement-public-list{max-height:45vh}}
+
+/* Более мягкая геометрия карточек и блоков раздела «Теория» */
+:is(#theory,.windowcontent) .theory-intro-card,
+:is(#theory,.windowcontent) .theory-topic-card,
+:is(#theory,.windowcontent) .theory-practice-box{
+  border-radius:26px!important;
+}
+:is(#theory,.windowcontent) .theory-rule-panel,
+:is(#theory,.windowcontent) .theory-note,
+:is(#theory,.windowcontent) .theory-details,
+:is(#theory,.windowcontent) .theory-suffix-card,
+:is(#theory,.windowcontent) .theory-example,
+:is(#theory,.windowcontent) .theory-pair-examples>div,
+:is(#theory,.windowcontent) .theory-algorithm>div,
+:is(#theory,.windowcontent) .theory-example-line,
+:is(#theory,.windowcontent) .theory-quiz{
+  border-radius:19px!important;
+}
+:is(#theory,.windowcontent) .theory-intro-symbol,
+:is(#theory,.windowcontent) .theory-topic-number,
+:is(#theory,.windowcontent) .theory-algorithm>div>b{
+  border-radius:13px!important;
+}
+:is(#theory,.windowcontent) .theory-topic-card,
+:is(#theory,.windowcontent) .theory-intro-card,
+:is(#theory,.windowcontent) .theory-rule-panel,
+:is(#theory,.windowcontent) .theory-note,
+:is(#theory,.windowcontent) .theory-details,
+:is(#theory,.windowcontent) .theory-suffix-card,
+:is(#theory,.windowcontent) .theory-pair-examples>div,
+:is(#theory,.windowcontent) .theory-algorithm>div,
+:is(#theory,.windowcontent) .theory-example-line{
+  transition:
+    border-radius .35s cubic-bezier(.2,.75,.25,1),
+    background-color .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease,
+    transform .28s cubic-bezier(.2,.75,.25,1)!important;
+}
+@media(max-width:520px){
+  :is(#theory,.windowcontent) .theory-intro-card,
+  :is(#theory,.windowcontent) .theory-topic-card,
+  :is(#theory,.windowcontent) .theory-practice-box{border-radius:21px!important}
+  :is(#theory,.windowcontent) .theory-rule-panel,
+  :is(#theory,.windowcontent) .theory-note,
+  :is(#theory,.windowcontent) .theory-details,
+  :is(#theory,.windowcontent) .theory-suffix-card,
+  :is(#theory,.windowcontent) .theory-example-line,
+  :is(#theory,.windowcontent) .theory-algorithm>div{border-radius:16px!important}
+}
+
 </style>
 </body>
   <script>
