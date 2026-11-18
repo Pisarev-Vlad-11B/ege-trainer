@@ -5436,18 +5436,16 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
 
 @media(max-width:600px){.support-float-btn{right:14px;bottom:14px;padding:12px 15px}.support-dialog{padding:25px 19px;border-radius:20px}.support-form-bottom{align-items:stretch;flex-direction:column}.support-form-bottom button{width:100%}.support-my-heading{align-items:flex-start;flex-direction:column}.dev-support-summary{gap:7px}.dev-support-summary>div{padding:12px}.dev-support-summary strong{font-size:22px}.dev-support-toolbar{align-items:flex-start;flex-direction:column}.dev-support-toolbar select{width:100%}.dev-support-ticket{align-items:flex-start}.dev-support-ticket-meta{flex-direction:column;gap:3px}}
 
-/* Подсветка карточки обращений — в том же стиле, что и карточки онлайна */
+/* Одинаковая анимация наведения для статистики и обращений */
+#developer .dev-stat-card,
 #developer .dev-support-waiting-card{
   transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
 }
+#developer .dev-stat-card:hover,
 #developer .dev-support-waiting-card:hover{
   transform:translateY(-3px);
   border-color:rgba(137,87,232,.45);
   box-shadow:0 9px 24px rgba(80,50,130,.08);
-}
-@media(prefers-reduced-motion:reduce){
-  #developer .dev-support-waiting-card{transition:none}
-  #developer .dev-support-waiting-card:hover{transform:none}
 }
 </style>
 </body>
