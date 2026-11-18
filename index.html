@@ -5107,6 +5107,44 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz .theory-details
   -webkit-box-decoration-break:clone;
 }
 </style>
+<style>
+/* Светлая тема — выразительное оформление вопросов и ответов в блоке самопроверки */
+html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz{
+  background:linear-gradient(135deg,#fffaf8 0%,#f8efed 100%);
+  border:1px solid #ead5d3;
+  box-shadow:0 5px 16px rgba(105,55,62,.07);
+}
+html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz summary{
+  color:#49343a;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.5;
+  padding:17px 19px;
+  transition:background-color .25s ease,color .25s ease;
+}
+html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz summary:hover{
+  background:rgba(169,54,69,.075);
+  color:#9f3040;
+}
+html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz .theory-details-content{
+  color:#625458;
+  font-size:14px;
+  line-height:1.75;
+  padding:0 19px 18px;
+}
+html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz .theory-details-content strong,
+html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz .theory-details-content b{
+  display:inline;
+  color:#922f40;
+  background:rgba(201,105,119,.13);
+  border:1px solid rgba(169,54,69,.16);
+  border-radius:5px;
+  padding:0 4px;
+  font-weight:850;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+</style>
 </body>
   <script>
 // Локальные настройки панели разработчика
