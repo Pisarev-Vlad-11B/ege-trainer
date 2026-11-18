@@ -1425,7 +1425,7 @@ window.scrollToTheoryMaterials=function(){
   const startY=window.scrollY||window.pageYOffset||0;
   const targetY=Math.max(0,target.getBoundingClientRect().top+startY-20);
   const distance=targetY-startY;
-  const duration=3000;
+  const duration=2500;
   const startTime=performance.now();
   const easeInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 
