@@ -1233,7 +1233,7 @@ const theoryHTML=`<div class="theory-intro-card">
   <p><b>Ко II спряжению</b> относятся 11 глаголов-исключений: <b>гнать, держать, дышать, слышать, смотреть, видеть, ненавидеть, зависеть, терпеть, обидеть, вертеть</b>.</p>
   <p><b>К I спряжению</b> относятся исключения <b>брить, стелить</b> (и образованные от них формы).</p>
  </div></details>
- <div class="theory-example-line"><span>МИНИ-ПРИМЕР</span><b>они бор…тся</b><span>бороться → I спряжение → бор<strong>ю</strong>тся</span></div>
+ <div class="theory-example-line"><span class="theory-example-label">МИНИ-ПРИМЕР</span><span class="theory-example-question">они бор…тся</span><span class="theory-example-solution">бороться <i>→</i> I спряжение <i>→</i> бор<strong>ю</strong>тся</span></div>
 </section>
 
 <section class="theory-topic-card">
@@ -4085,6 +4085,51 @@ html[data-theme="dark"] #theory .theory-view .theory-lead,html[data-theme="dark"
 @media(max-width:520px){#theory .theory-intro-card{grid-template-columns:65px 1fr;gap:13px;padding:15px}#theory .theory-intro-symbol{font-size:33px;letter-spacing:-3px}#theory .theory-intro-card h2{font-size:18px}#theory .theory-intro-card p{font-size:11px}#theory .theory-roadmap{gap:6px;font-size:8px}#theory .theory-topic-card{padding:16px 13px}#theory .theory-topic-head{gap:9px}#theory .theory-topic-number{flex-basis:35px;width:35px;height:35px;font-size:15px}#theory .theory-topic-head h3{font-size:16px}#theory .theory-topic-mark{display:none}#theory .theory-two-columns{grid-template-columns:1fr 1fr;gap:7px}#theory .theory-rule-panel{padding:12px 10px}#theory .theory-rule-panel>strong{font-size:29px}#theory .theory-rule-panel>p{font-size:10px}#theory .theory-suffix-grid{gap:6px}#theory .theory-suffix-card{padding:11px 9px}#theory .theory-pair-examples{grid-template-columns:1fr}#theory .theory-pair-examples>div{display:grid;grid-template-columns:1fr auto 1fr;gap:5px;text-align:center}#theory .theory-example-line{font-size:10px}}
 @media(prefers-reduced-motion:reduce){#theory .theory-topic-card,#theory .theory-intro-card,#theory .theory-practice-box{animation:none}#theory .theory-topic-card,#theory .theory-suffix-card,#theory .theory-algorithm>div{transition:none}}
 
+
+
+/* Точная типографика мини-примера: исключаем случайное зачёркивание и подсветку */
+:is(#theory,.windowcontent) .theory-example-line{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  column-gap:12px;
+  row-gap:7px;
+  text-decoration:none!important;
+}
+:is(#theory,.windowcontent) .theory-example-line .theory-example-label{
+  margin-right:auto;
+  color:#e4a0aa;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-decoration:none!important;
+  background:none!important;
+}
+:is(#theory,.windowcontent) .theory-example-line .theory-example-question{
+  display:inline-block;
+  color:#fff!important;
+  font-size:14px;
+  font-weight:800;
+  text-decoration:none!important;
+  text-decoration-line:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+:is(#theory,.windowcontent) .theory-example-line .theory-example-solution{
+  color:#e3d8dc;
+  font-size:12px;
+  text-decoration:none!important;
+}
+:is(#theory,.windowcontent) .theory-example-line .theory-example-solution i{
+  color:#e5a0aa;
+  font-style:normal;
+  padding:0 2px;
+}
+:is(#theory,.windowcontent) .theory-example-line .theory-example-solution strong{
+  color:#ffc0c8;
+  background:none!important;
+  font-weight:900;
+}
 
 /* Единая система оформления теории: основной экран и всплывающее окно */
 :root{
