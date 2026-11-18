@@ -883,7 +883,22 @@ max-height: 55px;
 @media(max-width:700px){#developer .dev-announcement-hero{min-height:0;padding:23px}.dev-announcement-hero-art{flex-basis:78px!important;width:78px!important;height:78px!important;border-radius:23px!important}#developer .dev-announcement-hero-art span{font-size:38px}#developer .dev-announcement-hero-art i{width:105px;height:105px}#developer .dev-announcement-hero-art b{width:125px;height:125px}#developer .dev-announcement-workspace{padding:16px}#developer .dev-announcement-admin{padding:16px}}
 @media(max-width:460px){#developer .dev-announcement-hero-art{display:none}#developer .dev-announcement-section-heading{display:block}#developer .dev-announcement-step{display:inline-block;margin-top:12px}}
 </style>
-</head>
+<style>
+#developer .dev-announcement-workspace{display:grid;gap:16px}
+#developer .dev-announcement-workspace>.dev-setting-card{min-width:0;padding:23px;border:1px solid var(--line);border-radius:17px;background:var(--paper);box-shadow:0 7px 24px rgba(40,25,30,.045)}
+#developer .dev-announcement-admin{background:var(--paper2)}
+#developer .dev-announcement-list-card #devAnnouncementAdminList{display:grid;gap:10px}
+#developer .dev-announcement-list-card .dev-announcement-row{padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:var(--paper2)}
+#developer .dev-publish-announcement-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;margin-top:14px!important;padding:0 22px;border:1px solid var(--red)!important;border-radius:11px;background:linear-gradient(135deg,var(--red),var(--red2))!important;color:#fff!important;font-size:13px;font-weight:750;box-shadow:0 7px 18px rgba(169,54,69,.2);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+#developer .dev-publish-announcement-btn:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 10px 23px rgba(169,54,69,.28)}
+#developer .dev-publish-announcement-btn:active{transform:translateY(0)}
+html[data-theme="dark"] #developer .dev-announcement-workspace>.dev-setting-card{background:var(--paper);border-color:var(--line);box-shadow:0 8px 24px rgba(0,0,0,.16)}
+html[data-theme="dark"] #developer .dev-announcement-admin{background:var(--paper2)}
+html[data-theme="dark"] #developer .dev-announcement-list-card .dev-announcement-row{background:var(--paper2);border-color:var(--line)}
+html[data-theme="dark"] #developer .dev-publish-announcement-btn{background:linear-gradient(135deg,#b84b5a,#d26775)!important;border-color:#d26775!important;color:#fff!important;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{background:linear-gradient(135deg,#c85a69,#df7b87)!important}
+@media(max-width:600px){#developer .dev-announcement-workspace>.dev-setting-card{padding:16px}}
+</style></head>
 <body>
 <header class="topbar">
   <button class="brand" id="homeLogo" type="button" aria-label="Перейти на главную">
@@ -1111,8 +1126,8 @@ max-height: 55px;
       <div class="dev-brand">
         <div class="dev-brand-icon">✦</div>
         <div>
-          <strong>DEVELOPER</strong>
-          <span>CONTROL CENTER</span>
+          <strong>РАЗРАБОТЧИК</strong>
+          <span>ЦЕНТР УПРАВЛЕНИЯ</span>
         </div>
       </div>
 
@@ -1153,19 +1168,19 @@ max-height: 55px;
   <div class="dev-page-panel active" data-dev-content="home">
     <div class="dev-topbar">
       <div>
-        <div class="dev-breadcrumb">CONTROL CENTER / OVERVIEW</div>
+        <div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / ОБЗОР</div>
         <h2>Главная</h2>
         <p>Добро пожаловать в панель управления.</p>
       </div>
       <div class="dev-top-actions">
-        <span class="dev-live-indicator"><i></i> SYSTEM ONLINE</span>
+        <span class="dev-live-indicator"><i></i> СИСТЕМА АКТИВНА</span>
         <div class="dev-avatar">Р</div>
       </div>
     </div>
 
     <div class="dev-welcome">
       <div>
-        <span class="dev-welcome-label">ADMINISTRATION PANEL</span>
+        <span class="dev-welcome-label">ПАНЕЛЬ АДМИНИСТРИРОВАНИЯ</span>
         <h3>Всё под контролем.</h3>
         <p>Управляй своим тренажёром в одном месте.</p>
       </div>
@@ -1204,7 +1219,7 @@ max-height: 55px;
   <div class="dev-page-panel" data-dev-content="users">
     <div class="dev-topbar">
       <div>
-        <div class="dev-breadcrumb">CONTROL CENTER / USERS</div>
+        <div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / ПОЛЬЗОВАТЕЛИ</div>
         <h2>Пользователи</h2>
         <p>Управление аккаунтами платформы.</p>
       </div>
@@ -1241,7 +1256,7 @@ max-height: 55px;
   <div class="dev-page-panel" data-dev-content="journal">
     <div class="dev-topbar">
       <div>
-        <div class="dev-breadcrumb">CONTROL CENTER / JOURNAL</div>
+        <div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / ЖУРНАЛ</div>
         <h2>Журнал действий</h2>
         <p>История событий на платформе.</p>
       </div>
@@ -1259,18 +1274,18 @@ max-height: 55px;
   <div class="dev-page-panel" data-dev-content="announcements">
     <div class="dev-topbar">
       <div>
-        <div class="dev-breadcrumb">CONTROL CENTER / COMMUNICATIONS</div>
+        <div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / ОБЪЯВЛЕНИЯ</div>
         <h2>Объявления</h2>
-        <p>Публикуй новости и важные сообщения для всех посетителей тренажёра.</p>
+        <p>Публикуйте новости и важные сообщения для всех посетителей тренажёра.</p>
       </div>
-      <div class="dev-top-actions"><span class="dev-live-indicator"><i></i> PUBLIC FEED</span><div class="dev-avatar">✉</div></div>
+      <div class="dev-top-actions"><span class="dev-live-indicator"><i></i> ЛЕНТА НОВОСТЕЙ</span><div class="dev-avatar">✉</div></div>
     </div>
     <div class="dev-announcement-hero">
-      <div class="dev-announcement-hero-copy"><span class="dev-welcome-label">НОВОСТИ ПЛАТФОРМЫ</span><h3>Твой голос — на главной.</h3><p>Создавай объявления об обновлениях, важных событиях и полезных возможностях. Опубликованное сообщение сразу появится у пользователей в виджете новостей.</p><div class="dev-announcement-hero-meta"><span>✦ Мгновенная публикация</span><span>◉ Видно всем посетителям</span></div></div>
+      <div class="dev-announcement-hero-copy"><span class="dev-welcome-label">НОВОСТИ ПЛАТФОРМЫ</span><h3>Новости, которые увидят все.</h3><p>Создавайте объявления об обновлениях, важных событиях и полезных возможностях. После публикации сообщение сразу появится в виджете новостей на сайте.</p><div class="dev-announcement-hero-meta"><span>✦ Публикация без задержек</span><span>◉ Видно всем посетителям</span></div></div>
       <div class="dev-announcement-hero-art" aria-hidden="true"><span>✉</span><i></i><b></b></div>
     </div>
     <div class="dev-announcement-workspace">
-      <div class="dev-announcement-section-heading"><div><span class="dev-breadcrumb">EDITORIAL DESK</span><h3>Создать объявление</h3><p>Заполни заголовок и текст — остальное сделает тренажёр.</p></div><span class="dev-announcement-step">01 / PUBLISH</span></div>
+      <div class="dev-announcement-section-heading"><div><span class="dev-breadcrumb">РЕДАКТОР ОБЪЯВЛЕНИЙ</span><h3>Создать объявление</h3><p>Заполните заголовок и текст — остальное сделает тренажёр.</p></div><span class="dev-announcement-step">01 / ПУБЛИКАЦИЯ</span></div>
             <div class="dev-setting-card dev-announcement-admin">
         <div class="dev-setting-heading">
           <span class="dev-setting-icon">✉</span>
@@ -1280,9 +1295,15 @@ max-height: 55px;
         <input id="devAnnouncementTitle" class="dev-setting-select" type="text" maxlength="70" placeholder="Например: Обновление тренажёра">
         <label class="dev-setting-label" for="devAnnouncementText" style="margin-top:14px;">Текст объявления</label>
         <textarea id="devAnnouncementText" class="dev-setting-select" rows="4" maxlength="500" placeholder="Напиши, что нового появилось на сайте..." style="padding:12px;resize:vertical;"></textarea>
-        <button type="button" id="devPublishAnnouncement" class="dev-settings-reset" style="margin-top:14px;background:var(--accent);color:#fff;border-color:var(--accent);">Опубликовать новость</button>
+        <button type="button" id="devPublishAnnouncement" class="dev-settings-reset dev-publish-announcement-btn">Опубликовать новость</button>
         <p id="devAnnouncementStatus" class="dev-setting-hint" aria-live="polite">Публикация доступна только разработчику.</p>
-        <div class="dev-announcement-manage"><strong>Опубликованные объявления</strong><div id="devAnnouncementAdminList"><p class="dev-setting-hint">Загрузка объявлений…</p></div></div>
+      </div>
+      <div class="dev-setting-card dev-announcement-list-card">
+        <div class="dev-setting-heading">
+          <span class="dev-setting-icon">▤</span>
+          <div><strong>Опубликованные объявления</strong><p>Все новости, которые сейчас доступны посетителям сайта</p></div>
+        </div>
+        <div id="devAnnouncementAdminList"><p class="dev-setting-hint">Загрузка объявлений…</p></div>
       </div>
     </div>
   </div>
@@ -1291,7 +1312,7 @@ max-height: 55px;
   <div class="dev-page-panel" data-dev-content="settings">
     <div class="dev-topbar">
       <div>
-        <div class="dev-breadcrumb">CONTROL CENTER / SETTINGS</div>
+        <div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / НАСТРОЙКИ</div>
         <h2>Настройки</h2>
         <p>Параметры панели разработчика.</p>
       </div>
