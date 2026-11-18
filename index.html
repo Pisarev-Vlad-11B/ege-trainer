@@ -1009,7 +1009,7 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
     <div id="supportTicketDetails"></div>
     <label class="support-reply-label" for="supportReplyText">Ответ на обращение</label>
     <textarea id="supportReplyText" rows="5" maxlength="2000" placeholder="Напиши ответ пользователю…"></textarea>
-    <div class="support-form-bottom"><small id="supportReplyStatus">Ответ будет виден автору обращения</small><button id="supportReplySend" class="primary" type="button">Отправить ответ</button></div>
+    <div class="support-form-bottom"><small id="supportReplyStatus">Ответ будет виден автору обращения</small><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="supportMarkProgress" class="secondary" type="button">Взять в работу</button><button id="supportReplySend" class="primary" type="button">Отправить ответ</button></div></div>
   </section>
 </div>
 <main>
@@ -3110,6 +3110,16 @@ $id("devSupportList").addEventListener("click",e=>{
  const ticket=supportTicketsCache.find(t=>t.id===card.dataset.supportTicketId);if(ticket)openSupportTicket(ticket);
 });
 $id("devSupportFilter").addEventListener("change",renderDeveloperSupport);
+$id("supportMarkProgress").addEventListener("click",async()=>{
+ if(window.__isDeveloper!==true||!activeSupportTicket)return;
+ const btn=$id("supportMarkProgress");btn.disabled=true;btn.textContent="Сохраняем…";
+ try{
+  await setDoc(doc(db,"supportTickets",activeSupportTicket.id),{status:"in_progress",statusUpdatedAt:serverTimestamp()},{merge:true});
+  activeSupportTicket={...activeSupportTicket,status:"in_progress"};
+  $id("supportReplyStatus").textContent="Обращение отмечено как «В работе».";
+ }catch(err){console.error("Не удалось изменить статус:",err);$id("supportReplyStatus").textContent="Не удалось изменить статус. Проверь правила Firestore.";}
+ finally{btn.disabled=false;btn.textContent="Взять в работу";}
+});
 $id("supportReplySend").addEventListener("click",async()=>{
  if(window.__isDeveloper!==true||!activeSupportTicket)return;
  const btn=$id("supportReplySend"),reply=$id("supportReplyText").value.trim();
