@@ -3569,6 +3569,28 @@ html[data-theme="dark"] .leaderboard-entry.is-me {
     transition: none !important;
   }
 }
+/* Тёмное оформление достижений при наведении */
+html[data-theme="dark"] .achievement-page-card.unlocked {
+  background: linear-gradient(135deg, #29292d, #242427) !important;
+  border-color: #514047;
+}
+
+html[data-theme="dark"] .achievement-page-card:hover {
+  background: linear-gradient(135deg, #30272c, #292327) !important;
+  border-color: #9b5966;
+  box-shadow:
+    0 18px 36px rgba(0,0,0,.35),
+    0 0 0 3px rgba(169,85,101,.12);
+  transform: translateY(-5px) scale(1.025);
+}
+
+html[data-theme="dark"] .achievement-page-icon {
+  background: #343035;
+}
+
+html[data-theme="dark"] .achievement-page-card.unlocked .achievement-page-icon {
+  background: #493039;
+}
 </style>
 </body>
   <script>
