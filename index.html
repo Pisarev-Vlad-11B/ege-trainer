@@ -916,7 +916,7 @@ max-height: 55px;
           <span>Всего пользователей</span>
           <div class="dev-stat-icon purple">♙</div>
         </div>
-        <strong id="devTotalUsersCount">—</strong>
+        <strong id="devTotalUsersCount">…</strong>
 <small>Зарегистрировано аккаунтов</small>
       </div>
 
@@ -1878,8 +1878,16 @@ let developerOnlineUsers = [];
 
 function renderDeveloperOnlineCount() {
   const counter = document.getElementById("devOnlineUsersCount");
+  const totalCounter = document.getElementById("devTotalUsersCount");
 
-  if (!counter || window.__isDeveloper !== true) return;
+  if (window.__isDeveloper !== true) return;
+
+  // Количество документов в users — число зарегистрированных аккаунтов.
+  if (totalCounter) {
+    totalCounter.textContent = developerOnlineUsers.length;
+  }
+
+  if (!counter) return;
 
   const now = Date.now();
 
