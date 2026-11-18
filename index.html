@@ -978,6 +978,40 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
     <div id="announcementPublicList" class="announcement-public-list"><p class="announcement-empty">Пока нет новых объявлений.</p></div>
   </section>
 </div>
+<button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку"><span>✉</span><b>Поддержка</b></button>
+<div id="supportUserOverlay" class="support-overlay" hidden>
+  <section class="support-dialog" role="dialog" aria-modal="true" aria-labelledby="supportUserTitle">
+    <button class="support-close" id="supportUserClose" type="button" aria-label="Закрыть">×</button>
+    <div class="support-dialog-kicker">МЫ ГОТОВЫ ПОМОЧЬ</div>
+    <h2 id="supportUserTitle">Служба поддержки</h2>
+    <p class="support-dialog-intro">Опиши проблему или оставь предложение. Мы рассмотрим обращение и ответим здесь.</p>
+    <form id="supportForm" class="support-form">
+      <label for="supportTopic">Тема обращения</label>
+      <select id="supportTopic" required>
+        <option value="Техническая проблема">Техническая проблема</option>
+        <option value="Ошибка в задании или теории">Ошибка в задании или теории</option>
+        <option value="Жалоба или предложение">Жалоба или предложение</option>
+        <option value="Другое">Другое</option>
+      </select>
+      <label for="supportMessage">Опиши ситуацию</label>
+      <textarea id="supportMessage" maxlength="2000" rows="5" required placeholder="Что произошло? На какой странице или устройстве?"></textarea>
+      <div class="support-form-bottom"><small id="supportFormHint">До 2000 символов</small><button class="primary" id="supportSubmitBtn" type="submit">Отправить обращение</button></div>
+      <p id="supportFormStatus" class="support-form-status" role="status"></p>
+    </form>
+    <div class="support-my-block"><div class="support-my-heading"><strong>Мои обращения</strong><span>Ответы поддержки появятся здесь</span></div><div id="supportMyList"><p class="support-muted">Войди в аккаунт, чтобы посмотреть обращения.</p></div></div>
+  </section>
+</div>
+<div id="supportTicketOverlay" class="support-overlay" hidden>
+  <section class="support-dialog support-ticket-dialog" role="dialog" aria-modal="true" aria-labelledby="supportTicketTitle">
+    <button class="support-close" id="supportTicketClose" type="button" aria-label="Закрыть">×</button>
+    <div class="support-dialog-kicker">ОБРАЩЕНИЕ В ПОДДЕРЖКУ</div>
+    <h2 id="supportTicketTitle">Обращение</h2>
+    <div id="supportTicketDetails"></div>
+    <label class="support-reply-label" for="supportReplyText">Ответ на обращение</label>
+    <textarea id="supportReplyText" rows="5" maxlength="2000" placeholder="Напиши ответ пользователю…"></textarea>
+    <div class="support-form-bottom"><small id="supportReplyStatus">Ответ будет виден автору обращения</small><button id="supportReplySend" class="primary" type="button">Отправить ответ</button></div>
+  </section>
+</div>
 <main>
   <div class="page-doodles" aria-hidden="true">
     <svg class="page-doodle doodle-star" viewBox="0 0 100 100"><path d="M50 5 60 38 95 50 60 61 50 95 39 61 5 50 39 38Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg>
@@ -1198,6 +1232,9 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
       <button class="dev-menu-item" type="button" data-dev-page="announcements">
         <span>✉</span> Объявления
       </button>
+      <button class="dev-menu-item" type="button" data-dev-page="support">
+        <span>♡</span> Поддержка <i id="devSupportNewBadge" class="dev-support-new-badge" hidden>0</i>
+      </button>
 
       <div class="dev-menu-label dev-menu-label-bottom">СИСТЕМА</div>
 
@@ -1358,6 +1395,14 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
         <div id="devAnnouncementAdminList"><p class="dev-setting-hint">Загрузка объявлений…</p></div>
       </div>
     </div>
+  </div>
+
+  <!-- ПОДДЕРЖКА -->
+  <div class="dev-page-panel" data-dev-content="support">
+    <div class="dev-topbar"><div><div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / ПОДДЕРЖКА</div><h2>Поддержка</h2><p>Все обращения пользователей и ответы на них.</p></div><div class="dev-top-actions"><span class="dev-live-indicator"><i></i> ОБРАЩЕНИЯ</span><div class="dev-avatar">♡</div></div></div>
+    <div class="dev-support-summary"><div><span>Всего обращений</span><strong id="devSupportTotal">—</strong></div><div><span>Новые</span><strong id="devSupportNew">—</strong></div><div><span>Ожидают ответа</span><strong id="devSupportPending">—</strong></div></div>
+    <div class="dev-support-toolbar"><div><strong>Входящие обращения</strong><small id="devSupportStatus">Обновление в реальном времени</small></div><select id="devSupportFilter" aria-label="Фильтр обращений"><option value="all">Все обращения</option><option value="new">Новые</option><option value="in_progress">В работе</option><option value="answered">Отвечено</option></select></div>
+    <div id="devSupportList" class="dev-support-list"><p class="support-muted">Загрузка обращений…</p></div>
   </div>
 
   <!-- НАСТРОЙКИ -->
@@ -1899,7 +1944,7 @@ signOut, onAuthStateChanged, deleteUser,
 EmailAuthProvider, reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, getDocs, collection, setDoc, deleteDoc, serverTimestamp, onSnapshot, addDoc, query, orderBy, limit
+  getFirestore, doc, getDoc, getDocs, collection, setDoc, deleteDoc, serverTimestamp, onSnapshot, addDoc, query, orderBy, limit, where
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 /*
@@ -2978,6 +3023,108 @@ if (FIREBASE_CONFIG_READY) {
     const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
+
+
+// ===== СЛУЖБА ПОДДЕРЖКИ =====
+let supportAdminUnsubscribe = null;
+let supportUserUnsubscribe = null;
+let activeSupportTicket = null;
+let supportTicketsCache = [];
+const supportEsc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const supportDate = value => { try { return value?.toDate ? value.toDate().toLocaleString("ru-RU",{dateStyle:"short",timeStyle:"short"}) : "Дата не определена"; } catch(e){ return "Дата не определена"; } };
+function closeSupportOverlays(){ $id("supportUserOverlay").hidden=true; $id("supportTicketOverlay").hidden=true; }
+function renderMySupportTickets(items){
+ const host=$id("supportMyList"); if(!host)return;
+ if(!auth?.currentUser){host.innerHTML='<p class="support-muted">Войди в аккаунт, чтобы отправлять обращения и читать ответы.</p>';return;}
+ if(!items.length){host.innerHTML='<p class="support-muted">Ты ещё не отправлял обращения.</p>';return;}
+ host.innerHTML=items.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0)).map(item=>`<article class="support-my-ticket"><strong>${supportEsc(item.topic)}</strong><p>${supportEsc(item.message)}</p><small>${item.status==="answered"?"Ответ получен":item.status==="in_progress"?"В работе":"Ожидает ответа"} · ${supportDate(item.createdAt)}</small>${item.reply?`<p><b>Ответ поддержки:</b> ${supportEsc(item.reply)}</p>`:""}</article>`).join("");
+}
+function startMySupportListener(){
+ if(supportUserUnsubscribe){supportUserUnsubscribe();supportUserUnsubscribe=null;}
+ const user=auth?.currentUser;
+ if(!user){renderMySupportTickets([]);return;}
+ const ownQuery=query(collection(db,"supportTickets"),where("uid","==",user.uid));
+ supportUserUnsubscribe=onSnapshot(ownQuery,snap=>renderMySupportTickets(snap.docs.map(d=>({id:d.id,...d.data()}))),err=>{
+   console.error("Не удалось загрузить обращения пользователя:",err);
+   $id("supportMyList").innerHTML='<p class="support-muted">Не удалось загрузить обращения. Проверь правила Firestore.</p>';
+ });
+}
+function renderDeveloperSupport(){
+ const list=$id("devSupportList"),filter=$id("devSupportFilter")?.value||"all";
+ if(!list)return;
+ const items=filter==="all"?supportTicketsCache:supportTicketsCache.filter(t=>(t.status||"new")===filter);
+ const fresh=supportTicketsCache.filter(t=>(t.status||"new")==="new").length;
+ $id("devSupportTotal").textContent=supportTicketsCache.length;
+ $id("devSupportNew").textContent=fresh;
+ $id("devSupportPending").textContent=supportTicketsCache.filter(t=>(t.status||"new")==="in_progress").length;
+ const badge=$id("devSupportNewBadge");badge.hidden=!fresh;badge.textContent=fresh>9?"9+":String(fresh);
+ if(!items.length){list.innerHTML='<div class="support-muted" style="padding:22px;border:1px dashed var(--border);border-radius:14px;">Обращений в этой категории пока нет.</div>';return;}
+ list.innerHTML=items.map(t=>`<article class="dev-support-ticket" data-support-ticket-id="${supportEsc(t.id)}"><div class="dev-support-ticket-icon">✉</div><div class="dev-support-ticket-main"><strong>${supportEsc(t.topic||"Обращение")}</strong><p>${supportEsc(t.message||"")}</p><div class="dev-support-ticket-meta"><span>${supportEsc(t.username||"Пользователь")}</span><span>${supportDate(t.createdAt)}</span></div></div><span class="dev-support-status">${t.status==="answered"?"Отвечено":t.status==="in_progress"?"В работе":"Новое"}</span></article>`).join("");
+}
+function startDeveloperSupport(){
+ if(window.__isDeveloper!==true||!db)return;
+ if(supportAdminUnsubscribe)supportAdminUnsubscribe();
+ $id("devSupportStatus").textContent="Загружаем обращения…";
+ const q=query(collection(db,"supportTickets"),orderBy("createdAt","desc"),limit(200));
+ supportAdminUnsubscribe=onSnapshot(q,snap=>{
+   supportTicketsCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+   $id("devSupportStatus").textContent="Обновляется автоматически";
+   renderDeveloperSupport();
+ },err=>{
+   console.error("Ошибка загрузки обращений:",err);
+   $id("devSupportStatus").textContent="Нет доступа к обращениям — проверь правила Firestore";
+   $id("devSupportList").innerHTML='<p class="support-muted">Не удалось загрузить обращения. Проверь правила Firestore для supportTickets.</p>';
+ });
+}
+function openSupportTicket(ticket){
+ activeSupportTicket=ticket;
+ $id("supportTicketTitle").textContent=ticket.topic||"Обращение";
+ $id("supportTicketDetails").innerHTML=`<div class="support-ticket-meta"><span>${supportEsc(ticket.username||"Пользователь")}</span><span>${supportDate(ticket.createdAt)}</span><span>${ticket.status==="answered"?"Отвечено":ticket.status==="in_progress"?"В работе":"Новое"}</span></div><div class="support-ticket-body">${supportEsc(ticket.message)}</div>${ticket.reply?`<div style="margin-top:15px;padding-top:14px;border-top:1px solid var(--line)"><b>Предыдущий ответ:</b><p class="support-ticket-body">${supportEsc(ticket.reply)}</p></div>`:""}`;
+ $id("supportReplyText").value=ticket.reply||"";
+ $id("supportReplyStatus").textContent="Изменение статуса: ";
+ $id("supportTicketOverlay").hidden=false;
+}
+$id("supportFloatBtn").addEventListener("click",()=>{$id("supportUserOverlay").hidden=false;startMySupportListener();});
+$id("supportUserClose").addEventListener("click",()=>$id("supportUserOverlay").hidden=true);
+$id("supportTicketClose").addEventListener("click",()=>$id("supportTicketOverlay").hidden=true);
+$id("supportUserOverlay").addEventListener("click",e=>{if(e.target===$id("supportUserOverlay"))$id("supportUserOverlay").hidden=true;});
+$id("supportTicketOverlay").addEventListener("click",e=>{if(e.target===$id("supportTicketOverlay"))$id("supportTicketOverlay").hidden=true;});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSupportOverlays();});
+$id("supportForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const user=auth?.currentUser;
+ const status=$id("supportFormStatus"),btn=$id("supportSubmitBtn");
+ if(!user){status.textContent="Сначала войди в аккаунт через вкладку «Профиль».";return;}
+ const topic=$id("supportTopic").value,messageText=$id("supportMessage").value.trim();
+ if(messageText.length<10){status.textContent="Опиши проблему чуть подробнее (минимум 10 символов).";return;}
+ btn.disabled=true;btn.textContent="Отправляем…";status.textContent="";
+ try{
+  await addDoc(collection(db,"supportTickets"),{uid:user.uid,username:String(profile?.username||user.email?.split("@")[0]||"Пользователь").slice(0,40),topic,message:messageText,status:"new",createdAt:serverTimestamp(),reply:""});
+  $id("supportMessage").value="";status.textContent="Обращение отправлено. Спасибо!";
+  await logActivity("Новое обращение в поддержку",topic);
+ }catch(err){console.error("Ошибка отправки обращения:",err);status.textContent="Не удалось отправить. Проверь подключение и правила Firestore.";}
+ finally{btn.disabled=false;btn.textContent="Отправить обращение";}
+});
+$id("devSupportList").addEventListener("click",e=>{
+ const card=e.target.closest("[data-support-ticket-id]");if(!card)return;
+ const ticket=supportTicketsCache.find(t=>t.id===card.dataset.supportTicketId);if(ticket)openSupportTicket(ticket);
+});
+$id("devSupportFilter").addEventListener("change",renderDeveloperSupport);
+$id("supportReplySend").addEventListener("click",async()=>{
+ if(window.__isDeveloper!==true||!activeSupportTicket)return;
+ const btn=$id("supportReplySend"),reply=$id("supportReplyText").value.trim();
+ if(reply.length<2){$id("supportReplyStatus").textContent="Напиши ответ перед отправкой.";return;}
+ btn.disabled=true;btn.textContent="Сохраняем…";
+ try{
+  await setDoc(doc(db,"supportTickets",activeSupportTicket.id),{reply,status:"answered",repliedAt:serverTimestamp(),repliedBy:auth.currentUser.uid},{merge:true});
+  await logActivity("Ответ на обращение поддержки",activeSupportTicket.topic||"Обращение");
+  $id("supportReplyStatus").textContent="Ответ отправлен пользователю.";
+  activeSupportTicket={...activeSupportTicket,reply,status:"answered"};
+  setTimeout(()=>$id("supportTicketOverlay").hidden=true,450);
+ }catch(err){console.error("Не удалось отправить ответ:",err);$id("supportReplyStatus").textContent="Ошибка сохранения. Проверь правила Firestore.";}
+ finally{btn.disabled=false;btn.textContent="Отправить ответ";}
+});
+document.querySelectorAll('[data-dev-page="support"]').forEach(button=>button.addEventListener("click",()=>{if(window.__isDeveloper===true)startDeveloperSupport();}));
 
     // Публичная лента объявлений и инструменты публикации для разработчика.
     const publicAnnouncementList = document.getElementById("announcementPublicList");
@@ -5144,6 +5291,32 @@ html[data-theme="light"] :is(#theory,.windowcontent) .theory-quiz .theory-detail
   box-decoration-break:clone;
   -webkit-box-decoration-break:clone;
 }
+</style>
+<style>
+/* Система обращений в поддержку */
+.support-float-btn{position:fixed;right:24px;bottom:22px;z-index:1200;display:flex;align-items:center;gap:9px;padding:13px 18px;border:1px solid rgba(255,255,255,.22);border-radius:999px;color:#fff;background:linear-gradient(135deg,#873d56,#b65b70);box-shadow:0 10px 28px rgba(112,43,64,.28);font:800 13px inherit;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease}
+.support-float-btn span{font-size:17px}.support-float-btn:hover{transform:translateY(-3px);box-shadow:0 15px 34px rgba(112,43,64,.35)}
+.support-overlay{position:fixed;inset:0;z-index:2200;display:grid;place-items:center;padding:18px;background:rgba(20,15,20,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.support-overlay[hidden]{display:none!important}
+.support-dialog{position:relative;width:min(620px,100%);max-height:min(88vh,900px);overflow:auto;padding:30px;border:1px solid var(--line);border-radius:24px;background:var(--paper);color:var(--text);box-shadow:0 28px 90px rgba(0,0,0,.3);animation:supportDialogIn .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes supportDialogIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.support-close{position:absolute;right:17px;top:13px;width:36px;height:36px;border:0;border-radius:12px;background:var(--soft);color:var(--text);font-size:24px;cursor:pointer}
+.support-dialog-kicker{margin-bottom:8px;color:var(--red);font-size:10px;font-weight:900;letter-spacing:1.7px}
+.support-dialog h2{margin:0 45px 8px 0;font-size:26px}.support-dialog-intro{margin:0 0 22px;color:var(--muted);font-size:13px;line-height:1.6}
+.support-form{display:grid;gap:9px}.support-form label,.support-reply-label{margin-top:5px;font-size:12px;font-weight:800;color:var(--text)}
+.support-form select,.support-form textarea,.support-dialog textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:var(--bg,var(--paper));color:var(--text);font:inherit;font-size:13px;outline:none}
+.support-form textarea,.support-dialog textarea{resize:vertical;min-height:110px;line-height:1.55}
+.support-form select:focus,.support-form textarea:focus,.support-dialog textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(169,54,69,.1)}
+.support-form-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:5px}.support-form-bottom small,.support-muted{color:var(--muted);font-size:11px}
+.support-form-status{min-height:17px;margin:0;color:var(--red);font-size:12px}
+.support-my-block{margin-top:22px;padding-top:19px;border-top:1px solid var(--line)}.support-my-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.support-my-heading strong{font-size:14px}.support-my-heading span{font-size:10px;color:var(--muted)}
+.support-my-ticket{padding:12px 13px;margin-top:8px;border:1px solid var(--line);border-radius:13px;background:var(--soft)}.support-my-ticket strong{display:block;font-size:12px}.support-my-ticket p{margin:5px 0;color:var(--muted);font-size:12px;line-height:1.5;white-space:pre-wrap}.support-my-ticket small{font-size:10px;color:var(--red);font-weight:800}
+.support-ticket-dialog{width:min(680px,100%)}#supportTicketDetails{margin:16px 0 22px;padding:17px;border:1px solid var(--line);border-radius:15px;background:var(--soft)}.support-ticket-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;color:var(--muted);font-size:11px}.support-ticket-body{white-space:pre-wrap;line-height:1.7;font-size:14px}.support-reply-label{display:block;margin-bottom:8px}
+.dev-support-new-badge{display:inline-grid;place-items:center;min-width:19px;height:19px;margin-left:auto;padding:0 5px;border-radius:20px;background:#b84c61;color:#fff;font-size:10px;font-style:normal}
+.dev-support-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}.dev-support-summary>div{padding:17px;border:1px solid var(--border);border-radius:16px;background:var(--card-bg,var(--paper));display:flex;flex-direction:column;gap:7px}.dev-support-summary span{color:var(--muted);font-size:11px}.dev-support-summary strong{font-size:27px;color:var(--red);font-variant-numeric:tabular-nums}
+.dev-support-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:25px 0 13px}.dev-support-toolbar>div{display:grid;gap:4px}.dev-support-toolbar strong{font-size:17px}.dev-support-toolbar small{font-size:11px;color:var(--muted)}.dev-support-toolbar select{padding:10px 12px;border:1px solid var(--border);border-radius:11px;background:var(--paper);color:var(--text)}
+.dev-support-list{display:grid;gap:10px}.dev-support-ticket{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--border);border-radius:15px;background:var(--paper);cursor:pointer;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}.dev-support-ticket:hover{transform:translateY(-2px);border-color:#c98b98;box-shadow:0 9px 22px rgba(90,45,55,.09)}.dev-support-ticket-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:13px;background:rgba(169,54,69,.1);color:var(--red);font-size:19px}.dev-support-ticket-main{flex:1;min-width:0}.dev-support-ticket-main strong{display:block;font-size:13px}.dev-support-ticket-main p{margin:4px 0 0;overflow:hidden;color:var(--muted);font-size:11px;text-overflow:ellipsis;white-space:nowrap}.dev-support-ticket-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;color:var(--muted);font-size:10px}.dev-support-status{padding:5px 8px;border-radius:20px;background:var(--soft);color:var(--red);font-size:10px;font-weight:850;white-space:nowrap}
+@media(max-width:600px){.support-float-btn{right:14px;bottom:14px;padding:12px 15px}.support-dialog{padding:25px 19px;border-radius:20px}.support-form-bottom{align-items:stretch;flex-direction:column}.support-form-bottom button{width:100%}.support-my-heading{align-items:flex-start;flex-direction:column}.dev-support-summary{gap:7px}.dev-support-summary>div{padding:12px}.dev-support-summary strong{font-size:22px}.dev-support-toolbar{align-items:flex-start;flex-direction:column}.dev-support-toolbar select{width:100%}.dev-support-ticket{align-items:flex-start}.dev-support-ticket-meta{flex-direction:column;gap:3px}}
 </style>
 </body>
   <script>
