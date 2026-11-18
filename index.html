@@ -1070,6 +1070,10 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
         <div class="streak-flame" aria-hidden="true"><svg viewBox="0 0 64 76"><path class="flame-outer" d="M34 3C38 20 58 25 56 47c-1 16-11 26-25 26C14 73 5 62 7 47 9 31 22 25 24 10c8 8 9 14 9 19C40 22 39 12 34 3Z"/><path class="flame-inner" d="M34 37c2 9 13 12 12 23-1 8-6 12-14 12-8 0-13-6-12-13 1-7 7-10 8-17 4 4 5 7 5 10 3-4 3-9 1-15Z"/></svg></div>
         <div><span>Серия правильных ответов</span><strong id="streakCount">0</strong><small>подряд · рекорд: <b id="bestStreak">0</b></small></div>
       </article>
+      <article class="stat-card practice-days-card">
+        <div class="practice-days-icon" aria-hidden="true">📅</div>
+        <div><span>Дни занятий подряд</span><strong id="practiceDaysCount">0</strong><small id="practiceDaysHint">Реши хотя бы одно задание сегодня</small></div>
+      </article>
     </div>
   </div>
   <div class="stats-footer-note"><span>✦</span> Каждый решённый пример приближает тебя к цели. Продолжай в своём темпе!</div>
@@ -1509,6 +1513,20 @@ function renderAchievements(){
   return `<article class="achievement-page-card ${yes?"unlocked":""}"><div class="achievement-page-icon">${a.icon}</div><div class="achievement-page-copy"><strong>${a.title}</strong><span>${a.desc}</span></div><div class="achievement-status">${yes?"Открыто ✓":"Ещё впереди"}</div></article>`;
  }).join("");
 }
+function localPracticeDate(){
+ const now=new Date();
+ return [now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
+}
+function markPracticeDay(){
+ const today=localPracticeDate(), last=state.lastPracticeDate||"";
+ if(last===today)return;
+ if(last){
+  const previous=Date.parse(last+"T00:00:00Z"), current=Date.parse(today+"T00:00:00Z");
+  const difference=Math.round((current-previous)/86400000);
+  state.practiceDayStreak=difference===1?(Number(state.practiceDayStreak)||0)+1:1;
+ }else state.practiceDayStreak=1;
+ state.lastPracticeDate=today;
+}
 function updateStats(){
  const done=state.completed.length, remaining=143-done, percent=Math.round(done/143*100);
  $("errorCount").textContent=state.mistakes.length;$("bankCount").textContent=143;
@@ -1522,6 +1540,8 @@ function updateStats(){
  if($("statHint"))$("statHint").textContent=done?`Уже решено правильно ${done} из 143 заданий. Так держать!`:"Реши первое задание, чтобы начать наполнять банку.";
  if($("streakCount"))$("streakCount").textContent=state.streak||0;
  if($("bestStreak"))$("bestStreak").textContent=state.bestStreak||0;
+ if($("practiceDaysCount"))$("practiceDaysCount").textContent=state.practiceDayStreak||0;
+ if($("practiceDaysHint"))$("practiceDaysHint").textContent=state.lastPracticeDate===localPracticeDate()?"Отлично! Сегодня ты уже занимался.":"Реши хотя бы одно задание сегодня";
  renderAchievements();
 }
 function renderTask(){
@@ -1548,7 +1568,7 @@ function checkAnswer(){
  const wasCompleted=state.completed.includes(t.id);
  state.answers[t.id]={value,status:ok?"correct":"wrong"};
  if(ok){
-   if(!wasCompleted){state.completed.push(t.id);state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);}
+   if(!wasCompleted){state.completed.push(t.id);state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);markPracticeDay();}
    state.mistakes=state.mistakes.filter(x=>x!==t.id);state.correct=state.completed.length;
  } else {
    state.streak=0;
@@ -5079,6 +5099,13 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
   #theory .theory-index-strip{border-radius:17px!important}
 }
 
+
+/* Карточка серии дней занятий в статистике */
+.practice-days-card{display:flex;align-items:center;gap:12px;grid-column:span 2;min-height:88px}
+.practice-days-card>div:last-child{display:flex;flex-direction:column;gap:2px}
+.practice-days-card strong{font-size:27px;margin:0;color:var(--red);font-variant-numeric:tabular-nums}
+.practice-days-card small{font-size:11px;color:var(--muted)}
+.practice-days-icon{width:43px;height:43px;display:grid;place-items:center;flex:0 0 43px;font-size:30px;filter:drop-shadow(0 4px 5px #e28a3b25)}
 </style>
 </body>
   <script>
