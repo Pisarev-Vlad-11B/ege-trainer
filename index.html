@@ -4526,20 +4526,23 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-details{
 }
 
 
-/* Большие карточки тем: плавная реакция на курсор длительностью около 1,2 секунды */
+/* Большие карточки разделов: движение как у плашек суффиксов из раздела 3.
+   Отдельная анимация появления без transform — иначе она блокирует hover-подъём карточки. */
+@keyframes theoryCardFadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+:is(#theory,.windowcontent) .theory-topic-card{
+  animation:theoryCardFadeIn .5s ease both;
+}
 @media(hover:hover) and (prefers-reduced-motion:no-preference){
   :is(#theory,.windowcontent) .theory-topic-card{
-    transition:background 1.2s ease,color 1.2s ease,border-color 1.2s ease,
-      box-shadow 1.2s ease,transform 1.2s ease!important;
+    transition:transform 1.2s ease,box-shadow 1.2s ease,
+      border-color 1.2s ease,background-color 1.2s ease!important;
   }
   :is(#theory,.windowcontent) .theory-topic-card:hover{
-    background:var(--theory-hover)!important;
-    border-color:#d5a0a7!important;
-    transform:translateY(-2px)!important;
-    box-shadow:0 8px 20px rgba(71,30,37,.08)!important;
-  }
-  html[data-theme="dark"] :is(#theory,.windowcontent) .theory-topic-card:hover{
-    border-color:#a85b68!important;
+    transform:translateY(-4px)!important;
+    box-shadow:0 9px 18px #74374312!important;
   }
 }
 
