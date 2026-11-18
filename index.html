@@ -1219,9 +1219,50 @@ max-height: 55px;
         <p>Параметры панели разработчика.</p>
       </div>
     </div>
-    <div class="dev-journal-card">
-      <strong>Настройки системы</strong>
-      <p>Здесь появятся настройки панели.</p>
+    <div class="dev-settings-grid">
+      <div class="dev-setting-card">
+        <div class="dev-setting-heading">
+          <span class="dev-setting-icon">◉</span>
+          <div><strong>Обновление онлайна</strong><p>Как часто пересчитывать количество активных пользователей</p></div>
+        </div>
+        <label class="dev-setting-label" for="devOnlineRefresh">Интервал обновления</label>
+        <select id="devOnlineRefresh" class="dev-setting-select">
+          <option value="5000">Каждые 5 секунд</option>
+          <option value="15000">Каждые 15 секунд</option>
+          <option value="30000">Каждые 30 секунд</option>
+          <option value="60000">Каждую минуту</option>
+        </select>
+        <small class="dev-setting-hint">Изменение применяется сразу, без перезагрузки сайта.</small>
+      </div>
+
+      <div class="dev-setting-card">
+        <div class="dev-setting-heading">
+          <span class="dev-setting-icon">▤</span>
+          <div><strong>Внешний вид панели</strong><p>Настрой плотность отображения элементов</p></div>
+        </div>
+        <label class="dev-setting-switch">
+          <span><strong>Компактный режим</strong><small>Уменьшает отступы в панели разработчика</small></span>
+          <input type="checkbox" id="devCompactMode">
+          <i></i>
+        </label>
+      </div>
+
+      <div class="dev-setting-card">
+        <div class="dev-setting-heading">
+          <span class="dev-setting-icon">⚠</span>
+          <div><strong>Безопасность действий</strong><p>Дополнительная защита от случайного удаления</p></div>
+        </div>
+        <label class="dev-setting-switch">
+          <span><strong>Подтверждать удаление пользователей</strong><small>Показывать окно подтверждения перед удалением данных аккаунта</small></span>
+          <input type="checkbox" id="devConfirmDelete">
+          <i></i>
+        </label>
+      </div>
+
+      <div class="dev-settings-footer">
+        <span id="devSettingsSaved">Настройки сохраняются на этом устройстве</span>
+        <button type="button" id="devSettingsReset" class="dev-settings-reset">Сбросить настройки</button>
+      </div>
     </div>
   </div>
 
@@ -2195,7 +2236,7 @@ async function loadDeveloperUsers() {
 
     const username = targetUser.username || "без логина";
 
-    if (!confirm(
+    if (window.__devSettings?.confirmUserDelete !== false && !confirm(
       `Удалить данные пользователя «${username}»?\n\nБудут удалены профиль, прогресс и запись рейтинга. Сам вход в Firebase Authentication останется.`
     )) return;
 
@@ -2335,7 +2376,7 @@ function startDeveloperOnlineMonitor() {
 
   developerOnlineTimer = setInterval(
     renderDeveloperOnlineCount,
-    15000
+    window.__devSettings?.onlineRefreshMs || 15000
   );
 }
 
@@ -4653,9 +4694,104 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
   background:var(--theory-hover)!important;
   border-color:#a85b68!important;
 }
+
+/* Настройки панели разработчика */
+#developer .dev-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#developer .dev-setting-card{min-width:0;padding:22px;border:1px solid var(--border);border-radius:16px;background:var(--card);box-shadow:0 5px 18px rgba(30,20,25,.035)}
+#developer .dev-setting-heading{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px}
+#developer .dev-setting-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:var(--soft);color:var(--accent);font-size:19px}
+#developer .dev-setting-heading strong{display:block;font-size:14px;color:var(--text)}
+#developer .dev-setting-heading p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+#developer .dev-setting-label{display:block;margin-bottom:8px;color:var(--muted);font-size:12px;font-weight:700}
+#developer .dev-setting-select{width:100%;min-height:44px;padding:0 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:13px;outline:none}
+#developer .dev-setting-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 13%,transparent)}
+#developer .dev-setting-hint{display:block;margin-top:9px;color:var(--muted);font-size:11px}
+#developer .dev-setting-switch{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer}
+#developer .dev-setting-switch span{display:grid;gap:5px}
+#developer .dev-setting-switch strong{font-size:13px;color:var(--text)}
+#developer .dev-setting-switch small{font-size:11px;line-height:1.5;color:var(--muted)}
+#developer .dev-setting-switch input{position:absolute;opacity:0;width:1px;height:1px}
+#developer .dev-setting-switch i{position:relative;flex:0 0 42px;width:42px;height:24px;border-radius:30px;background:#a9a9ad;transition:background .2s}
+#developer .dev-setting-switch i:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;transition:transform .2s}
+#developer .dev-setting-switch input:checked+i{background:var(--accent)}
+#developer .dev-setting-switch input:checked+i:after{transform:translateX(18px)}
+#developer .dev-setting-switch input:focus-visible+i{outline:3px solid color-mix(in srgb,var(--accent) 30%,transparent);outline-offset:3px}
+#developer .dev-settings-footer{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:4px 2px;color:var(--muted);font-size:12px}
+#developer .dev-settings-reset{padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text);font:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+#developer .dev-settings-reset:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+#developer.dev-compact .dev-setting-card{padding:16px}
+#developer.dev-compact .dev-stats-grid{gap:10px}
+#developer.dev-compact .dev-stat-card{padding:16px}
+@media(max-width:700px){#developer .dev-settings-grid{grid-template-columns:1fr}#developer .dev-settings-footer{align-items:flex-start;flex-direction:column}}
 </style>
 </body>
   <script>
+// Локальные настройки панели разработчика
+const DEV_SETTINGS_KEY = "egeDeveloperSettings";
+const DEV_SETTINGS_DEFAULTS = { onlineRefreshMs: 15000, compactMode: false, confirmUserDelete: true };
+function loadDeveloperSettings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DEV_SETTINGS_KEY) || "{}");
+    return {
+      onlineRefreshMs: [5000, 15000, 30000, 60000].includes(Number(saved.onlineRefreshMs)) ? Number(saved.onlineRefreshMs) : DEV_SETTINGS_DEFAULTS.onlineRefreshMs,
+      compactMode: saved.compactMode === true,
+      confirmUserDelete: saved.confirmUserDelete !== false
+    };
+  } catch (error) {
+    return { ...DEV_SETTINGS_DEFAULTS };
+  }
+}
+window.__devSettings = loadDeveloperSettings();
+function saveDeveloperSettings() {
+  localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(window.__devSettings));
+  const status = document.getElementById("devSettingsSaved");
+  if (status) {
+    status.textContent = "Сохранено";
+    clearTimeout(window.__devSettingsSavedTimer);
+    window.__devSettingsSavedTimer = setTimeout(() => {
+      status.textContent = "Настройки сохраняются на этом устройстве";
+    }, 1800);
+  }
+}
+function applyDeveloperSettings() {
+  const root = document.getElementById("developer");
+  if (root) root.classList.toggle("dev-compact", window.__devSettings.compactMode);
+  const interval = document.getElementById("devOnlineRefresh");
+  const compact = document.getElementById("devCompactMode");
+  const confirmDelete = document.getElementById("devConfirmDelete");
+  if (interval) interval.value = String(window.__devSettings.onlineRefreshMs);
+  if (compact) compact.checked = window.__devSettings.compactMode;
+  if (confirmDelete) confirmDelete.checked = window.__devSettings.confirmUserDelete;
+}
+function initDeveloperSettings() {
+  applyDeveloperSettings();
+  document.getElementById("devOnlineRefresh")?.addEventListener("change", event => {
+    window.__devSettings.onlineRefreshMs = Number(event.target.value);
+    saveDeveloperSettings();
+    if (window.__isDeveloper === true && typeof window.__startDeveloperOnlineMonitor === "function") {
+      window.__startDeveloperOnlineMonitor();
+    }
+  });
+  document.getElementById("devCompactMode")?.addEventListener("change", event => {
+    window.__devSettings.compactMode = event.target.checked;
+    applyDeveloperSettings();
+    saveDeveloperSettings();
+  });
+  document.getElementById("devConfirmDelete")?.addEventListener("change", event => {
+    window.__devSettings.confirmUserDelete = event.target.checked;
+    saveDeveloperSettings();
+  });
+  document.getElementById("devSettingsReset")?.addEventListener("click", () => {
+    window.__devSettings = { ...DEV_SETTINGS_DEFAULTS };
+    applyDeveloperSettings();
+    saveDeveloperSettings();
+    if (window.__isDeveloper === true && typeof window.__startDeveloperOnlineMonitor === "function") {
+      window.__startDeveloperOnlineMonitor();
+    }
+  });
+}
+initDeveloperSettings();
+
 const themeToggle = document.getElementById("themeToggle");
 
 function setTheme(theme) {
