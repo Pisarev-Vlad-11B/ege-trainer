@@ -555,6 +555,28 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
   border-color:var(--theory-accent)!important;
 }
 
+
+/* Раздел 4: реакция плашек на курсор — как у плашек разделов 2 и 3 */
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+  :is(#theory,.windowcontent) .theory-algorithm>div{
+    transition:
+      background-color .24s ease,
+      border-color .24s ease,
+      box-shadow .24s ease,
+      transform .24s ease!important;
+  }
+  :is(#theory,.windowcontent) .theory-algorithm>div:hover{
+    background:var(--theory-hover)!important;
+    border-color:#d5a0a7!important;
+    transform:translateY(-2px)!important;
+    box-shadow:0 8px 20px rgba(71,30,37,.08)!important;
+  }
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
+  background:var(--theory-hover)!important;
+  border-color:#a85b68!important;
+}
+
 </style>
 <style>
 /* Крышка банки остаётся неподвижной */
