@@ -5064,6 +5064,21 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
   :is(#theory,.windowcontent) .theory-algorithm>div{border-radius:16px!important}
 }
 
+
+/* Такие же плавные углы для крупных плашек раздела «Теория» */
+#theory .theory-masthead,
+#theory .theory-view{
+  border-radius:26px!important;
+}
+#theory .theory-index-strip{
+  border-radius:20px!important;
+}
+@media(max-width:520px){
+  #theory .theory-masthead,
+  #theory .theory-view{border-radius:21px!important}
+  #theory .theory-index-strip{border-radius:17px!important}
+}
+
 </style>
 </body>
   <script>
