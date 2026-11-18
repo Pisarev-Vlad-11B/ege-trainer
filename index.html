@@ -3704,11 +3704,59 @@ html[data-theme="dark"] .achievement-page-card.unlocked .achievement-page-icon {
   background: #493039;
 }
 
+/* Плавное появление карточек достижений */
+@keyframes achievementCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#achievementGrid .achievement-page-card {
+  animation: achievementCardIn .65s cubic-bezier(.2,.75,.25,1) both;
+}
+
+#achievementGrid .achievement-page-card:nth-child(1) { animation-delay: .03s; }
+#achievementGrid .achievement-page-card:nth-child(2) { animation-delay: .07s; }
+#achievementGrid .achievement-page-card:nth-child(3) { animation-delay: .11s; }
+#achievementGrid .achievement-page-card:nth-child(4) { animation-delay: .15s; }
+#achievementGrid .achievement-page-card:nth-child(5) { animation-delay: .19s; }
+#achievementGrid .achievement-page-card:nth-child(6) { animation-delay: .23s; }
+#achievementGrid .achievement-page-card:nth-child(7) { animation-delay: .27s; }
+#achievementGrid .achievement-page-card:nth-child(8) { animation-delay: .31s; }
+#achievementGrid .achievement-page-card:nth-child(n+9) { animation-delay: .35s; }
+
+@media (hover: hover) and (pointer: fine) {
+  #achievementGrid .achievement-page-card {
+    transition:
+      transform .75s cubic-bezier(.16,1,.3,1),
+      border-color .75s ease,
+      box-shadow .75s ease,
+      background .75s ease;
+  }
+
+  #achievementGrid .achievement-page-card:hover {
+    transform: translateY(-5px) scale(1.018);
+    box-shadow: 0 16px 32px rgba(113,53,59,.13), 0 0 0 3px rgba(214,151,157,.08);
+  }
+
+  #achievementGrid .achievement-page-icon {
+    transition: transform .8s cubic-bezier(.16,1,.3,1), box-shadow .8s ease;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .achievement-page-card,
-  .achievement-page-card::before,
-  .achievement-page-icon,
-  .achievement-page-copy strong {
+  #achievementGrid .achievement-page-card {
+    animation: none !important;
+    transition: none !important;
+  }
+  #achievementGrid .achievement-page-card::before,
+  #achievementGrid .achievement-page-icon,
+  #achievementGrid .achievement-page-copy strong {
     transition: none !important;
   }
 }
