@@ -5193,11 +5193,11 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 #developer .dev-setting-switch strong{font-size:13px;color:var(--text)}
 #developer .dev-setting-switch small{font-size:11px;line-height:1.5;color:var(--muted)}
 #developer .dev-setting-switch input{position:absolute;opacity:0;width:1px;height:1px}
-#developer .dev-setting-switch i{position:relative;flex:0 0 42px;width:42px;height:24px;border-radius:30px;background:#a9a9ad;transition:background .2s}
+#developer .dev-setting-switch i{position:relative;flex:0 0 42px;width:42px;height:24px;border-radius:30px;background:#a9a9ad;transition:background .2s,box-shadow .2s}
 #developer .dev-setting-switch i:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;transition:transform .2s}
-#developer .dev-setting-switch input:checked+i{background:var(--accent)}
+#developer .dev-setting-switch input:checked+i{background:#8957e8;box-shadow:0 0 0 2px rgba(137,87,232,.14)}
 #developer .dev-setting-switch input:checked+i:after{transform:translateX(18px)}
-#developer .dev-setting-switch input:focus-visible+i{outline:3px solid color-mix(in srgb,var(--accent) 30%,transparent);outline-offset:3px}
+#developer .dev-setting-switch input:focus-visible+i{outline:3px solid rgba(137,87,232,.3);outline-offset:3px}
 #developer .dev-settings-footer{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:4px 2px;color:var(--muted);font-size:12px}
 #developer .dev-settings-reset{padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text);font:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
 #developer .dev-settings-reset:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
