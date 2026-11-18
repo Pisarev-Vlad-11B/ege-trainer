@@ -5068,6 +5068,45 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 .practice-days-card{grid-column:2;grid-row:2}
 .practice-days-card strong{color:var(--red);font-variant-numeric:tabular-nums}
 </style>
+
+<style>
+/* Более выразительное оформление вопросов и ответов в блоке самопроверки (тёмная тема) */
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz{
+  background:linear-gradient(135deg,#343138 0%,#302d34 100%);
+  border:1px solid #5b505a;
+  box-shadow:0 5px 16px rgba(0,0,0,.13);
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz summary{
+  color:#fff7f8;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.5;
+  padding:17px 19px;
+  transition:background-color .25s ease,color .25s ease;
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz summary:hover{
+  background:rgba(240,160,173,.09);
+  color:#ffc2cb;
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz .theory-details-content{
+  color:#e5dce2;
+  font-size:14px;
+  line-height:1.75;
+  padding:0 19px 18px;
+}
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz .theory-details-content strong,
+html[data-theme="dark"] :is(#theory,.windowcontent) .theory-quiz .theory-details-content b{
+  display:inline;
+  color:#ffc0ca;
+  background:rgba(204,112,132,.19);
+  border:1px solid rgba(240,160,173,.2);
+  border-radius:5px;
+  padding:0 4px;
+  font-weight:850;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+</style>
 </body>
   <script>
 // Локальные настройки панели разработчика
