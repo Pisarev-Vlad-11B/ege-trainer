@@ -1518,7 +1518,46 @@ const theoryHTML=`<div class="theory-intro-card">
  <details class="theory-quiz"><summary>От чего зависит буква в слове «клеивший»?</summary><div class="theory-details-content">От гласной перед -ть в инфинитиве «клеить». Перед -ть стоит И, поэтому пишем кле<strong>и</strong>вший.</div></details>
 </div>
 <p class="theory-footnote">Это краткий конспект по основным орфографическим моделям задания № 12. В спорных случаях дополнительно проверяй словари и полный список исключений.</p>`;;
-$("theoryBody").innerHTML=theoryHTML;$("theoryModalContent").innerHTML=theoryHTML;
+const legacyTheoryHTML=`<h2>Как решать задание 12</h2>
+<p class="theory-lead">В задании проверяется <b>правописание личных окончаний глаголов</b> и <b>суффиксов причастий</b>. Сначала определи, какая это часть речи и какая форма слова, затем примени правило.</p>
+<div class="theory-visual">
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Иллюстрация книги и карандаша"><rect x="17" y="18" width="53" height="67" rx="8" fill="#fffdfa" stroke="#b44a57" stroke-width="2.5"/><path d="M27 18v67" stroke="#e4bfc0" stroke-width="2"/><path d="M37 37h23M37 48h18M37 59h20" stroke="#d7a0a3" stroke-width="3" stroke-linecap="round"/><path d="M72 18l10 5-23 49-10 5 1-11z" fill="#c65360"/><path d="M49 66l-1 11 10-5" fill="#e7c5a7"/><path d="M72 18l4-8 10 5-4 8" fill="#a93645"/></svg>
+  <div><strong>Сначала найди форму</strong><span>Глагол, причастие настоящего или прошедшего времени?</span></div>
+ </div>
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Иллюстрация карточек с буквами"><rect x="12" y="20" width="43" height="55" rx="8" fill="#fffdfa" stroke="#d7a0a3" stroke-width="2"/><rect x="43" y="12" width="43" height="55" rx="8" fill="#f3dfe0" stroke="#b44a57" stroke-width="2"/><text x="33" y="56" font-size="25" font-weight="800" text-anchor="middle" fill="#a93645">Е</text><text x="64" y="48" font-size="25" font-weight="800" text-anchor="middle" fill="#a93645">И</text><path d="M26 83h48" stroke="#d7a0a3" stroke-width="4" stroke-linecap="round"/><path d="M69 76l7 7-7 7" fill="none" stroke="#a93645" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div><strong>Потом проверь букву</strong><span>Определи спряжение или способ образования причастия.</span></div>
+ </div>
+</div>
+<h3>1. Спряжение глаголов</h3>
+<p>Ко <b>II спряжению</b> относятся глаголы на <b>-ить</b> (кроме брить, стелить и некоторых других исключений), а также глаголы-исключения: <b>гнать, держать, дышать, слышать, смотреть, видеть, ненавидеть, зависеть, терпеть, обидеть, вертеть</b>.</p>
+<ul><li><b>II спряжение:</b> в личных окончаниях обычно пишутся <b>и, а/я</b>: строишь, строят.</li><li><b>I спряжение:</b> в личных окончаниях обычно пишутся <b>е, у/ю</b>: читаешь, читают.</li></ul>
+<div class="theory-callout"><strong>Запомни:</strong> чтобы определить спряжение, поставь глагол в неопределённую форму и проверь окончание и исключения. Учитывай приставки и возвратный суффикс <b>-ся/-сь</b>.</div>
+<h3>2. Причастия настоящего времени</h3>
+<p>Суффикс зависит от <b>спряжения исходного глагола</b>:</p>
+<ul><li>От глаголов <b>I спряжения</b>: действительные причастия на <b>-ущ-/-ющ-</b>, страдательные на <b>-ем-/-ом-</b>.</li><li>От глаголов <b>II спряжения</b>: действительные причастия на <b>-ащ-/-ящ-</b>, страдательные на <b>-им-</b>.</li></ul>
+<div class="theory-visual">
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Схема первого спряжения"><circle cx="50" cy="50" r="37" fill="#fffdfa" stroke="#d7a0a3" stroke-width="3"/><text x="50" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#a93645">I</text><text x="50" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#76585b">-УЩ-</text><path d="M20 15l7 7M80 15l-7 7" stroke="#c65360" stroke-width="3" stroke-linecap="round"/></svg>
+  <div><strong>I спряжение</strong><span>Действительные: -ущ-/-ющ-<br/>Страдательные: -ем-/-ом-</span></div>
+ </div>
+ <div class="theory-visual-card">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Схема второго спряжения"><circle cx="50" cy="50" r="37" fill="#f3dfe0" stroke="#b44a57" stroke-width="3"/><text x="50" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#a93645">II</text><text x="50" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#76585b">-АЩ-</text><path d="M20 15l7 7M80 15l-7 7" stroke="#c65360" stroke-width="3" stroke-linecap="round"/></svg>
+  <div><strong>II спряжение</strong><span>Действительные: -ащ-/-ящ-<br/>Страдательные: -им-</span></div>
+ </div>
+</div>
+<h3>3. Причастия прошедшего времени</h3>
+<p>В <b>действительных причастиях прошедшего времени</b> перед суффиксом <b>-вш-</b> сохраняется гласная инфинитива: <b>увидеть — увидевший</b>, <b>услышать — услышавший</b>.</p>
+<div class="theory-callout"><strong>Обрати внимание:</strong> здесь важно вернуться к неопределённой форме глагола и посмотреть, какая гласная стоит перед <b>-ть</b>.</div>
+<h3>4. Краткий алгоритм</h3>
+<div class="theory-step"><em>1</em><span>Определи <b>часть речи</b> каждого слова.</span></div>
+<div class="theory-step"><em>2</em><span>Если это глагол — найди <b>инфинитив</b> и определи <b>спряжение</b>.</span></div>
+<div class="theory-step"><em>3</em><span>Если это причастие настоящего времени — определи спряжение <b>исходного глагола</b>.</span></div>
+<div class="theory-step"><em>4</em><span>Если причастие прошедшего времени — проверь гласную <b>перед суффиксом</b>.</span></div>
+<div class="theory-step"><em>5</em><span>Сравни пропущенные буквы в <b>обоих словах строки</b>.</span></div>
+<p><i>Важно: памятка краткая. Для сложных случаев проверяй исключения и способ образования конкретной формы.</i></p>`;
+$("theoryBody").innerHTML=theoryHTML;$("theoryModalContent").innerHTML=legacyTheoryHTML;
 let theoryCloseTimer=null;
 function openTheory(){
   const overlay=$("theoryOverlay");
