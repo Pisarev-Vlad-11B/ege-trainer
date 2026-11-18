@@ -2849,7 +2849,7 @@ async function restoreAccount(user, username = "") {
 
   // Обновляем профиль с учётом статуса разработчика
   paintProfile(data);
-  if (window.__isDeveloper === true) startDeveloperSupport();
+  if (window.__isDeveloper === true) window.__startDeveloperSupport?.();
 
   if (data.progress && window.__restoreCloudState) {
     window.__restoreCloudState(data.progress);
