@@ -987,7 +987,7 @@ max-height: 55px;
         <div class="theory-label"><span></span> ТВОЯ БАЗА ЗНАНИЙ</div>
         <h2>Понимай<br>правила. <em>Пиши</em><br><em>уверенно.</em></h2>
         <p>Всё, что нужно для задания № 12: от спряжений до суффиксов причастий. Без лишнего — только понятные объяснения и рабочий алгоритм.</p>
-        <button class="theory-jump" type="button" onclick="document.getElementById('theoryBody').scrollIntoView({behavior:'smooth',block:'start'})">Перейти к материалам <span>↓</span></button>
+        <button class="theory-jump" type="button" onclick="scrollToTheoryMaterials()">Перейти к материалам <span>↓</span></button>
       </div>
       <div class="theory-number-art" aria-hidden="true">
         <div class="theory-orbit theory-orbit-a"></div><div class="theory-orbit theory-orbit-b"></div>
@@ -1408,6 +1408,27 @@ function renderMistakes(){
  host.innerHTML="";
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
+window.scrollToTheoryMaterials=function(){
+  const target=document.getElementById("theoryBody");
+  if(!target)return;
+  const reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const startY=window.scrollY||window.pageYOffset;
+  const targetY=Math.max(0,target.getBoundingClientRect().top+startY-20);
+  const distance=targetY-startY;
+  if(reduceMotion||Math.abs(distance)<2){
+    window.scrollTo(0,targetY);
+    return;
+  }
+  const duration=950;
+  const startTime=performance.now();
+  const easeInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  function step(now){
+    const progress=Math.min(1,(now-startTime)/duration);
+    window.scrollTo(0,startY+distance*easeInOutCubic(progress));
+    if(progress<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+};
 const theoryHTML=`<div class="theory-intro-card">
  <div class="theory-intro-symbol">12</div>
  <div><span class="theory-block-eyebrow">ГЛАВНОЕ ПРАВИЛО</span><h2>Сначала определи форму — потом выбирай букву</h2>
