@@ -898,7 +898,54 @@ html[data-theme="dark"] #developer .dev-announcement-list-card .dev-announcement
 html[data-theme="dark"] #developer .dev-publish-announcement-btn{background:linear-gradient(135deg,#b84b5a,#d26775)!important;border-color:#d26775!important;color:#fff!important;box-shadow:0 8px 22px rgba(0,0,0,.3)}
 html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{background:linear-gradient(135deg,#c85a69,#df7b87)!important}
 @media(max-width:600px){#developer .dev-announcement-workspace>.dev-setting-card{padding:16px}}
-</style></head>
+</style>
+<style>
+/* Мобильная защита от перекрытия элементов плавающим виджетом новостей */
+@media (max-width: 650px) {
+  #announcementWidget.announcement-widget {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 5 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 8px 0 0 !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    pointer-events: none !important;
+  }
+  #announcementWidget .announcement-toggle {
+    position: relative !important;
+    z-index: 2 !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+  }
+  #announcementWidget .announcement-panel {
+    position: absolute !important;
+    top: calc(100% + 6px) !important;
+    right: 14px !important;
+    width: min(320px, calc(100vw - 28px)) !important;
+    max-height: 55vh !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+    z-index: 3 !important;
+  }
+  #announcementWidget .announcement-public-list {
+    max-height: calc(55vh - 60px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  #announcementWidget .announcement-toggle,
+  #announcementWidget .announcement-panel button {
+    touch-action: manipulation;
+  }
+}
+</style>
+</head>
 <body>
 <header class="topbar">
   <button class="brand" id="homeLogo" type="button" aria-label="Перейти на главную">
