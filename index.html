@@ -874,6 +874,18 @@ max-height: 55px;
     <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
 </nav>
 </header>
+
+<div id="announcementWidget" class="announcement-widget">
+  <button type="button" id="announcementToggle" class="announcement-toggle" aria-expanded="false" aria-controls="announcementPanel" title="Объявления">
+    <span class="announcement-bell">♢</span>
+    <span class="announcement-toggle-label">Новости</span>
+    <span id="announcementBadge" class="announcement-badge" hidden>0</span>
+  </button>
+  <section id="announcementPanel" class="announcement-panel" hidden aria-label="Объявления и новости">
+    <div class="announcement-panel-head"><div><strong>Объявления</strong><small>Новости тренажёра</small></div><button type="button" id="announcementClose" aria-label="Закрыть">×</button></div>
+    <div id="announcementPublicList" class="announcement-public-list"><p class="announcement-empty">Пока нет новых объявлений.</p></div>
+  </section>
+</div>
 <main>
   <div class="page-doodles" aria-hidden="true">
     <svg class="page-doodle doodle-star" viewBox="0 0 100 100"><path d="M50 5 60 38 95 50 60 61 50 95 39 61 5 50 39 38Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg>
@@ -1259,6 +1271,19 @@ max-height: 55px;
         </label>
       </div>
 
+      <div class="dev-setting-card dev-announcement-admin">
+        <div class="dev-setting-heading">
+          <span class="dev-setting-icon">✉</span>
+          <div><strong>Публикация объявления</strong><p>Сообщение появится в небольшом блоке новостей в правом верхнем углу сайта у всех посетителей</p></div>
+        </div>
+        <label class="dev-setting-label" for="devAnnouncementTitle">Заголовок</label>
+        <input id="devAnnouncementTitle" class="dev-setting-select" type="text" maxlength="70" placeholder="Например: Обновление тренажёра">
+        <label class="dev-setting-label" for="devAnnouncementText" style="margin-top:14px;">Текст объявления</label>
+        <textarea id="devAnnouncementText" class="dev-setting-select" rows="4" maxlength="500" placeholder="Напиши, что нового появилось на сайте..." style="padding:12px;resize:vertical;"></textarea>
+        <button type="button" id="devPublishAnnouncement" class="dev-settings-reset" style="margin-top:14px;background:var(--accent);color:#fff;border-color:var(--accent);">Опубликовать новость</button>
+        <p id="devAnnouncementStatus" class="dev-setting-hint" aria-live="polite">Публикация доступна только разработчику.</p>
+        <div class="dev-announcement-manage"><strong>Опубликованные объявления</strong><div id="devAnnouncementAdminList"><p class="dev-setting-hint">Загрузка объявлений…</p></div></div>
+      </div>
       <div class="dev-settings-footer">
         <span id="devSettingsSaved">Настройки сохраняются на этом устройстве</span>
         <button type="button" id="devSettingsReset" class="dev-settings-reset">Сбросить настройки</button>
@@ -2812,6 +2837,121 @@ if (FIREBASE_CONFIG_READY) {
     const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
+
+    // Публичная лента объявлений и инструменты публикации для разработчика.
+    const publicAnnouncementList = document.getElementById("announcementPublicList");
+    const adminAnnouncementList = document.getElementById("devAnnouncementAdminList");
+    const announcementBadge = document.getElementById("announcementBadge");
+    const announcementPanel = document.getElementById("announcementPanel");
+    const announcementToggle = document.getElementById("announcementToggle");
+    let announcementCache = [];
+
+    function formatAnnouncementDate(value) {
+      try {
+        const date = value?.toDate ? value.toDate() : new Date(value || Date.now());
+        return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+      } catch (error) { return ""; }
+    }
+    function renderPublicAnnouncements(items) {
+      if (!publicAnnouncementList) return;
+      if (!items.length) {
+        publicAnnouncementList.innerHTML = '<p class="announcement-empty">Пока нет новых объявлений.</p>';
+      } else {
+        publicAnnouncementList.innerHTML = items.map(item => `
+          <article class="announcement-item">
+            <strong>${escapeAnnouncementHtml(item.title)}</strong>
+            <p>${escapeAnnouncementHtml(item.text)}</p>
+            <time>${formatAnnouncementDate(item.createdAt)}</time>
+          </article>`).join("");
+      }
+      if (announcementBadge) {
+        announcementBadge.hidden = !items.length;
+        announcementBadge.textContent = items.length > 9 ? "9+" : String(items.length);
+      }
+    }
+    function escapeAnnouncementHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]);
+    }
+    function renderAdminAnnouncements() {
+      if (!adminAnnouncementList) return;
+      if (!announcementCache.length) {
+        adminAnnouncementList.innerHTML = '<p class="dev-setting-hint">Опубликованных объявлений пока нет.</p>';
+        return;
+      }
+      adminAnnouncementList.innerHTML = announcementCache.map(item => `
+        <div class="dev-announcement-row">
+          <div><strong>${escapeAnnouncementHtml(item.title)}</strong><small>${formatAnnouncementDate(item.createdAt)}</small></div>
+          <button type="button" class="dev-announcement-delete" data-announcement-delete="${item.id}">Удалить</button>
+        </div>`).join("");
+    }
+    onSnapshot(collection(db, "announcements"), snapshot => {
+      announcementCache = snapshot.docs.map(item => ({ id: item.id, ...item.data() }))
+        .sort((a,b) => {
+          const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+          const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+          return tb - ta;
+        });
+      renderPublicAnnouncements(announcementCache);
+      renderAdminAnnouncements();
+    }, error => {
+      console.error("Не удалось загрузить объявления:", error);
+      if (publicAnnouncementList) publicAnnouncementList.innerHTML = '<p class="announcement-empty">Не удалось загрузить новости.</p>';
+      if (adminAnnouncementList) adminAnnouncementList.innerHTML = '<p class="dev-setting-hint">Нет доступа к коллекции announcements. Проверь правила Firestore.</p>';
+    });
+
+    announcementToggle?.addEventListener("click", () => {
+      const opening = announcementPanel.hidden;
+      announcementPanel.hidden = !opening;
+      announcementToggle.setAttribute("aria-expanded", String(opening));
+    });
+    document.getElementById("announcementClose")?.addEventListener("click", () => {
+      announcementPanel.hidden = true;
+      announcementToggle?.setAttribute("aria-expanded", "false");
+    });
+    document.getElementById("devPublishAnnouncement")?.addEventListener("click", async () => {
+      const titleInput = document.getElementById("devAnnouncementTitle");
+      const textInput = document.getElementById("devAnnouncementText");
+      const status = document.getElementById("devAnnouncementStatus");
+      const title = titleInput?.value.trim();
+      const body = textInput?.value.trim();
+      if (window.__isDeveloper !== true) { if (status) status.textContent = "Недостаточно прав для публикации."; return; }
+      if (!title || !body) { if (status) status.textContent = "Заполни заголовок и текст объявления."; return; }
+      const button = document.getElementById("devPublishAnnouncement");
+      button.disabled = true;
+      button.textContent = "Публикуем…";
+      try {
+        await addDoc(collection(db, "announcements"), {
+          title: title.slice(0,70), text: body.slice(0,500),
+          createdAt: serverTimestamp(), createdBy: auth.currentUser?.uid || ""
+        });
+        titleInput.value = "";
+        textInput.value = "";
+        if (status) status.textContent = "Объявление опубликовано для всех посетителей.";
+        if (typeof logActivity === "function") await logActivity("Публикация объявления", title);
+      } catch (error) {
+        console.error("Ошибка публикации объявления:", error);
+        if (status) status.textContent = "Не удалось опубликовать. Проверь правила Firestore.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "Опубликовать новость";
+      }
+    });
+    adminAnnouncementList?.addEventListener("click", async event => {
+      const button = event.target.closest("[data-announcement-delete]");
+      if (!button) return;
+      if (window.__isDeveloper !== true) return;
+      const id = button.dataset.announcementDelete;
+      if (!id || !confirm("Удалить это объявление?")) return;
+      button.disabled = true;
+      try {
+        await deleteDoc(doc(db, "announcements", id));
+      } catch (error) {
+        console.error("Ошибка удаления объявления:", error);
+        alert("Не удалось удалить объявление. Проверь правила Firestore.");
+        button.disabled = false;
+      }
+    });
+
     onAuthStateChanged(auth, async user => {
       if (authActionInProgress) return;
       if (!user) {
@@ -4723,6 +4863,36 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 #developer.dev-compact .dev-stats-grid{gap:10px}
 #developer.dev-compact .dev-stat-card{padding:16px}
 @media(max-width:700px){#developer .dev-settings-grid{grid-template-columns:1fr}#developer .dev-settings-footer{align-items:flex-start;flex-direction:column}}
+
+/* Плавающий виджет объявлений */
+.announcement-widget{position:fixed;z-index:1200;top:92px;right:22px;width:min(320px,calc(100vw - 28px));font-family:inherit}
+.announcement-toggle{margin-left:auto;display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid var(--line);border-radius:13px;background:var(--paper);color:var(--ink);box-shadow:0 8px 26px #2d182012;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
+.announcement-toggle:hover{transform:translateY(-2px);border-color:#d5a0a7;box-shadow:0 12px 28px #2d18201c}
+.announcement-bell{font-size:18px;color:var(--red)}
+.announcement-toggle-label{font-size:12px;font-weight:800}
+.announcement-badge{display:grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:var(--red);color:#fff;font-size:10px;font-weight:800}
+.announcement-panel{margin-top:9px;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--paper);box-shadow:0 18px 50px #20101526;animation:announcementIn .2s ease}
+.announcement-panel[hidden]{display:none}
+@keyframes announcementIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.announcement-panel-head{display:flex;justify-content:space-between;align-items:center;padding:15px 16px;border-bottom:1px solid var(--line)}
+.announcement-panel-head div{display:grid;gap:3px}.announcement-panel-head strong{font-size:14px;color:var(--ink)}.announcement-panel-head small{font-size:11px;color:var(--muted)}
+.announcement-panel-head button{width:28px;height:28px;border:0;border-radius:8px;background:var(--paper2);color:var(--muted);font-size:20px;cursor:pointer}
+.announcement-public-list{display:grid;gap:0;max-height:min(55vh,420px);overflow:auto}
+.announcement-item{padding:14px 16px;border-bottom:1px solid var(--line)}
+.announcement-item:last-child{border-bottom:0}
+.announcement-item strong{display:block;margin-bottom:5px;color:var(--ink);font-size:13px}
+.announcement-item p{margin:0;color:var(--muted);font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.announcement-item time{display:block;margin-top:8px;color:var(--muted);font-size:10px}
+.announcement-empty{margin:0;padding:20px 16px;color:var(--muted);font-size:12px;line-height:1.5}
+.dev-announcement-admin{grid-column:1/-1}
+.dev-announcement-admin .dev-setting-label{margin-top:4px}
+.dev-announcement-manage{margin-top:22px;padding-top:17px;border-top:1px solid var(--border)}
+.dev-announcement-manage>strong{display:block;margin-bottom:10px;font-size:13px;color:var(--text)}
+.dev-announcement-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.dev-announcement-row strong{display:block;color:var(--text);font-size:12px}
+.dev-announcement-row small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.dev-announcement-delete{flex:0 0 auto;border:1px solid #d99aa2;border-radius:8px;background:transparent;color:#b4233a;padding:7px 9px;font-size:11px;cursor:pointer}
+@media(max-width:650px){.announcement-widget{top:78px;right:12px;width:min(300px,calc(100vw - 24px))}.announcement-toggle{padding:8px 11px}.announcement-public-list{max-height:45vh}}
 </style>
 </body>
   <script>
