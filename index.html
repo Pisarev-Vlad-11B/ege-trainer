@@ -1177,6 +1177,19 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
   .profile-shell .profile-pet-name-editor button{width:100%}
 }
 </style>
+<style>
+/* Исправление декора публичного аватара и панель выбора аккаунта для накрутки */
+.public-profile-avatar-wrap{margin:0 auto 46px!important}
+.public-profile-card h2{position:relative;z-index:1;margin-top:0}
+.public-profile-card .avatar-frame-decor{pointer-events:none}
+.dev-cheat-toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,330px);gap:16px;align-items:stretch;margin-bottom:18px}
+.dev-cheat-toolbar .dev-cheat-notice{margin:0}
+.dev-cheat-account{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px 18px;border:1px solid var(--border);border-radius:16px;background:var(--card)}
+.dev-cheat-account label{font-size:10px;font-weight:850;letter-spacing:1px;color:var(--muted)}
+.dev-cheat-account select{width:100%;min-width:0;padding:12px 13px;border:1px solid var(--border);border-radius:11px;background:var(--bg);color:var(--text);font:inherit;font-weight:650}
+.dev-cheat-account small{font-size:11px;color:var(--muted)}
+@media(max-width:760px){.dev-cheat-toolbar{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1688,7 +1701,10 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
   <!-- НАКРУТКА СТАТИСТИКИ -->
   <div class="dev-page-panel" data-dev-content="stats-tools">
     <div class="dev-topbar"><div><div class="dev-breadcrumb">ЦЕНТР УПРАВЛЕНИЯ / ИНСТРУМЕНТЫ</div><h2>Накрутка статистики</h2><p>Изменяй показатели своего аккаунта разработчика.</p></div><div class="dev-top-actions"><span class="dev-live-indicator"><i></i> ТОЛЬКО ДЛЯ РАЗРАБОТЧИКА</span></div></div>
-    <div class="dev-cheat-notice"><strong>⚠️ Административный инструмент</strong><span>Изменения применяются только к аккаунту, в котором выполнен вход в режиме разработчика, и синхронизируются с облачным сохранением.</span></div>
+    <div class="dev-cheat-toolbar">
+      <div class="dev-cheat-notice"><strong>⚠️ Административный инструмент</strong><span>Выбери аккаунт, данные которого нужно изменить. Изменения сохраняются в Firebase.</span></div>
+      <div class="dev-cheat-account"><label for="devCheatAccountSelect">АККАУНТ ДЛЯ НАКРУТКИ</label><select id="devCheatAccountSelect"><option value="">Загрузка аккаунтов…</option></select><small id="devCheatAccountStatus">Выбери пользователя из списка</small></div>
+    </div>
     <div class="dev-cheat-grid">
       <article class="dev-cheat-card"><div class="dev-cheat-icon">🔥</div><div class="dev-cheat-copy"><span>СЕРИЯ ПРАВИЛЬНЫХ ОТВЕТОВ</span><h3>Огоньки</h3><p>Установи текущую серию. Рекорд обновится автоматически, если новое значение окажется выше.</p></div><div class="dev-cheat-current">Сейчас: <strong id="devCheatStreakCurrent">0</strong></div><label for="devCheatStreakInput">Новое количество</label><input id="devCheatStreakInput" type="number" min="0" max="1000000" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatStreakApply">Применить огоньки</button></article>
       <article class="dev-cheat-card"><div class="dev-cheat-icon">✦</div><div class="dev-cheat-copy"><span>ВАЛЮТА МАГАЗИНА</span><h3>Баллы магазина</h3><p>Установи количество баллов. Их можно будет потратить на рамки аватара.</p></div><div class="dev-cheat-current">Баланс: <strong id="devCheatCoinsCurrent">0</strong> ✦</div><label for="devCheatCoinsInput">Новое количество</label><input id="devCheatCoinsInput" type="number" min="0" max="1000000" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatCoinsApply">Применить баллы</button></article>
@@ -2054,7 +2070,80 @@ function renderMistakes(){
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
 function refreshDeveloperCheatPanel(){if(window.__isDeveloper!==true)return;const streak=$("devCheatStreakCurrent"),coins=$("devCheatCoinsCurrent"),si=$("devCheatStreakInput"),ci=$("devCheatCoinsInput"),correct=$("devCheatCorrectCurrent"),wrong=$("devCheatWrongCurrent"),cInput=$("devCheatCorrectInput"),wInput=$("devCheatWrongInput"),petXp=$("devCheatPetXpCurrent"),petInput=$("devCheatPetXpInput");const done=Array.isArray(state.completed)?state.completed.length:0,errors=Array.isArray(state.mistakes)?state.mistakes.length:0;if(streak)streak.textContent=Number(state.streak)||0;if(coins)coins.textContent=Number(state.coins)||0;if(si)si.value=Number(state.streak)||0;if(ci)ci.value=Number(state.coins)||0;if(correct)correct.textContent=done;if(wrong)wrong.textContent=errors;if(cInput)cInput.value=done;if(wInput){wInput.value=errors;wInput.max=Math.max(0,143-done);}if(petXp)petXp.textContent=Number(state.pet?.xp)||0;if(petInput&&document.activeElement!==petInput)petInput.value=0;}
-function applyDeveloperCheat(kind){if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="petXp"){if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"arcticFox"};const currentXp=Math.max(0,Math.floor(Number(state.pet.xp)||0));if(currentXp+value>1000000){alert("Общий опыт питомца не может превышать 1 000 000 XP.");return;}state.pet.xp=currentXp+value;}else if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!",petXp:"Добавлено "+value+" опыта питомцу! Теперь у него "+(Number(state.pet?.xp)||0)+" XP."})[kind]);}
+let devCheatSelectedUid="";
+async function loadDevCheatAccounts(){
+  const select=document.getElementById("devCheatAccountSelect"),status=document.getElementById("devCheatAccountStatus");
+  if(!select||window.__isDeveloper!==true||!db)return;
+  select.disabled=true;if(status)status.textContent="Загружаем список аккаунтов…";
+  try{
+    const snapshot=await getDocs(collection(db,"users"));
+    const users=snapshot.docs.map(item=>({uid:item.id,...item.data()})).sort((a,b)=>String(a.username||a.firstName||a.uid).localeCompare(String(b.username||b.firstName||b.uid),"ru"));
+    const preferred=devCheatSelectedUid||auth?.currentUser?.uid||"";
+    select.innerHTML='<option value="">Выбери аккаунт…</option>'+users.map(user=>{
+      const fullName=[user.firstName,user.lastName].filter(Boolean).join(" ");
+      const label=(fullName?fullName+" · ":"")+"@"+String(user.username||"без логина");
+      return '<option value="'+escapeDevHTML(user.uid)+'">'+escapeDevHTML(label)+'</option>';
+    }).join("");
+    if(users.some(user=>user.uid===preferred))select.value=preferred;
+    devCheatSelectedUid=select.value;
+    if(status)status.textContent=users.length+" аккаунтов доступно";
+    await refreshDevCheatTarget();
+  }catch(error){console.error("Не удалось загрузить аккаунты для накрутки:",error);if(status)status.textContent="Не удалось загрузить аккаунты. Проверь доступ к users.";select.innerHTML='<option value="">Ошибка загрузки</option>';}
+  finally{select.disabled=false;}
+}
+async function refreshDevCheatTarget(){
+  const select=document.getElementById("devCheatAccountSelect"),uid=select?.value||"";
+  devCheatSelectedUid=uid;const status=document.getElementById("devCheatAccountStatus");
+  if(!uid){if(status)status.textContent="Сначала выбери аккаунт";return;}
+  try{
+    const snap=await getDoc(doc(db,"users",uid));if(!snap.exists()){if(status)status.textContent="Аккаунт не найден";return;}
+    const p=snap.data().progress||{};
+    const values={devCheatStreakCurrent:Number(p.streak)||0,devCheatCoinsCurrent:Number(p.coins)||0,devCheatCorrectCurrent:Array.isArray(p.completed)?p.completed.length:0,devCheatWrongCurrent:Array.isArray(p.mistakes)?p.mistakes.length:0,devCheatPetXpCurrent:Number(p.pet?.xp)||0};
+    Object.entries(values).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=String(value);});
+    if(status)status.textContent="Выбран аккаунт"+(uid===auth?.currentUser?.uid?" · твой аккаунт":" · изменения будут применены к нему");
+  }catch(error){console.error("Не удалось прочитать выбранный аккаунт:",error);if(status)status.textContent="Нет доступа к данным аккаунта";}
+}
+async function applyDeveloperCheatToTarget(kind){
+  if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}
+  const uid=devCheatSelectedUid||document.getElementById("devCheatAccountSelect")?.value;
+  if(!uid){alert("Сначала выбери аккаунт для накрутки.");return;}
+  const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"};
+  const input=$(config[kind]);if(!input)return;
+  const value=Number(input.value),max=(kind==="correct"||kind==="wrong")?143:1000000;
+  if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}
+  const button=document.getElementById("devCheat"+({streak:"Streak",coins:"Coins",correct:"Correct",wrong:"Wrong",petXp:"PetXp"}[kind])+"Apply");
+  if(button){button.disabled=true;button.textContent="Сохраняем…";}
+  try{
+    const ref=doc(db,"users",uid),snap=await getDoc(ref);if(!snap.exists())throw new Error("Аккаунт не найден");
+    const progress={...(snap.data().progress||{})};
+    progress.order=Array.isArray(progress.order)&&progress.order.length?progress.order:(Array.isArray(state.order)?state.order.slice():TASKS.map(task=>task.id));
+    progress.answers={...(progress.answers||{})};
+    if(kind==="petXp"){
+      progress.pet={...(progress.pet||{name:"Пушок",xp:0,type:"arcticFox"})};
+      const xp=Math.max(0,Math.floor(Number(progress.pet.xp)||0));if(xp+value>1000000)throw new Error("Общий опыт питомца не может превышать 1 000 000 XP.");progress.pet.xp=xp+value;
+    }else if(kind==="streak"){progress.streak=value;progress.bestStreak=Math.max(Number(progress.bestStreak)||0,value);}
+    else if(kind==="coins"){progress.coins=value;}
+    else if(kind==="correct"){
+      const ids=progress.order.slice(0,value).map(Number);progress.completed=ids;progress.correct=ids.length;
+      progress.mistakes=(progress.mistakes||[]).filter(id=>!ids.includes(Number(id)));
+      ids.forEach(id=>{const task=TASKS.find(t=>Number(t.id)===id);if(task)progress.answers[id]={value:task.answers[0],status:"correct"};});
+    }else{
+      const completed=progress.completed||[],available=143-completed.length;if(value>available)throw new Error("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");
+      const done=new Set(completed.map(Number)),ids=progress.order.map(Number).filter(id=>!done.has(id)).slice(0,value);
+      progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
+    }
+    await setDoc(ref,{progress,updatedAt:serverTimestamp()},{merge:true});
+    if(kind==="streak"){
+      try{await setDoc(doc(db,"leaderboard",uid),{streak:value,updatedAt:serverTimestamp()},{merge:true});}catch(e){console.warn("Не удалось обновить рейтинг выбранного пользователя:",e);}
+      try{const pub=doc(db,"publicProfiles",uid),ps=await getDoc(pub);if(ps.exists())await setDoc(pub,{streak:value,updatedAt:serverTimestamp()},{merge:true});}catch(e){console.warn("Не удалось обновить публичный профиль:",e);}
+    }
+    await refreshDevCheatTarget();if(typeof toast==="function")toast("Данные выбранного аккаунта обновлены.");
+  }catch(error){console.error("Ошибка накрутки выбранного аккаунта:",error);alert(error.message||"Не удалось сохранить изменения. Проверь правила Firestore.");}
+  finally{if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}}
+}
+document.getElementById("devCheatAccountSelect")?.addEventListener("change",refreshDevCheatTarget);
+document.querySelectorAll('[data-dev-page="stats-tools"]').forEach(button=>button.addEventListener("click",()=>loadDevCheatAccounts()));
+function applyDeveloperCheat(kind){if(document.getElementById("devCheatAccountSelect")){applyDeveloperCheatToTarget(kind);return;}if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="petXp"){if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"arcticFox"};const currentXp=Math.max(0,Math.floor(Number(state.pet.xp)||0));if(currentXp+value>1000000){alert("Общий опыт питомца не может превышать 1 000 000 XP.");return;}state.pet.xp=currentXp+value;}else if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!",petXp:"Добавлено "+value+" опыта питомцу! Теперь у него "+(Number(state.pet?.xp)||0)+" XP."})[kind]);}
 function renderMistakeAnalytics(){const host=$("mistakeAnalyticsList");if(!host)return;const entries=Object.entries(state.mistakeCounts||{}).map(([id,count])=>({id:Number(id),count:Number(count)||0})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,6);if(!entries.length){host.innerHTML='<div class="analytics-empty">Пока нет ошибок. Здесь появится статистика после первых попыток.</div>';return;}const max=entries[0].count;host.innerHTML=entries.map(x=>`<div class="analytics-row"><div class="analytics-row-top"><strong>Задание №${x.id}</strong><span>${x.count} ${x.count===1?"ошибка":x.count<5?"ошибки":"ошибок"}</span></div><div class="analytics-track"><i style="width:${Math.max(8,x.count/max*100)}%"></i></div><button type="button" class="analytics-repeat" data-repeat-task="${x.id}">Повторить задание →</button></div>`).join("");}
 const SHOP_FRAMES=[
  {id:"rose",name:"Розовая рамка",price:30,icon:"🌸",desc:"Нежное розовое свечение",category:"regular"},
