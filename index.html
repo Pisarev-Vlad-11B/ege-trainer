@@ -1179,7 +1179,7 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
 </style>
 <style>
 /* Исправление декора публичного аватара и панель выбора аккаунта для накрутки */
-.public-profile-avatar-wrap{margin:0 auto 1px!important;}
+.public-profile-avatar-wrap{margin:0 auto 5px!important;}
 .public-profile-card h2{display:block;clear:both;position:relative;z-index:4;margin:0 auto 4px!important;line-height:1.2;}
 .public-profile-card .avatar-frame-decor{z-index:2;}
 .dev-cheat-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(280px,360px)!important;}
@@ -2086,8 +2086,8 @@ async function loadDevCheatAccounts(){
   try{
     if (!auth?.currentUser) throw new Error("Нет активной авторизации Firebase. Выйди и войди в аккаунт разработчика заново.");
     if (window.__isDeveloper !== true) throw new Error("Firebase не подтвердил права разработчика. Проверь developerAccess/{UID} и поле role: developer.");
-    const snapshot=await getDocs(collection(db,"users"));
-    const users=snapshot.docs.map(item=>({uid:item.id,...item.data()})).sort((a,b)=>String(a.username||a.firstName||a.uid).localeCompare(String(b.username||b.firstName||b.uid),"ru"));
+    const users=await window.__devCheatFirebase.listUsers();
+    users.sort((a,b)=>String(a.username||a.firstName||a.uid).localeCompare(String(b.username||b.firstName||b.uid),"ru"));
     const preferred=devCheatSelectedUid||auth?.currentUser?.uid||"";
     select.innerHTML='<option value="">Выбери аккаунт…</option>'+users.map(user=>{
       const fullName=[user.firstName,user.lastName].filter(Boolean).join(" ");
@@ -2120,11 +2120,11 @@ async function refreshDevCheatTarget(){
   devCheatSelectedUid=uid;const status=document.getElementById("devCheatAccountStatus");
   if(!uid){if(status)status.textContent="Сначала выбери аккаунт";return;}
   try{
-    const snap=await getDoc(doc(db,"users",uid));if(!snap.exists()){if(status)status.textContent="Аккаунт не найден";return;}
-    const p=snap.data().progress||{};
+    const account=await window.__devCheatFirebase.getUser(uid);if(!account){if(status)status.textContent="Аккаунт не найден";return;}
+     const p=account.progress||{};
     const values={devCheatStreakCurrent:Number(p.streak)||0,devCheatCoinsCurrent:Number(p.coins)||0,devCheatCorrectCurrent:Array.isArray(p.completed)?p.completed.length:0,devCheatWrongCurrent:Array.isArray(p.mistakes)?p.mistakes.length:0,devCheatPetXpCurrent:Number(p.pet?.xp)||0};
     Object.entries(values).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=String(value);});
-    if(status)status.textContent="Выбран аккаунт"+(uid===auth?.currentUser?.uid?" · твой аккаунт":" · изменения будут применены к нему");
+    if(status)status.textContent="Выбран аккаунт"+(uid===window.__devCheatFirebase.currentUid()?" · твой аккаунт":" · изменения будут применены к нему");
   }catch(error){console.error("Не удалось прочитать выбранный аккаунт:",error);if(status)status.textContent="Нет доступа к данным аккаунта";}
 }
 async function applyDeveloperCheatToTarget(kind){
@@ -2138,8 +2138,8 @@ async function applyDeveloperCheatToTarget(kind){
   const button=document.getElementById("devCheat"+({streak:"Streak",coins:"Coins",correct:"Correct",wrong:"Wrong",petXp:"PetXp"}[kind])+"Apply");
   if(button){button.disabled=true;button.textContent="Сохраняем…";}
   try{
-    const ref=doc(db,"users",uid),snap=await getDoc(ref);if(!snap.exists())throw new Error("Аккаунт не найден");
-    const progress={...(snap.data().progress||{})};
+    const account=await window.__devCheatFirebase.getUser(uid);if(!account)throw new Error("Аккаунт не найден");
+     const progress={...(account.progress||{})};
     progress.order=Array.isArray(progress.order)&&progress.order.length?progress.order:(Array.isArray(state.order)?state.order.slice():TASKS.map(task=>task.id));
     progress.answers={...(progress.answers||{})};
     if(kind==="petXp"){
@@ -2156,10 +2156,9 @@ async function applyDeveloperCheatToTarget(kind){
       const done=new Set(completed.map(Number)),ids=progress.order.map(Number).filter(id=>!done.has(id)).slice(0,value);
       progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
     }
-    await setDoc(ref,{progress,updatedAt:serverTimestamp()},{merge:true});
+    await window.__devCheatFirebase.saveProgress(uid,progress);
     if(kind==="streak"){
-      try{await setDoc(doc(db,"leaderboard",uid),{streak:value,updatedAt:serverTimestamp()},{merge:true});}catch(e){console.warn("Не удалось обновить рейтинг выбранного пользователя:",e);}
-      try{const pub=doc(db,"publicProfiles",uid),ps=await getDoc(pub);if(ps.exists())await setDoc(pub,{streak:value,updatedAt:serverTimestamp()},{merge:true});}catch(e){console.warn("Не удалось обновить публичный профиль:",e);}
+      try{await window.__devCheatFirebase.updateStreak(uid,value);}catch(e){console.warn("Не удалось обновить рейтинг выбранного пользователя:",e);}
     }
     await refreshDevCheatTarget();if(typeof toast==="function")toast("Данные выбранного аккаунта обновлены.");
   }catch(error){console.error("Ошибка накрутки выбранного аккаунта:",error);alert(error.message||"Не удалось сохранить изменения. Проверь правила Firestore.");}
@@ -3816,6 +3815,17 @@ if (FIREBASE_CONFIG_READY) {
     const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
+    window.__devCheatFirebase = {
+      listUsers: async () => { const snap=await getDocs(collection(db,"users")); return snap.docs.map(item=>({uid:item.id,...item.data()})); },
+      getUser: async uid => { const snap=await getDoc(doc(db,"users",uid)); return snap.exists()?snap.data():null; },
+      saveProgress: async (uid,progress) => setDoc(doc(db,"users",uid),{progress,updatedAt:serverTimestamp()},{merge:true}),
+      updateStreak: async (uid,value) => {
+        await setDoc(doc(db,"leaderboard",uid),{streak:value,updatedAt:serverTimestamp()},{merge:true});
+        const pubRef=doc(db,"publicProfiles",uid),pub=await getDoc(pubRef);
+        if(pub.exists()) await setDoc(pubRef,{streak:value,updatedAt:serverTimestamp()},{merge:true});
+      },
+      currentUid: () => auth?.currentUser?.uid || ""
+    };
 
 let globalWinterAtmosphereEnabled = false;
 let globalWinterAtmosphereUnsubscribe = null;
