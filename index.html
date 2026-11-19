@@ -1382,7 +1382,7 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
 </div>
       <p class="profile-privacy-note">Мы не запрашиваем номер телефона, электронную почту или дату рождения. Указывай только ту информацию о себе, которой готов поделиться.</p>
     </div>
-    <div class="profile-pet-card" id="profilePetCard">
+    <div class="profile-pet-card" id="profilePetCard" hidden>
       <div class="profile-pet-top">
         <div><span class="eyebrow">ТВОЙ СПУТНИК</span><h3>Питомец профиля</h3><p>Решай задания, чтобы он рос и открывал новые формы.</p></div>
         <span class="profile-pet-level" id="petLevelBadge">Уровень 1</span>
@@ -1871,6 +1871,7 @@ function renderPetCard(){
  $("petMoodText").textContent=details.mood;$("petXpLabel").textContent=details.inside+" / 50 опыта";$("petXpPercent").textContent=details.percent+"%";$("petXpBar").style.width=details.percent+"%";
  const input=$("petNameInput");if(input&&document.activeElement!==input)input.value=name;
 }
+window.__refreshProfilePet=renderPetCard;
 function updateStats(){
  const done=state.completed.length, remaining=143-done, percent=Math.round(done/143*100);
  $("errorCount").textContent=state.mistakes.length;$("bankCount").textContent=143;
@@ -2546,6 +2547,7 @@ if (avatar && signed) {
 $id("profileNavText").textContent = signed
   ? (full.split(" ")[0] || data.username || "Профиль")
   : "Профиль";
+  window.__refreshProfilePet?.();
 }
 window.__updateProfileProgress = state => {
   if (!state) return;
