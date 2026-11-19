@@ -1859,6 +1859,8 @@ function applyProfileFrame(){
  wrap.querySelector(".avatar-frame-decor")?.remove();
  if(!state.activeFrame)return;
  wrap.classList.add("frame-"+state.activeFrame);
+ // Снег и фигурный сугроб используются только в сезонных зимних рамках.
+ if(!state.activeFrame.startsWith("newyear-"))return;
  const decorations={
   "newyear-snow":[["☃️","frame-snowman"],["❄️","frame-flake frame-flake-left"],["❄️","frame-flake frame-flake-right"]],
   "newyear-tree":[["❄️","frame-flake frame-flake-left"],["❄️","frame-flake frame-flake-right"],["✨","frame-star frame-star-top"]],
@@ -5897,9 +5899,9 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 .profile-avatar-wrap .avatar-edit{z-index:5}
 .avatar-frame-decor{position:absolute;inset:-18px;z-index:3;pointer-events:none;overflow:visible}
 .avatar-frame-decor>span{position:absolute;display:block;line-height:1;filter:drop-shadow(0 2px 2px rgba(35,35,35,.22))}
-.avatar-frame-decor .frame-snowbank{left:13px;right:13px;bottom:-9px;height:17px;border-radius:50% 50% 45% 45%;background:linear-gradient(180deg,#fff 0%,#eaf8ff 75%,#c9e9f7 100%);box-shadow:0 2px 5px #5d9fbd55;z-index:3}
-.avatar-frame-decor .frame-snowbank:before,.avatar-frame-decor .frame-snowbank:after{content:"";position:absolute;top:-5px;width:15px;height:10px;border-radius:50%;background:#f8fdff}
-.avatar-frame-decor .frame-snowbank:before{left:7px}.avatar-frame-decor .frame-snowbank:after{right:8px;top:-3px;width:11px;height:8px}
+.avatar-frame-decor .frame-snowbank{left:7px;right:7px;bottom:-10px;height:23px;border-radius:54% 46% 18% 22% / 88% 82% 18% 16%;background:radial-gradient(ellipse at 25% 15%,#fff 0 10%,transparent 34%),radial-gradient(ellipse at 72% 8%,#fff 0 9%,transparent 30%),linear-gradient(180deg,#fff 0%,#f4fcff 38%,#dceff8 78%,#b9ddeb 100%);border-top:1px solid rgba(255,255,255,.98);box-shadow:0 3px 7px #477f9955,0 1px 0 #fff inset;z-index:3}
+.avatar-frame-decor .frame-snowbank:before,.avatar-frame-decor .frame-snowbank:after{content:"";position:absolute;display:block;border-radius:50%;background:linear-gradient(180deg,#fff,#e7f5fb);box-shadow:0 1px 3px #5d9fbd33}
+.avatar-frame-decor .frame-snowbank:before{left:12px;top:-6px;width:22px;height:13px;transform:rotate(-12deg)}.avatar-frame-decor .frame-snowbank:after{right:10px;top:-5px;width:19px;height:12px;transform:rotate(10deg)}
 .avatar-frame-decor .frame-falling-snow{color:#dff8ff;text-shadow:0 0 4px #5ebde8;font-size:13px;z-index:4;animation:avatarSnowFall 3.2s ease-in infinite}
 .avatar-frame-decor .snow-p0{left:8%;top:-15%;animation-delay:-.2s}.avatar-frame-decor .snow-p1{left:25%;top:-30%;animation-delay:-1.8s}.avatar-frame-decor .snow-p2{left:43%;top:-12%;animation-delay:-.9s}.avatar-frame-decor .snow-p3{left:60%;top:-25%;animation-delay:-2.4s}.avatar-frame-decor .snow-p4{left:79%;top:-18%;animation-delay:-1.2s}.avatar-frame-decor .snow-p5{left:94%;top:-30%;animation-delay:-2.8s}.avatar-frame-decor .snow-p6{left:17%;top:5%;animation-delay:-2.1s}.avatar-frame-decor .snow-p7{left:72%;top:0%;animation-delay:-.6s}.avatar-frame-decor .snow-p8{left:51%;top:-22%;animation-delay:-1.5s}
 @keyframes avatarSnowFall{0%{transform:translate3d(0,-5px,0) rotate(0);opacity:0}15%{opacity:.95}85%{opacity:.9}100%{transform:translate3d(10px,112px,0) rotate(180deg);opacity:0}}
