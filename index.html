@@ -1094,7 +1094,6 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
     <span class="brandmark">Р</span>
     <span class="brand-copy">РУССКИЙ ЯЗЫК<small>Тренажёр ЕГЭ · задание 12</small></span>
   </button>
-  <button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку" title="Поддержка"><span aria-hidden="true">✉</span><b>Поддержка</b></button>
   <nav class="nav">
   <button data-view="leaderboard" data-protected="true" hidden>🔥 Рейтинг</button>
   <button data-view="tasks" data-protected="true" hidden>Задания</button>
@@ -1111,6 +1110,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
     <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
 </nav>
 </header>
+  <button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку" title="Поддержка"><span aria-hidden="true">✉</span><b>Поддержка</b></button>
 
 <div id="announcementWidget" class="announcement-widget">
   <button type="button" id="announcementToggle" class="announcement-toggle" aria-expanded="false" aria-controls="announcementPanel" title="Объявления">
@@ -5946,7 +5946,7 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
 .dev-support-open-all:hover{gap:12px}
 @media(max-width:600px){.dev-support-waiting-card{padding:17px}.dev-support-waiting-head h3{font-size:19px}.dev-home-support-item{padding:10px;gap:9px}}
 
-@media(max-width:600px){.topbar{position:sticky;padding-right:62px}.support-float-btn{position:absolute;right:12px;top:30%;bottom:auto;transform:translateY(-50%);width:38px;height:38px;padding:0;justify-content:center;gap:0;border-radius:13px;box-shadow:0 5px 15px rgba(112,43,64,.22)}.support-float-btn span{font-size:19px}.support-float-btn b{display:none}.support-float-btn:hover{transform:translateY(-50%)}.support-dialog{padding:25px 19px;border-radius:20px}.support-form-bottom{align-items:stretch;flex-direction:column}.support-form-bottom button{width:100%}.support-my-heading{align-items:flex-start;flex-direction:column}.dev-support-summary{gap:7px}.dev-support-summary>div{padding:12px}.dev-support-summary strong{font-size:22px}.dev-support-toolbar{align-items:flex-start;flex-direction:column}.dev-support-toolbar select{width:100%}.dev-support-ticket{align-items:flex-start}.dev-support-ticket-meta{flex-direction:column;gap:3px}}
+@media(max-width:600px){.topbar{position:sticky;padding-right:62px}.support-float-btn{position:fixed;right:12px;top:20px;bottom:auto;transform:none;width:38px;height:38px;padding:0;justify-content:center;gap:0;border-radius:13px;box-shadow:0 5px 15px rgba(112,43,64,.22)}.support-float-btn span{font-size:19px}.support-float-btn b{display:none}.support-float-btn:hover{transform:none}.support-dialog{padding:25px 19px;border-radius:20px}.support-form-bottom{align-items:stretch;flex-direction:column}.support-form-bottom button{width:100%}.support-my-heading{align-items:flex-start;flex-direction:column}.dev-support-summary{gap:7px}.dev-support-summary>div{padding:12px}.dev-support-summary strong{font-size:22px}.dev-support-toolbar{align-items:flex-start;flex-direction:column}.dev-support-toolbar select{width:100%}.dev-support-ticket{align-items:flex-start}.dev-support-ticket-meta{flex-direction:column;gap:3px}}
 
 /* Одинаковая анимация наведения для статистики и обращений */
 #developer .dev-stat-card,
