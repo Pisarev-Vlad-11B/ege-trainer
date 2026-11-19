@@ -1608,26 +1608,15 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 
       <div class="dev-setting-card">
         <div class="dev-setting-heading">
-          <span class="dev-setting-icon">▤</span>
-          <div><strong>Внешний вид панели</strong><p>Настрой плотность отображения элементов</p></div>
-        </div>
-        <label class="dev-setting-switch">
-          <span><strong>Компактный режим</strong><small>Уменьшает отступы в панели разработчика</small></span>
-          <input type="checkbox" id="devCompactMode">
-          <i></i>
-        </label>
-      </div>
-
-      <div class="dev-setting-card">
-        <div class="dev-setting-heading">
           <span class="dev-setting-icon">❄️</span>
           <div><strong>Зимняя атмосфера</strong><p>Добавляет снегопад, снежные сугробы и праздничные украшения на все страницы сайта</p></div>
         </div>
         <label class="dev-setting-switch">
-          <span><strong>Включить зимнее оформление</strong><small>Эффект будет виден во всех разделах на этом устройстве</small></span>
+          <span><strong>Включить зимнее оформление</strong><small>Переключатель действует для всех посетителей сайта</small></span>
           <input type="checkbox" id="devWinterAtmosphere">
           <i></i>
         </label>
+        <small class="dev-setting-hint" id="devWinterStatus">Загружаем общее состояние…</small>
       </div>
 
       <div class="dev-setting-card dev-notification-settings">
@@ -3491,6 +3480,27 @@ if (FIREBASE_CONFIG_READY) {
     auth = getAuth(app);
     db = getFirestore(app);
 
+let globalWinterAtmosphereEnabled = false;
+let globalWinterAtmosphereUnsubscribe = null;
+function startGlobalWinterAtmosphereListener() {
+  if (!db || globalWinterAtmosphereUnsubscribe) return;
+  globalWinterAtmosphereUnsubscribe = onSnapshot(doc(db, "siteSettings", "winterAtmosphere"), snapshot => {
+    globalWinterAtmosphereEnabled = snapshot.exists() && snapshot.data().enabled === true;
+    applyWinterAtmosphere(globalWinterAtmosphereEnabled);
+    const checkbox = document.getElementById("devWinterAtmosphere");
+    if (checkbox) checkbox.checked = globalWinterAtmosphereEnabled;
+    const status = document.getElementById("devWinterStatus");
+    if (status) status.textContent = globalWinterAtmosphereEnabled
+      ? "Зимний режим включён для всех посетителей сайта."
+      : "Зимний режим выключен для всех посетителей сайта.";
+  }, error => {
+    console.error("Не удалось получить глобальные настройки зимнего режима:", error);
+    applyWinterAtmosphere(false);
+    const status = document.getElementById("devWinterStatus");
+    if (status) status.textContent = "Нет доступа к общим настройкам. Проверь правила Firestore для siteSettings.";
+  });
+}
+startGlobalWinterAtmosphereListener();
 
 // ===== СЛУЖБА ПОДДЕРЖКИ =====
 let supportAdminUnsubscribe = null;
@@ -5638,9 +5648,6 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 #developer .dev-settings-footer{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:4px 2px;color:var(--muted);font-size:12px}
 #developer .dev-settings-reset{padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text);font:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
 #developer .dev-settings-reset:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
-#developer.dev-compact .dev-setting-card{padding:16px}
-#developer.dev-compact .dev-stats-grid{gap:10px}
-#developer.dev-compact .dev-stat-card{padding:16px}
 @media(max-width:700px){#developer .dev-settings-grid{grid-template-columns:1fr}#developer .dev-settings-footer{align-items:flex-start;flex-direction:column}}
 
 /* Отдельные карточки настроек только на телефонах.
@@ -6047,17 +6054,15 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
   <script>
 // Локальные настройки панели разработчика
 const DEV_SETTINGS_KEY = "egeDeveloperSettings";
-const DEV_SETTINGS_DEFAULTS = { onlineRefreshMs: 15000, compactMode: false, confirmUserDelete: true, supportSound: true, supportBrowserNotifications: false, winterAtmosphere: false };
+const DEV_SETTINGS_DEFAULTS = { onlineRefreshMs: 15000, confirmUserDelete: true, supportSound: true, supportBrowserNotifications: false };
 function loadDeveloperSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem(DEV_SETTINGS_KEY) || "{}");
     return {
       onlineRefreshMs: [5000, 15000, 30000, 60000].includes(Number(saved.onlineRefreshMs)) ? Number(saved.onlineRefreshMs) : DEV_SETTINGS_DEFAULTS.onlineRefreshMs,
-      compactMode: saved.compactMode === true,
       confirmUserDelete: saved.confirmUserDelete !== false,
       supportSound: saved.supportSound !== false,
       supportBrowserNotifications: saved.supportBrowserNotifications === true,
-      winterAtmosphere: saved.winterAtmosphere === true
     };
   } catch (error) {
     return { ...DEV_SETTINGS_DEFAULTS };
@@ -6076,21 +6081,14 @@ function saveDeveloperSettings() {
   }
 }
 function applyDeveloperSettings() {
-  const root = document.getElementById("developer");
-  if (root) root.classList.toggle("dev-compact", window.__devSettings.compactMode);
   const interval = document.getElementById("devOnlineRefresh");
-  const compact = document.getElementById("devCompactMode");
   const confirmDelete = document.getElementById("devConfirmDelete");
   const supportSound = document.getElementById("devSupportSound");
   const supportBrowser = document.getElementById("devSupportBrowserNotifications");
-  const winterAtmosphere = document.getElementById("devWinterAtmosphere");
   if (interval) interval.value = String(window.__devSettings.onlineRefreshMs);
-  if (compact) compact.checked = window.__devSettings.compactMode;
   if (confirmDelete) confirmDelete.checked = window.__devSettings.confirmUserDelete;
   if (supportSound) supportSound.checked = window.__devSettings.supportSound;
   if (supportBrowser) supportBrowser.checked = window.__devSettings.supportBrowserNotifications;
-  if (winterAtmosphere) winterAtmosphere.checked = window.__devSettings.winterAtmosphere === true;
-  applyWinterAtmosphere(window.__devSettings.winterAtmosphere === true);
   const permissionStatus = document.getElementById("devNotificationPermissionStatus");
   const permissionButton = document.getElementById("devRequestNotificationPermission");
   if (permissionStatus) permissionStatus.textContent = !("Notification" in window) ? "Браузер не поддерживает уведомления" : Notification.permission === "granted" ? "Разрешение получено" : Notification.permission === "denied" ? "Уведомления заблокированы в настройках браузера" : "Разрешение браузера не запрошено";
@@ -6133,21 +6131,33 @@ function initDeveloperSettings() {
       window.__startDeveloperOnlineMonitor();
     }
   });
-  document.getElementById("devCompactMode")?.addEventListener("change", event => {
-    window.__devSettings.compactMode = event.target.checked;
-    applyDeveloperSettings();
-    saveDeveloperSettings();
-  });
-  document.getElementById("devWinterAtmosphere")?.addEventListener("change", event => {
-    if (window.__isDeveloper !== true) {
-      event.target.checked = false;
-      window.__devSettings.winterAtmosphere = false;
-      applyWinterAtmosphere(false);
+  document.getElementById("devWinterAtmosphere")?.addEventListener("change", async event => {
+    const checkbox = event.target;
+    const status = document.getElementById("devWinterStatus");
+    if (window.__isDeveloper !== true || !auth?.currentUser || !db) {
+      checkbox.checked = globalWinterAtmosphereEnabled;
+      if (status) status.textContent = "Изменять зимний режим может только разработчик.";
       return;
     }
-    window.__devSettings.winterAtmosphere = event.target.checked;
-    applyWinterAtmosphere(event.target.checked);
-    saveDeveloperSettings();
+    checkbox.disabled = true;
+    if (status) status.textContent = "Сохраняем общее состояние для всех посетителей…";
+    try {
+      await setDoc(doc(db, "siteSettings", "winterAtmosphere"), {
+        enabled: checkbox.checked,
+        updatedAt: serverTimestamp(),
+        updatedBy: auth.currentUser.uid
+      }, { merge: true });
+      if (status) status.textContent = checkbox.checked
+        ? "Зимний режим включён для всех посетителей сайта."
+        : "Зимний режим выключен для всех посетителей сайта.";
+    } catch (error) {
+      console.error("Не удалось изменить глобальный зимний режим:", error);
+      checkbox.checked = globalWinterAtmosphereEnabled;
+      if (status) status.textContent = "Не удалось сохранить. Проверь правила Firestore для siteSettings.";
+      alert("Не удалось изменить зимний режим. Проверь правила Firestore для siteSettings.");
+    } finally {
+      checkbox.disabled = false;
+    }
   });
   document.getElementById("devConfirmDelete")?.addEventListener("change", event => {
     window.__devSettings.confirmUserDelete = event.target.checked;
