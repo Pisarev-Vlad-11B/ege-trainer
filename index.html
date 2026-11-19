@@ -2083,14 +2083,15 @@ async function loadDevCheatAccounts(){
   const select=document.getElementById("devCheatAccountSelect"),status=document.getElementById("devCheatAccountStatus");
   if(!select)return;
   if(window.__isDeveloper!==true){select.innerHTML='<option value="">Нет доступа разработчика</option>';if(status)status.textContent="Войди в аккаунт разработчика и открой раздел заново.";return;}
-  if(!db){select.innerHTML='<option value="">Firebase не подключён</option>';if(status)status.textContent="Не удалось подключиться к базе данных.";return;}
+  const firebase=window.__devCheatFirebase;
+  if(!firebase?.isReady?.()){select.innerHTML='<option value="">Подключаемся к Firebase…</option>';if(status)status.textContent="Firebase ещё запускается. Открой вкладку «Накрутка» ещё раз через пару секунд.";return;}
   select.disabled=true;select.innerHTML='<option value="">Загружаем аккаунты…</option>';if(status)status.textContent="Запрос к Firestore отправлен…";
   try{
-    if (!auth?.currentUser) throw new Error("Нет активной авторизации Firebase. Выйди и войди в аккаунт разработчика заново.");
+    if (!firebase.isAuthenticated()) throw new Error("Нет активной авторизации Firebase. Выйди и войди в аккаунт разработчика заново.");
     if (window.__isDeveloper !== true) throw new Error("Firebase не подтвердил права разработчика. Проверь developerAccess/{UID} и поле role: developer.");
     const users=await window.__devCheatFirebase.listUsers();
     users.sort((a,b)=>String(a.username||a.firstName||a.uid).localeCompare(String(b.username||b.firstName||b.uid),"ru"));
-    const preferred=devCheatSelectedUid||auth?.currentUser?.uid||"";
+    const preferred=devCheatSelectedUid||firebase.currentUid()||"";
     select.innerHTML='<option value="">Выбери аккаунт…</option>'+users.map(user=>{
       const fullName=[user.firstName,user.lastName].filter(Boolean).join(" ");
       const label=(fullName?fullName+" · ":"")+"@"+String(user.username||"без логина");
@@ -3843,6 +3844,8 @@ if (FIREBASE_CONFIG_READY) {
         const pubRef=doc(db,"publicProfiles",uid),pub=await getDoc(pubRef);
         if(pub.exists()) await setDoc(pubRef,{streak:value,updatedAt:serverTimestamp()},{merge:true});
       },
+      isReady: () => !!auth && !!db,
+      isAuthenticated: () => !!auth?.currentUser,
       currentUid: () => auth?.currentUser?.uid || ""
     };
 
