@@ -1179,7 +1179,7 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
 </style>
 <style>
 /* Исправление декора публичного аватара и панель выбора аккаунта для накрутки */
-.public-profile-avatar-wrap{margin:0 auto 8px!important;}
+.public-profile-avatar-wrap{margin:0 auto 1px!important;}
 .public-profile-card h2{display:block;clear:both;position:relative;z-index:4;margin:0 auto 4px!important;line-height:1.2;}
 .public-profile-card .avatar-frame-decor{z-index:2;}
 .dev-cheat-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(280px,360px)!important;}
@@ -2082,8 +2082,10 @@ async function loadDevCheatAccounts(){
   if(!select)return;
   if(window.__isDeveloper!==true){select.innerHTML='<option value="">Нет доступа разработчика</option>';if(status)status.textContent="Войди в аккаунт разработчика и открой раздел заново.";return;}
   if(!db){select.innerHTML='<option value="">Firebase не подключён</option>';if(status)status.textContent="Не удалось подключиться к базе данных.";return;}
-  select.disabled=true;select.innerHTML='<option value="">Загружаем аккаунты…</option>';if(status)status.textContent="Загружаем список аккаунтов…";
+  select.disabled=true;select.innerHTML='<option value="">Загружаем аккаунты…</option>';if(status)status.textContent="Запрос к Firestore отправлен…";
   try{
+    if (!auth?.currentUser) throw new Error("Нет активной авторизации Firebase. Выйди и войди в аккаунт разработчика заново.");
+    if (window.__isDeveloper !== true) throw new Error("Firebase не подтвердил права разработчика. Проверь developerAccess/{UID} и поле role: developer.");
     const snapshot=await getDocs(collection(db,"users"));
     const users=snapshot.docs.map(item=>({uid:item.id,...item.data()})).sort((a,b)=>String(a.username||a.firstName||a.uid).localeCompare(String(b.username||b.firstName||b.uid),"ru"));
     const preferred=devCheatSelectedUid||auth?.currentUser?.uid||"";
@@ -2096,7 +2098,7 @@ async function loadDevCheatAccounts(){
     devCheatSelectedUid=select.value;
     if(status)status.textContent=users.length+" аккаунтов доступно";
     await refreshDevCheatTarget();
-  }catch(error){console.error("Не удалось загрузить аккаунты для накрутки:",error);if(status)status.textContent="Ошибка: "+(error?.code||"без кода")+" — "+(error?.message||"не удалось прочитать users");select.innerHTML='<option value="">Ошибка загрузки</option>';}
+  }catch(error){console.error("Не удалось загрузить аккаунты для накрутки:",error);if(status)status.textContent="Не удалось загрузить аккаунты: "+(error?.code||"без кода")+" — "+(error?.message||"не удалось прочитать users");select.innerHTML='<option value="">Ошибка загрузки — смотри сообщение ниже</option>';}
   finally{select.disabled=false;}
 }
 // Делаем загрузчик доступным для общего обработчика навигации панели разработчика.
@@ -2474,7 +2476,17 @@ document.addEventListener("click", function(e) {
       });
     }
 
-    if(devPage==="stats-tools") refreshDeveloperCheatPanel();
+    if(devPage==="stats-tools") {
+       refreshDeveloperCheatPanel();
+       const accountSelect = document.getElementById("devCheatAccountSelect");
+       const accountStatus = document.getElementById("devCheatAccountStatus");
+       if (accountSelect) accountSelect.innerHTML = '<option value="">Подключаемся к Firebase…</option>';
+       if (accountStatus) accountStatus.textContent = "Запускаю загрузку списка аккаунтов…";
+       Promise.resolve().then(() => window.__loadDevCheatAccounts?.()).catch(error => {
+         console.error("Ошибка запуска загрузки аккаунтов:", error);
+         if (accountStatus) accountStatus.textContent = "Не удалось запустить загрузку: " + (error?.message || error);
+       });
+     }
     if (devPage === "users" && window.__loadDeveloperUsers) {
       window.__loadDeveloperUsers();
     }
