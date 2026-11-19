@@ -994,6 +994,7 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
     <img id="profileNavAvatar" class="profile-nav-avatar" alt="" hidden>
     <span id="profileNavText">Профиль</span>
   </button>
+  <button id="installAppBtn" class="secondary" type="button" aria-label="Установить приложение" style="padding:10px 13px;white-space:nowrap;">＋ Установить</button>
   <button id="themeToggle" class="secondary" type="button">🌙</button>
     <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
 </nav>
@@ -1008,6 +1009,16 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
   <section id="announcementPanel" class="announcement-panel" hidden aria-label="Объявления и новости">
     <div class="announcement-panel-head"><div><strong>Объявления</strong><small>Новости тренажёра</small></div><button type="button" id="announcementClose" aria-label="Закрыть">×</button></div>
     <div id="announcementPublicList" class="announcement-public-list"><p class="announcement-empty">Пока нет новых объявлений.</p></div>
+  </section>
+</div>
+<div id="installAppOverlay" hidden style="position:fixed;inset:0;z-index:3000;background:rgba(15,12,14,.62);backdrop-filter:blur(7px);padding:20px;display:none;align-items:center;justify-content:center;">
+  <section role="dialog" aria-modal="true" aria-labelledby="installAppTitle" style="width:min(440px,100%);padding:25px;border-radius:22px;background:var(--paper);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.28);position:relative;">
+    <button id="installAppClose" type="button" aria-label="Закрыть" style="position:absolute;right:14px;top:10px;border:0;background:transparent;color:var(--muted);font-size:27px;">×</button>
+    <div style="font-size:30px;margin-bottom:8px;">📲</div>
+    <h2 id="installAppTitle" style="margin:0 30px 10px 0;font-size:23px;">Установить ЕГЭ Тренажёр</h2>
+    <p style="color:var(--muted);line-height:1.55;margin:0 0 15px;">Добавь тренажёр на главный экран — он будет запускаться отдельно, как обычное приложение.</p>
+    <div id="installAppInstructions" style="padding:15px;border-radius:14px;background:var(--soft);line-height:1.65;font-size:14px;"></div>
+    <button id="installAppDone" type="button" class="primary" style="width:100%;margin-top:18px;">Понятно</button>
   </section>
 </div>
 <button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку"><span>✉</span><b>Поддержка</b></button>
@@ -5760,6 +5771,58 @@ setTheme(savedTheme);
 themeToggle.addEventListener("click", () => {
   const currentTheme = document.documentElement.getAttribute("data-theme");
   setTheme(currentTheme === "dark" ? "light" : "dark");
+});
+
+// Универсальная установка PWA: автоматический запрос там, где он поддерживается,
+ // и понятная инструкция для браузеров с ручной установкой.
+let deferredInstallPrompt = null;
+const installAppBtn = document.getElementById("installAppBtn");
+const installAppOverlay = document.getElementById("installAppOverlay");
+const installAppInstructions = document.getElementById("installAppInstructions");
+function showInstallHelp() {
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isSamsung = /SamsungBrowser/i.test(ua);
+  const isFirefox = /Firefox/i.test(ua);
+  if (isIOS) {
+    installAppInstructions.innerHTML = "<b>Safari на iPhone или iPad</b><br>1. Нажми «Поделиться» (квадрат со стрелкой вверх).<br>2. Выбери «На экран Домой».<br>3. Нажми «Добавить».";
+  } else if (isSamsung) {
+    installAppInstructions.innerHTML = "<b>Samsung Internet</b><br>1. Открой меню браузера (☰).<br>2. Выбери «Добавить страницу» → «Главный экран» (название пункта может отличаться).";
+  } else if (isFirefox) {
+    installAppInstructions.innerHTML = "<b>Firefox</b><br>Открой меню браузера (⋮) и найди пункт «Установить» или «Добавить на главный экран». Если пункта нет, открой сайт в Chrome или Samsung Internet.";
+  } else {
+    installAppInstructions.innerHTML = "<b>Установка через меню браузера</b><br>1. Открой меню браузера (⋮ или ☰).<br>2. Выбери «Установить приложение», «Установить» или «Добавить на главный экран».<br>3. Подтверди действие.<br><br>Если такого пункта нет, попробуй открыть сайт в Chrome (Android) или Safari (iPhone).";
+  }
+  installAppOverlay.hidden = false;
+  installAppOverlay.style.display = "flex";
+}
+function closeInstallHelp() {
+  installAppOverlay.hidden = true;
+  installAppOverlay.style.display = "none";
+}
+installAppBtn.addEventListener("click", async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice;
+    if (choice && choice.outcome === "accepted") installAppBtn.hidden = true;
+    deferredInstallPrompt = null;
+    return;
+  }
+  showInstallHelp();
+});
+document.getElementById("installAppClose").addEventListener("click", closeInstallHelp);
+document.getElementById("installAppDone").addEventListener("click", closeInstallHelp);
+installAppOverlay.addEventListener("click", event => {
+  if (event.target === installAppOverlay) closeInstallHelp();
+});
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installAppBtn.hidden = false;
+});
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  installAppBtn.hidden = true;
 });
 
 if ("serviceWorker" in navigator) {
