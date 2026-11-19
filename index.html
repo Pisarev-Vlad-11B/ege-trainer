@@ -2447,8 +2447,19 @@ case "developerGear":
     case "petSaveTypeBtn": try {
       const type=$("petTypeSelect")?.value;
       if(!PET_SPECIES[type]){toast("Выбери питомца из списка.");break;}
-      state.pet={...(state.pet||{name:"Пушок",xp:0}),type};
-      save();renderPetCard();toast("Теперь ты выращиваешь: "+PET_SPECIES[type].label+"!");
+      const previousPet=state.pet||{name:"Пушок",xp:0,type:"arcticFox"};
+      const isDifferentPet=previousPet.type!==type;
+      state.pet={
+        ...previousPet,
+        type,
+        xp:isDifferentPet?0:Math.max(0,Number(previousPet.xp)||0),
+        patDate:isDifferentPet?"":previousPet.patDate,
+        patCount:isDifferentPet?0:Math.max(0,Number(previousPet.patCount)||0)
+      };
+      save();renderPetCard();
+      toast(isDifferentPet
+        ?"Новый питомец выбран! Его уровень и опыт начинаются с нуля."
+        :"Этот питомец уже выбран.");
     } catch(err) { console.error(err); } break;
     case "petSaveNameBtn": try {
       const input=$("petNameInput"),name=String(input?.value||"").trim().replace(/[<>]/g,"").slice(0,18);
