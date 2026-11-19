@@ -5370,6 +5370,37 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
   }
 }
 
+/* Усиленное визуальное разделение карточек настроек на телефонах */
+@media(max-width:700px){
+  #developer .dev-settings-grid{
+    gap:16px!important;
+  }
+  #developer .dev-settings-grid > .dev-setting-card{
+    position:relative!important;
+    display:flex!important;
+    flex-direction:column!important;
+    padding:20px 18px!important;
+    border:1px solid rgba(120,105,112,.28)!important;
+    border-radius:18px!important;
+    background:#fff!important;
+    box-shadow:0 5px 18px rgba(35,20,25,.07)!important;
+  }
+  html[data-theme="dark"] #developer .dev-settings-grid > .dev-setting-card{
+    background:#211f22!important;
+    border-color:rgba(255,255,255,.14)!important;
+    box-shadow:0 7px 22px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.035)!important;
+  }
+  #developer .dev-settings-grid > .dev-setting-card .dev-setting-heading{
+    margin-bottom:18px!important;
+  }
+  #developer .dev-settings-grid > .dev-setting-card .dev-setting-switch{
+    border-top:1px solid rgba(120,105,112,.16)!important;
+  }
+  html[data-theme="dark"] #developer .dev-settings-grid > .dev-setting-card .dev-setting-switch{
+    border-top-color:rgba(255,255,255,.09)!important;
+  }
+}
+ 
 /* Плавающий виджет объявлений */
 .announcement-widget{position:fixed;z-index:1200;top:92px;right:22px;width:min(320px,calc(100vw - 28px));font-family:inherit}
 .announcement-toggle{margin-left:auto;display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid var(--line);border-radius:13px;background:var(--paper);color:var(--ink);box-shadow:0 8px 26px #2d182012;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
