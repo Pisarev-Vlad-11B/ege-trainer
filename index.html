@@ -1271,7 +1271,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
   <button type="button" class="shop-category-btn active" data-shop-category="regular" role="tab" aria-selected="true">✨ Обычные</button>
   <button type="button" class="shop-category-btn" data-shop-category="newyear" role="tab" aria-selected="false">🎄 Новый год <span>СЕЗОННОЕ</span></button>
 </div>
-<div class="shop-category-heading" id="shopCategoryHeading"><div><span class="eyebrow">КОЛЛЕКЦИЯ</span><h3>Обычные рамки</h3><p>Классические оформления, доступные в любое время.</p></div></div>
+<div class="shop-category-heading" id="shopCategoryHeading"><div><span class="eyebrow">КОЛЛЕКЦИЯ</span><h3>Обычные оформления</h3><p>Классические рамки и шапки профиля, доступные в любое время.</p></div></div>
 <div id="shopItems" class="shop-grid"></div></section>
 <section id="achievements" class="view">
   <div class="section-head"><div><div class="eyebrow">Твои маленькие и большие победы</div><h2>Достижения</h2><p>Открывай новые значки шаг за шагом — прогресс складывается из усилий.</p></div><span class="achievement-total achievement-total-large" id="achievementTotal">0/12 открыто</span></div>
@@ -1979,7 +1979,7 @@ function renderShop(){
  document.querySelectorAll("[data-shop-category]").forEach(btn=>{const active=btn.dataset.shopCategory===category;btn.classList.toggle("active",active);btn.setAttribute("aria-selected",String(active));});
  const heading=$("shopCategoryHeading");
  if(heading)heading.innerHTML=category==="newyear"
-  ?'<div><span class="eyebrow">ЛИМИТИРОВАННАЯ СЕРИЯ · ЗИМА 2026/27</span><h3>Новогодняя коллекция 🎄</h3><p>Поймай праздничное настроение: снежные узоры, хвоя и сияние новогодней ночи.</p></div>'
+  ?'<div><span class="eyebrow">ЛИМИТИРОВАННАЯ СЕРИЯ · ЗИМА 2026/27</span><h3>Новогодняя коллекция 🎄</h3><p>Праздничные рамки и шапки профиля: снежные узоры, хвоя и сияние новогодней ночи.</p></div>'
   :'<div><span class="eyebrow">КОЛЛЕКЦИЯ</span><h3>Обычные рамки</h3><p>Классические оформления, доступные в любое время.</p></div>';
  const items=SHOP_FRAMES.filter(item=>item.category===category);
  const frameCards=items.map(item=>{
