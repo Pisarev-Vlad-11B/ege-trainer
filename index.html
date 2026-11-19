@@ -1853,7 +1853,22 @@ const SHOP_FRAMES=[
  {id:"newyear-gold",name:"Золотая полночь",price:140,icon:"✨",desc:"Праздничное золото с рубиновыми акцентами",category:"newyear",tag:"НОВОГОДНЯЯ КОЛЛЕКЦИЯ"}
 ];
 let activeShopCategory="regular";
-function applyProfileFrame(){const wrap=$("profileAvatar")?.parentElement;if(!wrap)return;[...wrap.classList].filter(name=>name.startsWith("frame-")).forEach(name=>wrap.classList.remove(name));if(state.activeFrame)wrap.classList.add("frame-"+state.activeFrame);}
+function applyProfileFrame(){
+ const wrap=$("profileAvatar")?.parentElement;if(!wrap)return;
+ [...wrap.classList].filter(name=>name.startsWith("frame-")).forEach(name=>wrap.classList.remove(name));
+ wrap.querySelector(".avatar-frame-decor")?.remove();
+ if(!state.activeFrame)return;
+ wrap.classList.add("frame-"+state.activeFrame);
+ const decorations={
+  "newyear-snow":[["☃️","snowman"],["❄️","snowflake snowflake-a"],["❄️","snowflake snowflake-b"],["✧","sparkle sparkle-a"],["❄","snowflake snowflake-c"]],
+  "newyear-tree":[["🎄","tree"],["🔴","bauble bauble-a"],["🟡","bauble bauble-b"],["⭐","star"],["❄️","snowflake snowflake-a"]],
+  "newyear-gold":[["🎁","gift"],["🔔","bell"],["✨","sparkle sparkle-a"],["🔴","bauble bauble-a"],["⭐","star"]]
+ };
+ const pieces=decorations[state.activeFrame];if(!pieces)return;
+ const layer=document.createElement("span");layer.className="avatar-frame-decor";layer.setAttribute("aria-hidden","true");
+ pieces.forEach(([symbol,cls])=>{const item=document.createElement("span");item.className=cls;item.textContent=symbol;layer.appendChild(item);});
+ wrap.appendChild(layer);
+}
 function renderShop(){
  const host=$("shopItems");if(!host)return;
  if($("shopCoins"))$("shopCoins").textContent=(Number(state.coins)||0)+" ✦";
@@ -5825,13 +5840,32 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
 html[data-theme="dark"] .shop-item-seasonal{border-color:#6e5a36;background:linear-gradient(155deg,var(--paper),rgba(160,123,54,.12))}
 html[data-theme="dark"] .shop-item-seasonal .shop-item-icon{background:linear-gradient(145deg,#55452c,#3d3528)}
 html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
-/* Новогодние рамки аватара */
+/* Новогодние рамки: декоративные фигурки располагаются вокруг фото */
 .profile-avatar-wrap.frame-newyear-snow:after{border-color:#a9def5;box-shadow:0 0 0 3px #edfaff,0 0 19px #8bd8f4}
-.profile-avatar-wrap.frame-newyear-snow:before{content:"";position:absolute;inset:-12px;border:2px dashed #c5eafa;border-radius:50%;pointer-events:none;z-index:0}
 .profile-avatar-wrap.frame-newyear-tree:after{border-color:#238454;box-shadow:0 0 0 3px #d6ad48,0 0 18px #2b9b6877}
-.profile-avatar-wrap.frame-newyear-tree:before{content:"";position:absolute;inset:-12px;border:2px dotted #d6ad48;border-radius:50%;pointer-events:none;z-index:0}
 .profile-avatar-wrap.frame-newyear-gold:after{border-color:#d6ad48;box-shadow:0 0 0 3px #9c2939,0 0 20px #d6ad4988}
-.profile-avatar-wrap.frame-newyear-gold:before{content:"";position:absolute;inset:-12px;border:2px solid #e6c96f;border-radius:50%;pointer-events:none;z-index:0}
+.avatar-frame-decor{position:absolute;inset:-17px;z-index:1;pointer-events:none}
+.avatar-frame-decor>span{position:absolute;display:block;line-height:1;filter:drop-shadow(0 2px 2px rgba(35,35,35,.22))}
+.avatar-frame-decor .snowman{right:-2px;top:0;font-size:27px;transform:rotate(9deg)}
+.avatar-frame-decor .snowflake{color:#8bd8f4;text-shadow:0 1px 5px #fff;font-size:22px}
+.avatar-frame-decor .snowflake-a{left:0;top:8px}
+.avatar-frame-decor .snowflake-b{right:5px;bottom:3px;font-size:19px}
+.avatar-frame-decor .snowflake-c{left:7px;bottom:-1px;font-size:16px}
+.avatar-frame-decor .sparkle{color:#d7b85d;font-size:20px}
+.avatar-frame-decor .sparkle-a{left:1px;top:-2px}
+.avatar-frame-decor .tree{left:-5px;top:-5px;font-size:26px;transform:rotate(-9deg)}
+.avatar-frame-decor .bauble{font-size:17px}
+.avatar-frame-decor .bauble-a{right:0;top:29px}
+.avatar-frame-decor .bauble-b{left:12px;bottom:0}
+.avatar-frame-decor .star{right:1px;bottom:0;color:#e7c45f;font-size:22px}
+.avatar-frame-decor .gift{left:-7px;top:0;font-size:25px;transform:rotate(-10deg)}
+.avatar-frame-decor .bell{right:-4px;top:20px;font-size:22px}
+.avatar-frame-decor .star{right:0;bottom:0;color:#e7c45f;font-size:22px}
+.avatar-frame-decor .sparkle-a{left:0;bottom:0}
+.avatar-frame-decor .gift~.bauble-a{right:0;bottom:0;top:auto}
+.avatar-frame-decor .gift~.star{left:5px;top:48px;right:auto;bottom:auto}
+.profile-avatar-wrap .avatar-edit{z-index:3}
+@media(max-width:700px){.avatar-frame-decor{inset:-15px}.avatar-frame-decor .snowman{font-size:24px}.avatar-frame-decor .tree{font-size:23px}}
 @media(max-width:700px){.shop-category-tabs{gap:7px}.shop-category-btn{flex:1;justify-content:center;padding:11px 9px;font-size:12px}.shop-category-heading{padding:15px}.shop-category-heading h3{font-size:18px}}
 </style>
 </body>
