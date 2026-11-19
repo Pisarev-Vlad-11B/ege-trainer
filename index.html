@@ -2828,6 +2828,16 @@ async function loadAccount(user, fallbackUsername = "") {
     isPublic: stored.isPublic === true || publicData.isPublic === true
   };
 
+  // Баланс магазина синхронизируется отдельно и при входе берётся из аккаунта.
+  if (stored.progress && typeof stored.progress === "object") {
+    data.progress = {
+      ...stored.progress,
+      coins: Number.isFinite(Number(stored.shopCoins))
+        ? Math.max(0, Math.floor(Number(stored.shopCoins)))
+        : Math.max(0, Math.floor(Number(stored.progress.coins) || 0))
+    };
+  }
+
   // Создаём документ или восстанавливаем в нём отсутствующие личные поля.
   const needsProfileRepair = !snap.exists() ||
     ["firstName", "lastName", "about", "avatarUrl"].some(key =>
@@ -3381,6 +3391,7 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
   try {
     await setDoc(userDoc(auth.currentUser.uid), {
       progress: state,
+      shopCoins: Math.max(0, Math.floor(Number(state.coins) || 0)),
       updatedAt: serverTimestamp()
     }, { merge: true });
   } catch (e) {
