@@ -1457,11 +1457,11 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
           <div class="profile-pet-xp-row"><span id="petXpLabel">0 / 50 опыта</span><span id="petXpPercent">0%</span></div>
           <div class="profile-pet-xp-track"><i id="petXpBar"></i></div>
           <label class="profile-pet-select-label" for="petTypeSelect">Кого выращиваем?</label>
-          <div class="profile-pet-select-row"><select id="petTypeSelect" aria-label="Выбор питомца"><option value="dragon">🐉 Дракончик</option><option value="cat">🐱 Котёнок</option><option value="fox">🦊 Лисёнок</option><option value="panda">🐼 Пандочка</option><option value="owl">🦉 Совёнок</option></select><button class="secondary" id="petSaveTypeBtn" type="button">Выбрать</button></div>
+          <div class="profile-pet-select-row"><select id="petTypeSelect" aria-label="Выбор питомца"><optgroup label="Северные питомцы — ЯНАО и Арктика"><option value="arcticFox">🦊 Ямальский песец</option><option value="reindeer">🦌 Северный оленёнок</option><option value="polarBear">🐻‍❄️ Белый медвежонок</option><option value="seal">🦭 Нерпа</option><option value="snowyOwl">🦉 Полярная сова</option><option value="lemming">🐹 Лемминг</option></optgroup><optgroup label="Другие питомцы"><option value="dragon">🐉 Дракончик</option><option value="cat">🐱 Котёнок</option><option value="fox">🦊 Лисёнок</option><option value="panda">🐼 Пандочка</option><option value="owl">🦉 Совёнок</option></optgroup></select><button class="secondary" id="petSaveTypeBtn" type="button">Выбрать</button></div>
           <div class="profile-pet-name-editor"><input id="petNameInput" type="text" maxlength="18" placeholder="Имя питомца" aria-label="Имя питомца"><button class="secondary" id="petSaveNameBtn" type="button">Сохранить имя</button></div>
         </div>
       </div>
-      <div class="profile-pet-footer"><span>✨ +5 опыта за новое правильно решённое задание</span><button class="pet-pat-btn" id="petPatBtn" type="button">Погладить ♡</button></div>
+      <div class="profile-pet-footer"><span>✨ +5 опыта за новое правильно решённое задание<br><small id="petPatCount">Ласка: 0 из 3 сегодня · +1 опыт за поглаживание</small></span><button class="pet-pat-btn" id="petPatBtn" type="button">Погладить ♡</button></div>
     </div>
     <div class="profile-progress-card"><h3>Твой прогресс</h3><div class="profile-progress-grid"><div><strong id="profileDone">0</strong><span>решено заданий</span></div><div><strong id="profileAccuracy">—</strong><span>точность</span></div><div><strong id="profileStreak">0</strong><span>серия ответов</span></div></div><p>После подключения сервера твой прогресс будет храниться в аккаунте и синхронизироваться между устройствами.</p></div>
   </div>
@@ -1925,7 +1925,13 @@ const PET_SPECIES={
  cat:{label:"Котёнок",stages:[["🥚","Кошачье яйцо","Совсем скоро появится любопытный котёнок."],["🐱","Маленький котёнок","Котёнок знакомится с новым домом."],["🐈","Подросший кот","Он уже самостоятельный и очень ласковый."],["🐈‍⬛","Взрослый кот","Твой пушистый друг стал настоящим красавцем."],["🐈‍⬛","Королевский кот","Королевский любимец с особым характером!"]]},
  fox:{label:"Лисёнок",stages:[["🥚","Лисье яйцо","Внутри прячется хитрый и добрый лисёнок."],["🦊","Маленький лисёнок","Лисёнок делает первые шаги."],["🦊","Любопытная лиса","Он исследует всё вокруг."],["🦊","Взрослая лиса","Ловкий и умный спутник."],["🦊","Легендарная лиса","Самая яркая звезда леса!"]]},
  panda:{label:"Пандочка",stages:[["🥚","Бамбуковое яйцо","Скоро появится маленькая любительница бамбука."],["🐼","Маленькая панда","Пандочка учится лазать и играть."],["🐼","Подросшая панда","Она стала сильнее и обожает приключения."],["🐼","Взрослая панда","Спокойный и надёжный друг."],["🐼","Редкая панда","Настоящая гордость бамбукового леса!"]]},
- owl:{label:"Совёнок",stages:[["🥚","Таинственное яйцо","Внутри растёт внимательный совёнок."],["🐣","Маленький совёнок","Совёнок только учится расправлять крылья."],["🦉","Юная сова","Она уже замечает самые мелкие детали."],["🦉","Мудрая сова","Мудрый спутник, который всегда рядом."],["🦉","Хранитель знаний","Самая мудрая птица в округе!"]]}
+ owl:{label:"Совёнок",stages:[["🥚","Таинственное яйцо","Внутри растёт внимательный совёнок."],["🐣","Маленький совёнок","Совёнок только учится расправлять крылья."],["🦉","Юная сова","Она уже замечает самые мелкие детали."],["🦉","Мудрая сова","Мудрый спутник, который всегда рядом."],["🦉","Хранитель знаний","Самая мудрая птица в округе!"]]},
+ arcticFox:{label:"Ямальский песец",stages:[["🐾","Песец-малыш","Маленький песец прячется в мягком снегу тундры."],["🦊","Юный песец","Белая шубка помогает ему оставаться незаметным среди сугробов."],["🦊","Песец тундры","Он ловко исследует снежные просторы Ямала."],["🦊","Северный следопыт","Ни одна тропинка в тундре от него не укроется."],["🦊","Хозяин снежной тундры","Редкий и гордый песец — настоящий символ Севера!"]]},
+ reindeer:{label:"Северный оленёнок",stages:[["🦌","Оленёнок-малыш","Любопытный оленёнок делает первые шаги по тундре."],["🦌","Юный оленёнок","Он учится находить ягель под снегом."],["🦌","Сильный северный олень","Крепкие ноги несут его по бескрайней тундре."],["🦌","Величественный олень","Ему не страшны ни ветер, ни долгие переходы."],["🦌","Хранитель тундры","Гордый северный олень — дух просторов Ямала!"]]},
+ polarBear:{label:"Белый медвежонок",stages:[["🐻‍❄️","Медвежонок-малыш","Маленький медвежонок уютно устроился в снежном логове."],["🐻‍❄️","Любопытный медвежонок","Он познаёт ледяной мир Арктики."],["🐻‍❄️","Подросший медведь","Становится сильнее с каждым новым приключением."],["🐻‍❄️","Белый медведь","Сильный и осторожный житель северных льдов."],["🐻‍❄️","Владыка Арктики","Величественный хозяин ледяных просторов!"]]},
+ seal:{label:"Нерпа",stages:[["🦭","Малыш нерпы","Маленькая нерпа греется на льдине."],["🦭","Любопытная нерпа","Она учится ловко нырять в холодную воду."],["🦭","Пловец ледяных морей","Нерпа уверенно скользит подо льдом."],["🦭","Морская путешественница","Ей знакомы заливы и холодные воды Севера."],["🦭","Хранительница ледяных вод","Настоящая звезда северных морей!"]]},
+ snowyOwl:{label:"Полярная сова",stages:[["🐣","Птенец полярной совы","Пушистый птенец выглядывает из снежного укрытия."],["🦉","Юная полярная сова","Она учится бесшумно летать над тундрой."],["🦉","Снежная охотница","Острый взгляд замечает всё вокруг."],["🦉","Полярная стражница","Белые крылья несут её над бескрайним Севером."],["🦉","Мудрость Арктики","Легендарная полярная сова — хранительница северного неба!"]]},
+ lemming:{label:"Лемминг",stages:[["🐾","Малыш-лемминг","Крошечный житель тундры обустраивает норку."],["🐹","Юный лемминг","Он запасает силы и исследует окрестности."],["🐹","Проворный лемминг","Маленький, но очень смелый исследователь."],["🐹","Тундровый житель","Он знает все укромные уголки северной тундры."],["🐹","Легенда тундры","Самый отважный маленький путешественник Севера!"]]}
 };
 function petDetails(petState=state.pet||{name:"Пушок",xp:0,type:"dragon"}){
  const xp=Math.max(0,Math.floor(Number(petState.xp)||0)),level=Math.floor(xp/50)+1,inside=xp%50;
@@ -1945,6 +1951,9 @@ function renderPetCard(){
  $("petMoodText").textContent=details.mood;$("petXpLabel").textContent=details.inside+" / 50 опыта";$("petXpPercent").textContent=details.percent+"%";$("petXpBar").style.width=details.percent+"%";
  const input=$("petNameInput");if(input&&document.activeElement!==input)input.value=name;
  const selector=$("petTypeSelect");if(selector)selector.value=details.type;
+ const today=localPracticeDate(),patCount=state.pet.patDate===today?Math.min(3,Math.max(0,Number(state.pet.patCount)||0)):0;
+ const patLabel=$("petPatCount");if(patLabel)patLabel.textContent="Ласка: "+patCount+" из 3 сегодня · +1 опыт за поглаживание";
+ const patButton=$("petPatBtn");if(patButton){patButton.disabled=patCount>=3;patButton.textContent=patCount>=3?"На сегодня хватит ♡":"Погладить ♡";patButton.title=patCount>=3?"Можно погладить питомца снова завтра":"Погладить питомца и получить +1 опыт";}
 }
 window.__refreshProfilePet=renderPetCard;
 function updateStats(){
@@ -2447,9 +2456,17 @@ case "developerGear":
     } catch(err) { console.error(err); } break;
     case "devCheatPetXpApply": try { applyDeveloperCheat("petXp"); } catch(err) { console.error(err); } break;
     case "petPatBtn": try {
-      const lines=["Питомец довольно мурлычет от внимания ♡","Питомец рад тебя видеть!","Кажется, настроение стало ещё лучше ✨","Питомец благодарит за заботу!"];
+      if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"dragon"};
+      const today=localPracticeDate();
+      if(state.pet.patDate!==today){state.pet.patDate=today;state.pet.patCount=0;}
+      const used=Math.max(0,Number(state.pet.patCount)||0);
+      if(used>=3){toast("Сегодня питомец уже получил три порции ласки. Возвращайся завтра!");renderPetCard();break;}
+      state.pet.patCount=used+1;state.pet.xp=Math.max(0,Number(state.pet.xp)||0)+1;
+      const lines=["Питомец довольно мурлычет от внимания ♡","+1 опыт! Питомец рад твоей заботе ✨","Питомец благодарит за ласку! +1 опыт","Кажется, настроение стало ещё лучше ♡"];
       $("petMoodText").textContent=lines[Math.floor(Math.random()*lines.length)];
+      save();renderPetCard();
       $("petArt").animate([{transform:"scale(1)"},{transform:"scale(1.12) rotate(5deg)"},{transform:"scale(1)"}],{duration:420,easing:"ease-out"});
+      toast("Питомец получил +1 опыт! ("+(used+1)+"/3 за сегодня)");
     } catch(err) { console.error(err); } break;
     case "checkBtn": try { checkAnswer(); } catch(err) { console.error(err); } break;
     case "prevBtn": try { prev(); } catch(err) { console.error(err); } break;
