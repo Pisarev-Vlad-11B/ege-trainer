@@ -3388,12 +3388,21 @@ window.__renderLeaderboard = renderLeaderboard;
     const allowedFrames = ["rose","gold","ruby","newyear-snow","newyear-tree","newyear-gold"];
     const headerClass = allowedHeaders.includes(data.activeProfileHeader) ? "profile-header-" + data.activeProfileHeader : "";
     const frameClass = allowedFrames.includes(data.activeFrame) ? "frame-" + data.activeFrame : "";
+    const frameDecorations = {
+      "newyear-snow": [["☃️","frame-snowman"],["❄️","frame-flake frame-flake-left"],["❄️","frame-flake frame-flake-right"]],
+      "newyear-tree": [["🎄","frame-mini-tree"],["🎁","frame-mini-gift frame-mini-gift-left"],["🎁","frame-mini-gift frame-mini-gift-right"],["❄️","frame-flake frame-flake-right"],["✨","frame-star frame-star-top"]],
+      "newyear-gold": [["⭐","frame-star frame-star-left"],["✨","frame-star frame-star-top"],["⭐","frame-star frame-star-right"]]
+    };
+    const frameDecor = frameDecorations[data.activeFrame]
+      ? `<span class="avatar-frame-decor" aria-hidden="true"><span class="frame-snowbank"></span>${Array.from({length:9},(_,i)=>`<span class="frame-falling-snow snow-p${i}">${i%3===0?"❄":"·"}</span>`).join("")}${frameDecorations[data.activeFrame].map(([symbol,cls])=>`<span class="${cls}">${symbol}</span>`).join("")}</span>`
+      : "";
     content.innerHTML = `
       <div class="public-profile-card ${headerClass}">
         <div class="public-profile-avatar-wrap ${frameClass}">
           ${data.avatarUrl
             ? `<img class="public-profile-avatar" src="${escapeHTML(data.avatarUrl)}" alt="Аватар">`
             : `<div class="public-profile-avatar public-profile-avatar-fallback">${escapeHTML((fullName || "У").slice(0,1).toUpperCase())}</div>`}
+          ${frameDecor}
         </div>
         <h2>${escapeHTML(fullName)}</h2>
         <p class="public-profile-username">@${escapeHTML(data.username || "ученик")}</p>
