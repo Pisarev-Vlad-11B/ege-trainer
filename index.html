@@ -1857,17 +1857,7 @@ function applyProfileFrame(){
  const wrap=$("profileAvatar")?.parentElement;if(!wrap)return;
  [...wrap.classList].filter(name=>name.startsWith("frame-")).forEach(name=>wrap.classList.remove(name));
  wrap.querySelector(".avatar-frame-decor")?.remove();
- if(!state.activeFrame)return;
- wrap.classList.add("frame-"+state.activeFrame);
- const decorations={
-  "newyear-snow":[["☃️","snowman"],["❄️","snowflake snowflake-a"],["❄️","snowflake snowflake-b"],["✧","sparkle sparkle-a"],["❄","snowflake snowflake-c"]],
-  "newyear-tree":[["🎄","tree"],["🔴","bauble bauble-a"],["🟡","bauble bauble-b"],["⭐","star"],["❄️","snowflake snowflake-a"]],
-  "newyear-gold":[["🎁","gift"],["🔔","bell"],["✨","sparkle sparkle-a"],["🔴","bauble bauble-a"],["⭐","star"]]
- };
- const pieces=decorations[state.activeFrame];if(!pieces)return;
- const layer=document.createElement("span");layer.className="avatar-frame-decor";layer.setAttribute("aria-hidden","true");
- pieces.forEach(([symbol,cls])=>{const item=document.createElement("span");item.className=cls;item.textContent=symbol;layer.appendChild(item);});
- wrap.appendChild(layer);
+ if(state.activeFrame)wrap.classList.add("frame-"+state.activeFrame);
 }
 function renderShop(){
  const host=$("shopItems");if(!host)return;
@@ -1882,7 +1872,7 @@ function renderShop(){
  host.innerHTML=items.map(item=>{
   const owned=(state.ownedFrames||[]).includes(item.id),active=state.activeFrame===item.id;
   return `<article class="shop-item ${category==="newyear"?"shop-item-seasonal":""}">
-   <div class="shop-item-icon">${item.icon}</div>
+   <div class="shop-frame-preview frame-${item.id}" aria-hidden="true"><span class="shop-frame-sample">Р</span><i></i><b></b></div>
    <div class="shop-item-copy">${item.tag?'<span class="shop-item-tag">'+item.tag+'</span>':""}<strong>${item.name}</strong><p>${item.desc}</p><span>${item.price} ✦</span></div>
    <button type="button" class="shop-buy-btn" data-shop-item="${item.id}" ${!owned&&state.coins<item.price?"disabled":""}>${active?"Используется":owned?"Применить":"Купить"}</button>
   </article>`;
@@ -5867,6 +5857,29 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 .profile-avatar-wrap .avatar-edit{z-index:3}
 @media(max-width:700px){.avatar-frame-decor{inset:-15px}.avatar-frame-decor .snowman{font-size:24px}.avatar-frame-decor .tree{font-size:23px}}
 @media(max-width:700px){.shop-category-tabs{gap:7px}.shop-category-btn{flex:1;justify-content:center;padding:11px 9px;font-size:12px}.shop-category-heading{padding:15px}.shop-category-heading h3{font-size:18px}}
+
+/* Steam-inspired avatar frames: layered metallic rings, animated energy and live previews */
+.profile-avatar-wrap[class*="frame-"],.shop-frame-preview{position:relative;isolation:isolate;overflow:visible}
+.profile-avatar-wrap[class*="frame-"]::before,.shop-frame-preview::before{content:"";position:absolute;inset:-13px;border-radius:50%;z-index:0;padding:4px;background:conic-gradient(from 0deg,var(--frame-a),var(--frame-b),#fff,var(--frame-c),var(--frame-a));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 5px var(--frame-glow));animation:steamFrameSpin 7s linear infinite}
+.profile-avatar-wrap[class*="frame-"]::after,.shop-frame-preview::after{content:"";position:absolute;inset:-7px;border-radius:50%;z-index:0;border:2px solid var(--frame-b);box-shadow:inset 0 0 0 2px rgba(255,255,255,.55),0 0 0 2px rgba(20,20,30,.16),0 0 15px var(--frame-glow);pointer-events:none}
+.profile-avatar-wrap[class*="frame-"] .profile-avatar,.profile-avatar-wrap[class*="frame-"] .profile-avatar-fallback{position:relative;z-index:1}
+.profile-avatar-wrap[class*="frame-"] .avatar-edit{z-index:5}
+.profile-avatar-wrap.frame-rose,.shop-frame-preview.frame-rose{--frame-a:#ff8db7;--frame-b:#f5c4d5;--frame-c:#a93670;--frame-glow:#f17ba988}
+.profile-avatar-wrap.frame-gold,.shop-frame-preview.frame-gold{--frame-a:#fff0a5;--frame-b:#c88c24;--frame-c:#fff8d7;--frame-glow:#e8b94caa}
+.profile-avatar-wrap.frame-ruby,.shop-frame-preview.frame-ruby{--frame-a:#ff8290;--frame-b:#741d35;--frame-c:#e6b0b7;--frame-glow:#bd344fbb}
+.profile-avatar-wrap.frame-newyear-snow,.shop-frame-preview.frame-newyear-snow{--frame-a:#eaffff;--frame-b:#64c8ed;--frame-c:#b8eaff;--frame-glow:#8bdcf5cc}
+.profile-avatar-wrap.frame-newyear-tree,.shop-frame-preview.frame-newyear-tree{--frame-a:#e6d18a;--frame-b:#19754a;--frame-c:#f7e8b1;--frame-glow:#39a66cbb}
+.profile-avatar-wrap.frame-newyear-gold,.shop-frame-preview.frame-newyear-gold{--frame-a:#fff0a4;--frame-b:#a52e43;--frame-c:#d5a53c;--frame-glow:#e8bf55cc}
+.profile-avatar-wrap.frame-newyear-snow::after,.shop-frame-preview.frame-newyear-snow::after{border-style:dotted;border-width:3px}
+.profile-avatar-wrap.frame-newyear-tree::after,.shop-frame-preview.frame-newyear-tree::after{border-width:4px}
+.profile-avatar-wrap.frame-newyear-gold::after,.shop-frame-preview.frame-newyear-gold::after{border-width:3px;box-shadow:inset 0 0 0 2px #9e3040,0 0 0 2px #e6c66a,0 0 18px var(--frame-glow)}
+@keyframes steamFrameSpin{to{transform:rotate(360deg)}}
+.shop-frame-preview{width:86px;height:86px;margin:3px auto 8px;border-radius:50%;display:grid;place-items:center;flex:0 0 86px;background:radial-gradient(circle at 35% 28%,#fff 0,#f1e5e4 58%,#d7c4c3 100%);box-shadow:0 8px 20px rgba(45,25,30,.13)}
+.shop-frame-sample{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f6d8d9,#a93645);border:2px solid rgba(255,255,255,.85);color:#fff;font-size:25px;font-weight:900;box-shadow:inset 0 2px 8px #54202a55;position:relative;z-index:1}
+.shop-frame-preview>i,.shop-frame-preview>b{position:absolute;z-index:2;width:7px;height:7px;border-radius:50%;background:var(--frame-b);box-shadow:0 0 8px var(--frame-glow)}
+.shop-frame-preview>i{top:4px;left:39px}.shop-frame-preview>b{right:2px;bottom:25px}
+.shop-item{align-items:stretch}.shop-item .shop-frame-preview{align-self:center}
+@media(prefers-reduced-motion:reduce){.profile-avatar-wrap[class*="frame-"]::before,.shop-frame-preview::before{animation:none}}
 </style>
 </body>
   <script>
