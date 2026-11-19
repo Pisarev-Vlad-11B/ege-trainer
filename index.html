@@ -1457,7 +1457,7 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
           <div class="profile-pet-xp-row"><span id="petXpLabel">0 / 50 опыта</span><span id="petXpPercent">0%</span></div>
           <div class="profile-pet-xp-track"><i id="petXpBar"></i></div>
           <label class="profile-pet-select-label" for="petTypeSelect">Кого выращиваем?</label>
-          <div class="profile-pet-select-row"><select id="petTypeSelect" aria-label="Выбор питомца"><optgroup label="Северные питомцы — ЯНАО и Арктика"><option value="arcticFox">🦊 Ямальский песец</option><option value="reindeer">🦌 Северный оленёнок</option><option value="polarBear">🐻‍❄️ Белый медвежонок</option><option value="seal">🦭 Нерпа</option><option value="snowyOwl">🦉 Полярная сова</option><option value="lemming">🐹 Лемминг</option></optgroup><optgroup label="Другие питомцы"><option value="dragon">🐉 Дракончик</option><option value="cat">🐱 Котёнок</option><option value="fox">🦊 Лисёнок</option><option value="panda">🐼 Пандочка</option><option value="owl">🦉 Совёнок</option></optgroup></select><button class="secondary" id="petSaveTypeBtn" type="button">Выбрать</button></div>
+          <div class="profile-pet-select-row"><select id="petTypeSelect" aria-label="Выбор питомца"><optgroup label="Северные питомцы — ЯНАО и Арктика"><option value="arcticFox">🦊 Ямальский песец</option><option value="reindeer">🦌 Северный оленёнок</option><option value="polarBear">🐻‍❄️ Белый медвежонок</option><option value="snowyOwl">🦉 Полярная сова</option></optgroup><optgroup label="Другие питомцы"><option value="dragon">🐉 Дракончик</option><option value="cat">🐱 Котёнок</option><option value="fox">🦊 Лисёнок</option><option value="panda">🐼 Пандочка</option><option value="owl">🦉 Совёнок</option></optgroup></select><button class="secondary" id="petSaveTypeBtn" type="button">Выбрать</button></div>
           <div class="profile-pet-name-editor"><input id="petNameInput" type="text" maxlength="18" placeholder="Имя питомца" aria-label="Имя питомца"><button class="secondary" id="petSaveNameBtn" type="button">Сохранить имя</button></div>
         </div>
       </div>
@@ -1929,9 +1929,7 @@ const PET_SPECIES={
  arcticFox:{label:"Ямальский песец",stages:[["🐾","Песец-малыш","Маленький песец прячется в мягком снегу тундры."],["🦊","Юный песец","Белая шубка помогает ему оставаться незаметным среди сугробов."],["🦊","Песец тундры","Он ловко исследует снежные просторы Ямала."],["🦊","Северный следопыт","Ни одна тропинка в тундре от него не укроется."],["🦊","Хозяин снежной тундры","Редкий и гордый песец — настоящий символ Севера!"]]},
  reindeer:{label:"Северный оленёнок",stages:[["🦌","Оленёнок-малыш","Любопытный оленёнок делает первые шаги по тундре."],["🦌","Юный оленёнок","Он учится находить ягель под снегом."],["🦌","Сильный северный олень","Крепкие ноги несут его по бескрайней тундре."],["🦌","Величественный олень","Ему не страшны ни ветер, ни долгие переходы."],["🦌","Хранитель тундры","Гордый северный олень — дух просторов Ямала!"]]},
  polarBear:{label:"Белый медвежонок",stages:[["🐻‍❄️","Медвежонок-малыш","Маленький медвежонок уютно устроился в снежном логове."],["🐻‍❄️","Любопытный медвежонок","Он познаёт ледяной мир Арктики."],["🐻‍❄️","Подросший медведь","Становится сильнее с каждым новым приключением."],["🐻‍❄️","Белый медведь","Сильный и осторожный житель северных льдов."],["🐻‍❄️","Владыка Арктики","Величественный хозяин ледяных просторов!"]]},
- seal:{label:"Нерпа",stages:[["🦭","Малыш нерпы","Маленькая нерпа греется на льдине."],["🦭","Любопытная нерпа","Она учится ловко нырять в холодную воду."],["🦭","Пловец ледяных морей","Нерпа уверенно скользит подо льдом."],["🦭","Морская путешественница","Ей знакомы заливы и холодные воды Севера."],["🦭","Хранительница ледяных вод","Настоящая звезда северных морей!"]]},
  snowyOwl:{label:"Полярная сова",stages:[["🐣","Птенец полярной совы","Пушистый птенец выглядывает из снежного укрытия."],["🦉","Юная полярная сова","Она учится бесшумно летать над тундрой."],["🦉","Снежная охотница","Острый взгляд замечает всё вокруг."],["🦉","Полярная стражница","Белые крылья несут её над бескрайним Севером."],["🦉","Мудрость Арктики","Легендарная полярная сова — хранительница северного неба!"]]},
- lemming:{label:"Лемминг",stages:[["🐾","Малыш-лемминг","Крошечный житель тундры обустраивает норку."],["🐹","Юный лемминг","Он запасает силы и исследует окрестности."],["🐹","Проворный лемминг","Маленький, но очень смелый исследователь."],["🐹","Тундровый житель","Он знает все укромные уголки северной тундры."],["🐹","Легенда тундры","Самый отважный маленький путешественник Севера!"]]}
 };
 function petDetails(petState=state.pet||{name:"Пушок",xp:0,type:"dragon"}){
  const xp=Math.max(0,Math.floor(Number(petState.xp)||0)),level=Math.floor(xp/50)+1,inside=xp%50;
@@ -1944,7 +1942,7 @@ function renderPetCard(){
  const card=$("profilePetCard");if(!card)return;
  const signed=!!window.__isTrainerAuthenticated?.();card.hidden=!signed;if(!signed)return;
  if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"dragon"};
- if(!PET_SPECIES[state.pet.type])state.pet.type="dragon";
+ if(!PET_SPECIES[state.pet.type])state.pet.type="arcticFox";
  const details=petDetails(state.pet),name=String(state.pet.name||"Пушок").slice(0,18);
  $("petArt").textContent=details.icon;$("petArt").setAttribute("aria-label",name+", "+details.stage);
  $("petLevelBadge").textContent="Уровень "+details.level;$("petDisplayName").textContent=name;$("petStageLabel").textContent=details.stage;
