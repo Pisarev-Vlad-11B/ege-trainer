@@ -945,6 +945,38 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
   }
 }
 </style>
+
+<style id="mobile-landscape-compact">
+/* В горизонтальной ориентации телефона интерфейс немного компактнее.
+   В портретной ориентации все существующие размеры остаются без изменений. */
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  body {
+    zoom: .88;
+  }
+  .topbar {
+    min-height: 56px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+  .nav {
+    gap: 5px;
+  }
+  .nav button {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  main {
+    padding-top: 20px;
+    padding-bottom: 36px;
+  }
+  .overlay,
+  .support-overlay,
+  .public-profile-overlay {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+</style>
 </head>
 <body>
 <header class="topbar">
