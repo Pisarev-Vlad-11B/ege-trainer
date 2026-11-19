@@ -1117,6 +1117,65 @@ html[data-theme="dark"] .profile-pet-card,body.dark .profile-pet-card{background
 html[data-theme="dark"] .profile-pet-art,body.dark .profile-pet-art{background:radial-gradient(circle at 50% 38%,#51414c 0%,#40313e 68%,#352a39 100%)}
 html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{background:rgba(232,143,169,.14);color:#f0b2c5}
 @media(max-width:600px){.profile-pet-card{padding:18px}.profile-pet-body{align-items:flex-start;gap:14px}.profile-pet-art{width:94px;height:94px;border-radius:20px;font-size:52px}.profile-pet-name-editor{flex-direction:column}.profile-pet-name-editor button{width:100%}.profile-pet-footer{align-items:flex-start;flex-direction:column}.profile-pet-top h3{font-size:19px}}
+
+/* Исправление сетки профиля: питомец занимает отдельную колонку и не перекрывает анкету */
+.profile-shell{
+  width:100%;
+  max-width:1200px;
+  grid-template-columns:minmax(0,350px) minmax(0,1fr);
+  grid-template-rows:auto auto 1fr;
+  align-items:start;
+  gap:18px;
+}
+.profile-shell>*{min-width:0}
+.profile-shell>.profile-pet-card{
+  grid-column:1;
+  grid-row:1 / span 3;
+  position:sticky;
+  top:96px;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  margin:0;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.profile-shell>.profile-card{grid-column:2;grid-row:1}
+.profile-shell>.profile-form-card{grid-column:2;grid-row:2}
+.profile-shell>.profile-progress-card{grid-column:2;grid-row:3}
+.profile-shell .profile-pet-body{
+  flex-direction:column;
+  align-items:stretch;
+  gap:14px;
+}
+.profile-shell .profile-pet-art{
+  width:116px;
+  height:116px;
+  align-self:center;
+  font-size:64px;
+}
+.profile-shell .profile-pet-info{width:100%;min-width:0}
+.profile-shell .profile-pet-select-row{flex-wrap:wrap}
+.profile-shell .profile-pet-select-row select{width:100%;flex:1 1 150px;min-width:0}
+.profile-shell .profile-pet-select-row button{flex:0 0 auto}
+.profile-shell .profile-pet-name-editor{display:flex;gap:8px;min-width:0}
+.profile-shell .profile-pet-name-editor input{min-width:0;width:100%;flex:1}
+@media(max-width:900px){
+  .profile-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;max-width:720px}
+  .profile-shell>.profile-pet-card{grid-column:1;grid-row:1;position:static}
+  .profile-shell>.profile-card{grid-column:1;grid-row:2}
+  .profile-shell>.profile-form-card{grid-column:1;grid-row:3}
+  .profile-shell>.profile-progress-card{grid-column:1;grid-row:4}
+  .profile-shell .profile-pet-body{flex-direction:row;align-items:center}
+  .profile-shell .profile-pet-art{width:116px;height:116px;flex:0 0 116px}
+}
+@media(max-width:600px){
+  .profile-shell .profile-pet-body{align-items:flex-start}
+  .profile-shell .profile-pet-art{width:94px;height:94px;flex:0 0 94px;font-size:52px}
+  .profile-shell .profile-pet-info{flex:1}
+  .profile-shell .profile-pet-name-editor{flex-direction:column}
+  .profile-shell .profile-pet-name-editor button{width:100%}
+}
 </style>
 </head>
 <body>
