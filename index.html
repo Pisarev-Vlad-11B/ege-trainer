@@ -1049,6 +1049,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
   <button data-view="theory" data-protected="true" hidden>Теория</button>
   <button data-view="stats" data-protected="true" hidden>Статистика</button>
   <button data-view="achievements" data-protected="true" hidden>Достижения</button>
+  <button data-view="shop" data-protected="true" hidden>🎁 Магазин</button>
   <button data-view="profile" id="profileNav">
     <img id="profileNavAvatar" class="profile-nav-avatar" alt="" hidden>
     <span id="profileNavText">Профиль</span>
@@ -1156,12 +1157,12 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 </section>
   <section id="tasks" class="view">
   <div class="section-head"><div><div class="eyebrow">Практика</div><h2>Задания</h2><p>Решай самостоятельно — порядок заданий перемешивается.</p></div></div>
-  <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button></div>
+  <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button><button class="task-tab" id="favoritesTab">Избранное <span class="count-pill" id="favoriteCount">0</span></button></div>
   <div id="bankPane">
     <div class="practice-shell">
       <div class="side-art left"><div class="orb"></div><div class="side-symbol">✦</div></div>
       <article class="task-card">
-        <div class="task-meta"><div class="task-number" id="taskNumber">Задание 1 из 143</div><div class="progress-label" id="progressLabel">0% пройдено</div></div>
+        <div class="task-meta"><div class="task-number" id="taskNumber">Задание 1 из 143</div><div style="display:flex;align-items:center;gap:12px"><div class="progress-label" id="progressLabel">0% пройдено</div><button type="button" class="task-favorite-btn" id="taskFavoriteBtn" aria-label="Добавить в избранное" title="Добавить в избранное">☆</button></div></div>
         <div class="progress"><span id="progressBar" style="width:0%"></span></div>
         <p class="prompt">Укажите варианты ответов, в которых в обоих словах одного ряда пропущена одна и та же буква. Запишите номера ответов.</p>
         <div class="question-list" id="questionText"></div>
@@ -1171,7 +1172,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 <div class="side-art right"><div class="orb"></div><div class="side-symbol">✎</div></div>
     </div>
   </div>
-  <div id="errorsPane" hidden><div id="mistakesList" class="mistakes-list"></div></div>
+  <div id="errorsPane" hidden><div id="mistakesList" class="mistakes-list"></div></div><div id="favoritesPane" hidden><div id="favoritesList" class="mistakes-list"></div></div>
 </section>
 <section id="stats" class="view">
   <div class="section-head compact-head"><div><div class="eyebrow">Твой прогресс</div><h2>Статистика</h2><p>Все главные показатели — на одном экране.</p></div></div>
@@ -1203,8 +1204,10 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
       </article>
     </div>
   </div>
+  <section class="mistake-analytics-card"><div class="mistake-analytics-head"><div><span class="eyebrow">РАБОТА НАД ОШИБКАМИ</span><h3>Аналитика ошибок</h3><p>Какие задания чаще всего вызывают затруднения.</p></div><div class="analytics-total"><strong id="analyticsMistakesTotal">0</strong><span>ошибок</span></div></div><div id="mistakeAnalyticsList" class="mistake-analytics-list"></div></section>
   <div class="stats-footer-note"><span>✦</span> Каждый решённый пример приближает тебя к цели. Продолжай в своём темпе!</div>
 </section>
+<section id="shop" class="view"><div class="section-head"><div><div class="eyebrow">НАГРАДЫ ЗА УЧЁБУ</div><h2>Магазин наград</h2><p>Зарабатывай баллы за правильные ответы и открывай оформление профиля.</p></div><div class="shop-balance"><span>ТВОЙ БАЛАНС</span><strong id="shopCoins">0 ✦</strong></div></div><div class="shop-intro-card"><span>✦</span><div><strong>Учись — получай награды</strong><p>За каждое новое задание, решённое правильно впервые, начисляется 10 баллов. Повторные ответы не дают дополнительные баллы.</p></div></div><div id="shopItems" class="shop-grid"></div></section>
 <section id="achievements" class="view">
   <div class="section-head"><div><div class="eyebrow">Твои маленькие и большие победы</div><h2>Достижения</h2><p>Открывай новые значки шаг за шагом — прогресс складывается из усилий.</p></div><span class="achievement-total achievement-total-large" id="achievementTotal">0/12 открыто</span></div>
   <div class="motivation-banner"><div class="motivation-spark">✦</div><div><span class="eyebrow">НЕ ЗАБЫВАЙ</span><h3>У тебя получается лучше, чем кажется.</h3><p>Не обязательно быть идеальным с первого раза. Важно продолжать, замечать ошибки и становиться увереннее.</p></div></div>
@@ -1662,8 +1665,8 @@ const TASKS = [{"id":1,"question":"1) скоропорт..щиеся, донос
 const STORAGE_KEY = "ege12_trainer_state_v3";
 const $ = id => document.getElementById(id);
 const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
-const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],correct:0,completed:[],round:1,streak:0,bestStreak:0});
-function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;return s;}}catch(e){}return freshState();}
+const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],mistakeCounts:{},favorites:[],coins:0,ownedFrames:[],activeFrame:"",correct:0,completed:[],round:1,streak:0,bestStreak:0});
+function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;if(!s.mistakeCounts||typeof s.mistakeCounts!=="object")s.mistakeCounts={};if(!Array.isArray(s.favorites))s.favorites=[];if(!Number.isFinite(s.coins))s.coins=0;if(!Array.isArray(s.ownedFrames))s.ownedFrames=[];if(typeof s.activeFrame!=="string")s.activeFrame="";return s;}}catch(e){}return freshState();}
 let state=loadState(), activePane="bank";
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));updateStats();if(window.__syncCloudState)window.__syncCloudState(state);if(window.__updateProfileProgress)window.__updateProfileProgress(state);}
 // Мост между локальным тренажёром и облачным аккаунтом Firebase.
@@ -1741,6 +1744,9 @@ function updateStats(){
  if($("bestStreak"))$("bestStreak").textContent=state.bestStreak||0;
  if($("practiceDaysCount"))$("practiceDaysCount").textContent=state.practiceDayStreak||0;
  if($("practiceDaysHint"))$("practiceDaysHint").textContent=state.lastPracticeDate===localPracticeDate()?"Отлично! Сегодня ты уже занимался.":"Реши хотя бы одно задание сегодня";
+ if($("favoriteCount"))$("favoriteCount").textContent=(state.favorites||[]).length;
+ if($("analyticsMistakesTotal"))$("analyticsMistakesTotal").textContent=Object.values(state.mistakeCounts||{}).reduce((a,b)=>a+(Number(b)||0),0);
+ renderMistakeAnalytics();renderShop();applyProfileFrame();
  renderAchievements();
 }
 function renderTask(){
@@ -1757,6 +1763,7 @@ function renderTask(){
  $("prevBtn").disabled=state.index===0;
  $("nextBtn").disabled=state.index===142 && state.completed.length!==143;
  $("nextBtn").textContent=state.index===142 && state.completed.length===143?"Новое прохождение ↻":"Далее →";
+ const fav=$("taskFavoriteBtn");if(fav){const yes=(state.favorites||[]).includes(t.id);fav.textContent=yes?"★":"☆";fav.classList.toggle("is-favorite",yes);fav.title=yes?"Убрать из избранного":"Добавить в избранное";fav.setAttribute("aria-label",fav.title);}
  updateStats();
 }
 function checkAnswer(){
@@ -1767,10 +1774,11 @@ function checkAnswer(){
  const wasCompleted=state.completed.includes(t.id);
  state.answers[t.id]={value,status:ok?"correct":"wrong"};
  if(ok){
-   if(!wasCompleted){state.completed.push(t.id);state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);markPracticeDay();}
+   if(!wasCompleted){state.completed.push(t.id);state.coins=(Number(state.coins)||0)+10;state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);markPracticeDay();}
    state.mistakes=state.mistakes.filter(x=>x!==t.id);state.correct=state.completed.length;
  } else {
    state.streak=0;
+   state.mistakeCounts[t.id]=(Number(state.mistakeCounts[t.id])||0)+1;
    if(!state.mistakes.includes(t.id))state.mistakes.push(t.id);
  }
  save();renderTask();
@@ -1785,7 +1793,7 @@ function next(){
 }
 function prev(){if(state.index>0){state.index--;save();renderTask();}}
 function showView(name) {
-  const protectedViews = ["leaderboard", "tasks", "theory", "stats", "achievements"];
+  const protectedViews = ["leaderboard", "tasks", "theory", "stats", "achievements", "shop"];
 
   if (protectedViews.includes(name) && !window.__isTrainerAuthenticated?.()) {
     name = "profile";
@@ -1803,17 +1811,25 @@ function showView(name) {
   if (name === "tasks") renderTask();
   if (name === "stats") updateStats();
   if (name === "achievements") renderAchievements();
+  if (name === "shop") renderShop();
   if (name === "leaderboard" && window.__renderLeaderboard) {
     window.__renderLeaderboard();
   }
 }
-function showPane(name){activePane=name;$("bankPane").hidden=name!=="bank";$("errorsPane").hidden=name!=="errors";$("bankTab").classList.toggle("active",name==="bank");$("errorsTab").classList.toggle("active",name==="errors");if(name==="errors")renderMistakes();}
+function showPane(name){activePane=name;$("bankPane").hidden=name!=="bank";$("errorsPane").hidden=name!=="errors";$("favoritesPane").hidden=name!=="favorites";$("bankTab").classList.toggle("active",name==="bank");$("errorsTab").classList.toggle("active",name==="errors");$("favoritesTab").classList.toggle("active",name==="favorites");if(name==="errors")renderMistakes();if(name==="favorites")renderFavorites();}
 function renderMistakes(){
  const host=$("mistakesList");$("errorCount").textContent=state.mistakes.length;
  if(!state.mistakes.length){host.innerHTML='<div class="mistakes-empty"><div style="font-size:38px;margin-bottom:12px">✦</div><strong>Пока ошибок нет</strong><p>Задания, в которых будет допущена ошибка, появятся здесь.</p></div>';return;}
  host.innerHTML="";
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
+function renderMistakeAnalytics(){const host=$("mistakeAnalyticsList");if(!host)return;const entries=Object.entries(state.mistakeCounts||{}).map(([id,count])=>({id:Number(id),count:Number(count)||0})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,6);if(!entries.length){host.innerHTML='<div class="analytics-empty">Пока нет ошибок. Здесь появится статистика после первых попыток.</div>';return;}const max=entries[0].count;host.innerHTML=entries.map(x=>`<div class="analytics-row"><div class="analytics-row-top"><strong>Задание №${x.id}</strong><span>${x.count} ${x.count===1?"ошибка":x.count<5?"ошибки":"ошибок"}</span></div><div class="analytics-track"><i style="width:${Math.max(8,x.count/max*100)}%"></i></div><button type="button" class="analytics-repeat" data-repeat-task="${x.id}">Повторить задание →</button></div>`).join("");}
+const SHOP_FRAMES=[{id:"rose",name:"Розовая рамка",price:30,icon:"🌸",desc:"Нежное розовое свечение"},{id:"gold",name:"Золотая рамка",price:60,icon:"👑",desc:"Тёплый золотой акцент"},{id:"ruby",name:"Рубиновая рамка",price:90,icon:"💎",desc:"Яркое бордовое сияние"}];
+function applyProfileFrame(){const wrap=$("profileAvatar")?.parentElement;if(!wrap)return;wrap.classList.remove("frame-rose","frame-gold","frame-ruby");if(state.activeFrame)wrap.classList.add("frame-"+state.activeFrame);}
+function renderShop(){const host=$("shopItems");if(!host)return;if($("shopCoins"))$("shopCoins").textContent=(Number(state.coins)||0)+" ✦";host.innerHTML=SHOP_FRAMES.map(item=>{const owned=(state.ownedFrames||[]).includes(item.id),active=state.activeFrame===item.id;return `<article class="shop-item"><div class="shop-item-icon">${item.icon}</div><div class="shop-item-copy"><strong>${item.name}</strong><p>${item.desc}</p><span>${item.price} ✦</span></div><button type="button" class="shop-buy-btn" data-shop-item="${item.id}" ${!owned&&state.coins<item.price?"disabled":""}>${active?"Используется":owned?"Применить":"Купить"}</button></article>`;}).join("");}
+function renderFavorites(){const host=$("favoritesList");if(!host)return;const ids=state.favorites||[];if(!ids.length){host.innerHTML='<div class="mistakes-empty"><div style="font-size:38px;margin-bottom:12px">☆</div><strong>Избранное пока пусто</strong><p>Нажми на звёздочку в задании, чтобы сохранить его здесь.</p></div>';return;}host.innerHTML="";ids.forEach(id=>{const t=TASKS.find(x=>x.id===id);if(!t)return;const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");const title=document.createElement("strong");title.textContent="Задание из банка · №"+id;const desc=document.createElement("p");desc.textContent=t.question.split("\n")[0];left.append(title,desc);const actions=document.createElement("div");actions.className="favorite-actions";const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.addEventListener("click",()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();});const remove=document.createElement("button");remove.className="secondary";remove.textContent="Убрать";remove.addEventListener("click",()=>{state.favorites=state.favorites.filter(x=>x!==id);save();renderFavorites();});actions.append(btn,remove);el.append(left,actions);host.append(el);});}
+function toggleFavorite(){const id=currentTask().id;if(!Array.isArray(state.favorites))state.favorites=[];state.favorites=state.favorites.includes(id)?state.favorites.filter(x=>x!==id):[...state.favorites,id];save();renderTask();}
+function handleShopItem(id){const item=SHOP_FRAMES.find(x=>x.id===id);if(!item)return;if((state.ownedFrames||[]).includes(id)){state.activeFrame=id;}else{if((Number(state.coins)||0)<item.price)return;state.coins-=item.price;state.ownedFrames.push(id);state.activeFrame=id;}save();renderShop();toast("Оформление профиля применено!");}
 window.scrollToTheoryMaterials=function(){
   const target=document.getElementById("theoryWorkspaceHeading");
   if(!target)return;
@@ -2051,6 +2067,8 @@ document.addEventListener("click", function(e) {
     }
     if (el.id === "profileAuthBtn") return;
   }
+  if(el.dataset && el.dataset.repeatTask){state.index=state.order.indexOf(Number(el.dataset.repeatTask));showView("tasks");showPane("bank");renderTask();return;}
+  if(el.dataset && el.dataset.shopItem){handleShopItem(el.dataset.shopItem);return;}
   const view = el.dataset && el.dataset.view;
   if (view) {
   showView(view);
@@ -2092,6 +2110,9 @@ case "developerGear":
       document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
       break;
     case "bankTab": try { showPane("bank"); } catch(err) { console.error(err); } break;
+    case "errorsTab": try { showPane("errors"); } catch(err) { console.error(err); } break;
+    case "favoritesTab": try { showPane("favorites"); } catch(err) { console.error(err); } break;
+    case "taskFavoriteBtn": try { toggleFavorite(); } catch(err) { console.error(err); } break;
     case "errorsTab": try { showPane("errors"); } catch(err) { console.error(err); } break;
     case "checkBtn": try { checkAnswer(); } catch(err) { console.error(err); } break;
     case "prevBtn": try { prev(); } catch(err) { console.error(err); } break;
@@ -5736,7 +5757,7 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
   border-color:rgba(137,87,232,.65);
   box-shadow:0 0 0 1px rgba(137,87,232,.22),0 9px 24px rgba(80,50,130,.08);
 }
-</style>
+.task-favorite-btn{width:38px;height:38px;border:1px solid var(--line);border-radius:12px;background:var(--paper2);color:var(--muted);font-size:24px;line-height:1;transition:.2s}.task-favorite-btn:hover,.task-favorite-btn.is-favorite{color:var(--red);border-color:#d99aa3;background:var(--soft);transform:scale(1.06)}.task-tabs{flex-wrap:wrap}.favorite-actions{display:flex;gap:8px;flex-wrap:wrap}.mistake-analytics-card{margin-top:22px;padding:25px;background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.mistake-analytics-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}.mistake-analytics-head h3{margin:6px 0;font-size:22px}.mistake-analytics-head p{margin:0;color:var(--muted);font-size:13px}.analytics-total{display:grid;justify-items:center;padding:10px 17px;border-radius:15px;background:var(--soft);color:var(--red)}.analytics-total strong{font-size:25px}.analytics-total span{font-size:10px;font-weight:800}.mistake-analytics-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.analytics-row{padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper2)}.analytics-row-top{display:flex;justify-content:space-between;gap:8px;font-size:12px}.analytics-row-top span{color:var(--red);font-weight:800}.analytics-track{height:7px;margin:11px 0;background:var(--line);border-radius:20px;overflow:hidden}.analytics-track i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#d98b96,var(--red))}.analytics-repeat{padding:0;border:0;background:none;color:var(--red);font-size:11px;font-weight:800;cursor:pointer}.analytics-empty{padding:22px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);font-size:13px;text-align:center;grid-column:1/-1}.shop-balance{display:grid;gap:3px;padding:12px 17px;border-radius:16px;background:var(--soft);color:var(--red);text-align:right}.shop-balance span{font-size:9px;font-weight:900;letter-spacing:1px}.shop-balance strong{font-size:22px}.shop-intro-card{display:flex;gap:14px;align-items:center;margin:0 0 20px;padding:18px 20px;border:1px solid #e9cdd1;border-radius:18px;background:linear-gradient(120deg,#fff8f6,#f7e8e9)}.shop-intro-card>span{font-size:30px;color:var(--red)}.shop-intro-card strong{color:#913441}.shop-intro-card p{margin:5px 0 0;color:#79696b;font-size:12px;line-height:1.55}.shop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.shop-item{display:flex;flex-direction:column;align-items:flex-start;gap:13px;padding:20px;border:1px solid var(--line);border-radius:19px;background:var(--paper);transition:transform .2s,border-color .2s,box-shadow .2s}.shop-item:hover{transform:translateY(-3px);border-color:#d5a3aa;box-shadow:var(--shadow)}.shop-item-icon{display:grid;place-items:center;width:54px;height:54px;border-radius:17px;background:var(--soft);font-size:27px}.shop-item-copy strong{font-size:14px}.shop-item-copy p{margin:5px 0;color:var(--muted);font-size:12px}.shop-item-copy span{color:var(--red);font-size:12px;font-weight:900}.shop-buy-btn{width:100%;margin-top:auto;padding:11px;border:0;border-radius:12px;background:var(--red);color:#fff;font-size:12px;font-weight:850;cursor:pointer}.shop-buy-btn:disabled{opacity:.42;cursor:not-allowed}.profile-avatar-wrap.frame-rose:after,.profile-avatar-wrap.frame-gold:after,.profile-avatar-wrap.frame-ruby:after{content:"";position:absolute;inset:-7px;border:4px solid;border-radius:50%;pointer-events:none}.profile-avatar-wrap.frame-rose:after{border-color:#e88ca9;box-shadow:0 0 15px #e88ca977}.profile-avatar-wrap.frame-gold:after{border-color:#d7ad4b;box-shadow:0 0 16px #d7ad4b88}.profile-avatar-wrap.frame-ruby:after{border-color:#a93645;box-shadow:0 0 18px #a9364588}html[data-theme="dark"] .shop-intro-card{background:linear-gradient(120deg,#33262a,#38272e);border-color:#68414a}html[data-theme="dark"] .shop-intro-card strong{color:#f0b6c0}@media(max-width:700px){.mistake-analytics-list,.shop-grid{grid-template-columns:1fr}.mistake-analytics-card{padding:18px}.mistake-analytics-head{align-items:flex-start}.favorite-actions{width:100%}.favorite-actions button{flex:1}}</style>
 </body>
   <script>
 // Локальные настройки панели разработчика
