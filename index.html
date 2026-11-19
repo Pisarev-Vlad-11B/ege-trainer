@@ -1272,7 +1272,14 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
   <button type="button" class="shop-category-btn" data-shop-category="newyear" role="tab" aria-selected="false">🎄 Новый год <span>СЕЗОННОЕ</span></button>
 </div>
 <div class="shop-category-heading" id="shopCategoryHeading"><div><span class="eyebrow">КОЛЛЕКЦИЯ</span><h3>Обычные оформления</h3><p>Классические рамки и шапки профиля, доступные в любое время.</p></div></div>
-<div id="shopItems" class="shop-grid"></div></section>
+<section class="shop-product-block">
+ <div class="shop-product-block-heading"><span class="eyebrow">КОЛЛЕКЦИЯ 01</span><h3>🖼️ Рамки аватара</h3><p>Укрась фотографию профиля рамкой.</p></div>
+ <div id="shopFrameItems" class="shop-grid"></div>
+</section>
+<section class="shop-product-block shop-product-block-headers">
+ <div class="shop-product-block-heading"><span class="eyebrow">КОЛЛЕКЦИЯ 02</span><h3>✨ Шапки профиля</h3><p>Выбери оформление фона карточки профиля.</p></div>
+ <div id="shopHeaderItems" class="shop-grid"></div>
+</section></section>
 <section id="achievements" class="view">
   <div class="section-head"><div><div class="eyebrow">Твои маленькие и большие победы</div><h2>Достижения</h2><p>Открывай новые значки шаг за шагом — прогресс складывается из усилий.</p></div><span class="achievement-total achievement-total-large" id="achievementTotal">0/12 открыто</span></div>
   <div class="motivation-banner"><div class="motivation-spark">✦</div><div><span class="eyebrow">НЕ ЗАБЫВАЙ</span><h3>У тебя получается лучше, чем кажется.</h3><p>Не обязательно быть идеальным с первого раза. Важно продолжать, замечать ошибки и становиться увереннее.</p></div></div>
@@ -1954,7 +1961,7 @@ function applyProfileFrame(){
 const PROFILE_HEADERS=[
  {id:"burgundy",name:"Рубиновый акцент",price:150,icon:"💎",desc:"Насыщенный рубиновый оттенок с мягким сиянием",className:"profile-header-burgundy",category:"regular"},
  {id:"midnight",name:"Звёздная ночь",price:200,icon:"🌙",desc:"Глубокий ночной синий и россыпь звёзд",className:"profile-header-midnight",category:"regular"},
- {id:"winter",name:"Ледяное сияние",price:250,icon:"🩵",desc:"Светлые ледяные оттенки и морозное мерцание",className:"profile-header-winter",category:"regular"},
+ {id:"winter",name:"Ледяное сияние",price:250,icon:"❄️",desc:"Светлые ледяные оттенки и морозное мерцание",className:"profile-header-winter",category:"regular"},
  {id:"newyear-magic",name:"Новогоднее волшебство",price:320,icon:"🎅",desc:"Праздничный бордовый фон, золотые огни и снежинки",className:"profile-header-newyear-magic",category:"newyear"},
  {id:"newyear-tree",name:"Праздничная ёлка",price:350,icon:"🎄",desc:"Изумрудная хвоя, гирлянды и золотые украшения",className:"profile-header-newyear-tree",category:"newyear"},
  {id:"newyear-night",name:"Сияние полуночи",price:380,icon:"✨",desc:"Зимнее ночное небо, звёзды и праздничное сияние",className:"profile-header-newyear-night",category:"newyear"}
@@ -1973,7 +1980,7 @@ function handleProfileHeader(id){
  save();applyProfileHeader();renderShop();toast(state.activeProfileHeader===id?"Шапка профиля применена!":"Оформление профиля снято.");
 }
 function renderShop(){
- const host=$("shopItems");if(!host)return;
+ const frameHost=$("shopFrameItems"),headerHost=$("shopHeaderItems");if(!frameHost||!headerHost)return;
  if($("shopCoins"))$("shopCoins").textContent=(Number(state.coins)||0)+" ✦";
  const category=activeShopCategory==="newyear"?"newyear":"regular";
  document.querySelectorAll("[data-shop-category]").forEach(btn=>{const active=btn.dataset.shopCategory===category;btn.classList.toggle("active",active);btn.setAttribute("aria-selected",String(active));});
@@ -1998,7 +2005,8 @@ function renderShop(){
    <button type="button" class="shop-buy-btn" data-profile-header="${item.id}" ${!owned&&state.coins<item.price?"disabled":""}>${active?"Используется":owned?"Применить":"Купить"}</button>
   </article>`;
  }).join("");
- host.innerHTML=frameCards+headerCards;
+ frameHost.innerHTML=frameCards;
+ headerHost.innerHTML=headerCards;
  applyProfileHeader();
 }
 function renderFavorites(){const host=$("favoritesList");if(!host)return;const ids=state.favorites||[];if(!ids.length){host.innerHTML='<div class="mistakes-empty"><div style="font-size:38px;margin-bottom:12px">☆</div><strong>Избранное пока пусто</strong><p>Нажми на звёздочку в задании, чтобы сохранить его здесь.</p></div>';return;}host.innerHTML="";ids.forEach(id=>{const t=TASKS.find(x=>x.id===id);if(!t)return;const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");const title=document.createElement("strong");title.textContent="Задание из банка · №"+id;const desc=document.createElement("p");desc.textContent=t.question.split("\n")[0];left.append(title,desc);const actions=document.createElement("div");actions.className="favorite-actions";const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.addEventListener("click",()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();});const remove=document.createElement("button");remove.className="secondary";remove.textContent="Убрать";remove.addEventListener("click",()=>{state.favorites=state.favorites.filter(x=>x!==id);save();renderFavorites();});actions.append(btn,remove);el.append(left,actions);host.append(el);});}
@@ -5995,6 +6003,14 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
 .shop-category-btn.active{background:var(--soft);border-color:var(--red);color:var(--red);box-shadow:0 5px 16px rgba(130,45,60,.08)}
 .shop-category-btn span,.shop-item-tag{font-size:8px;letter-spacing:.8px;font-weight:900;color:#b47b36}
 .shop-category-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px;padding:17px 19px;border:1px solid var(--line);border-radius:17px;background:var(--paper2)}
+.shop-product-block{margin-top:22px;padding:18px;border:1px solid var(--line);border-radius:19px;background:var(--paper2)}
+.shop-product-block+.shop-product-block{margin-top:18px}
+.shop-product-block-heading{margin-bottom:14px}
+.shop-product-block-heading h3{margin:4px 0;font-size:19px}
+.shop-product-block-heading p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.shop-product-block .shop-grid{margin-top:0}
+html[data-theme="dark"] .shop-product-block{background:var(--paper);border-color:var(--line)}
+@media(max-width:600px){.shop-product-block{padding:13px;margin-top:16px}}
 .shop-category-heading h3{margin:4px 0;font-size:20px}
 .shop-category-heading p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
 .shop-item-seasonal{border-color:#d8c49a;background:linear-gradient(155deg,var(--paper),rgba(214,190,135,.12))}
