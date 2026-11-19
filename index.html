@@ -1071,8 +1071,8 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 </style>
 <style id="winter-atmosphere-styles">
 #winterAtmosphereLayer{position:fixed;inset:0;z-index:9990;pointer-events:none;overflow:hidden;contain:strict}
-#winterAtmosphereLayer .winter-flake{position:absolute;top:-24px;left:var(--x);width:var(--size);height:var(--size);border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 0 7px rgba(157,190,220,.5);opacity:var(--opacity);animation:winterFall var(--duration) linear var(--delay) infinite}
-#winterAtmosphereLayer .winter-drift{position:absolute;top:-25px;left:var(--x);font-size:var(--emoji-size);opacity:.72;animation:winterFall var(--duration) linear var(--delay) infinite}
+#winterAtmosphereLayer .winter-flake{position:absolute;top:-24px;left:var(--x);width:var(--size);height:var(--size);border-radius:50%;background:rgba(255,255,255,.62);box-shadow:0 0 3px rgba(157,190,220,.22);opacity:var(--opacity);animation:winterFall var(--duration) linear var(--delay) infinite}
+#winterAtmosphereLayer .winter-drift{position:absolute;top:-25px;left:var(--x);font-size:var(--emoji-size);opacity:.34;filter:saturate(.72);animation:winterFall var(--duration) linear var(--delay) infinite}
 #winterAtmosphereDecor{position:fixed;z-index:9988;left:0;right:0;bottom:0;height:clamp(48px,8vh,88px);pointer-events:none;overflow:hidden}
 #winterAtmosphereDecor:before,#winterAtmosphereDecor:after{content:"";position:absolute;bottom:-30px;width:62%;height:75px;background:linear-gradient(180deg,#fff 0%,#eaf3fa 75%,#dce9f3 100%);border-radius:50% 50% 0 0;filter:drop-shadow(0 -3px 8px rgba(140,170,195,.13))}
 #winterAtmosphereDecor:before{left:-8%;transform:rotate(-3deg)}
@@ -6107,13 +6107,13 @@ function applyWinterAtmosphere(enabled){
     const elements=[];
     for(let i=0;i<34;i++){
       const el=document.createElement("i");el.className="winter-flake";
-      el.style.setProperty("--x",(i*29%100)+"%");el.style.setProperty("--size",(3+i%4)+"px");
+      el.style.setProperty("--x",(i*29%100)+"%");el.style.setProperty("--size",(2+i%3)+"px");
       el.style.setProperty("--duration",(9+i%9)+"s");el.style.setProperty("--delay",(-((i*7)%170)/10)+"s");
-      el.style.setProperty("--opacity",String(.42+(i%6)*.09));elements.push(el);
+      el.style.setProperty("--opacity",String(.18+(i%5)*.055));elements.push(el);
     }
     ["❄️","✨","❄️","🌟","❄️","🎄","❄️","🎁"].forEach((emoji,i)=>{
       const el=document.createElement("span");el.className="winter-drift";el.textContent=emoji;
-      el.style.setProperty("--x",(7+i*12)+"%");el.style.setProperty("--emoji-size",(12+i%3*4)+"px");
+      el.style.setProperty("--x",(7+i*12)+"%");el.style.setProperty("--emoji-size",(9+i%3*2)+"px");
       el.style.setProperty("--duration",(13+i%5*2)+"s");el.style.setProperty("--delay",(-i*2.1)+"s");elements.push(el);
     });
     elements.forEach(el=>layer.appendChild(el));document.body.appendChild(layer);
