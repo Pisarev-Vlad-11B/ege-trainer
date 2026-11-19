@@ -1,4 +1,4 @@
-const CACHE_NAME = "ege-trainer-v34";
+const CACHE_NAME = "ege-trainer-v35";
 
 const APP_FILES = [
   "/ege-trainer/",
