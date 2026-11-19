@@ -977,6 +977,65 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
   }
 }
 </style>
+<style>
+.install-guide{max-width:1000px;margin:0 auto;padding-bottom:30px}
+.install-guide-hero{position:relative;overflow:hidden;min-height:280px;padding:42px clamp(22px,5vw,54px);border-radius:28px;background:linear-gradient(120deg,#2b2428,#493039);color:#fff;display:flex;flex-direction:column;justify-content:center}
+.install-guide-kicker{font-size:11px;font-weight:850;letter-spacing:2px;color:#e8aab2}
+.install-guide-hero h1{font-size:clamp(38px,6vw,58px);line-height:1.02;letter-spacing:-2px;margin:15px 0 12px;max-width:560px}
+.install-guide-hero h1 span{color:#e99ba7}
+.install-guide-hero>p{max-width:520px;color:#e1d6d9;line-height:1.65;margin:0;font-size:15px}
+.install-guide-hero-mark{position:absolute;right:8%;top:28px;width:210px;height:230px;display:grid;place-items:center}
+.install-phone{width:125px;height:210px;padding:8px;border:3px solid #f7dfe4;border-radius:25px;background:#171519;box-shadow:0 18px 45px #0006;transform:rotate(8deg);position:relative}
+.install-phone-speaker{position:absolute;top:6px;left:43px;width:34px;height:7px;border-radius:8px;background:#f7dfe4;z-index:2}
+.install-phone-screen{height:100%;border-radius:17px;background:#f7f0ed;color:#292526;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:15px 7px}
+.install-app-icon{width:42px;height:42px;border-radius:13px;background:#ad3949;color:white;display:grid;place-items:center;font-size:23px;font-weight:850;box-shadow:0 6px 14px #a9364535}
+.install-phone-screen b{font-size:10px}.install-phone-screen small{font-size:7px;color:#817579}.install-phone-lines{height:5px;width:75%;border-radius:8px;background:#e5d8d7}.install-phone-lines.short{width:48%}
+.install-guide-spark{position:absolute;right:4px;top:30px;color:#f1a6b0;font-size:40px}.install-guide-plus{position:absolute;bottom:8px;left:12px;color:#f1a6b0;font-size:35px}
+.install-guide-intro{margin:38px 0 18px}.install-guide-intro h2{font-size:30px;margin:7px 0}.install-guide-intro p{color:var(--muted);margin:0}
+.install-platform-tabs{display:flex;gap:10px;margin-bottom:20px}
+.install-platform-tab{border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:13px;padding:13px 22px;font-weight:750;min-width:130px;transition:.2s}
+.install-platform-tab.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 7px 18px #a9364526}
+.install-platform-panel{animation:fade .25s ease}.install-platform-panel[hidden]{display:none!important}
+.install-platform-heading{display:flex;align-items:center;gap:14px;margin:22px 0}
+.install-platform-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:var(--soft);font-size:25px;color:var(--red)}
+.install-platform-heading h3{margin:0 0 4px;font-size:22px}.install-platform-heading p{margin:0;color:var(--muted);font-size:13px}
+.install-steps{display:grid;gap:16px}
+.install-step{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.8fr);gap:22px;align-items:center;padding:22px;border:1px solid var(--line);border-radius:20px;background:var(--paper);box-shadow:0 6px 20px rgba(40,25,30,.035)}
+.install-step-number{font-size:11px;font-weight:850;letter-spacing:1.8px;color:var(--red)}
+.install-step-copy h4{font-size:19px;margin:8px 0}.install-step-copy p{font-size:14px;line-height:1.65;color:var(--muted);margin:0}
+.install-visual{min-height:170px;border-radius:16px;background:linear-gradient(145deg,#f4e9e7,#e9dadd);padding:14px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#292526}
+html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#393034,#292328)}
+.mock-status,.mock-android-top{position:absolute;top:8px;left:14px;right:14px;display:flex;justify-content:space-between;font-size:9px;font-weight:800}
+.mock-address,.mock-android-address{position:absolute;top:29px;left:13px;right:13px;background:#fff;border-radius:8px;padding:8px;font-size:9px;color:#51484b;box-shadow:0 2px 7px #0001}
+.mock-android-address{top:30px}.mock-android-address b{float:right;font-size:15px}
+.mock-page{width:82%;height:90px;margin-top:40px;border-radius:9px;background:#fff;padding:10px;display:grid;grid-template-columns:25px 1fr;column-gap:8px;align-content:center;box-shadow:0 7px 18px #51353b18}
+.mock-logo{grid-row:span 2;width:25px;height:25px;border-radius:8px;background:#ad3949;color:#fff;display:grid;place-items:center;font-weight:800}
+.mock-page b{font-size:9px}.mock-page small{font-size:7px;color:#82777a}.mock-page-bar{height:5px;background:#eee2e1;border-radius:8px;margin-top:9px;width:90%;grid-column:2}.mock-page-bar.tiny{width:55%;margin-top:4px}
+.mock-browser-bottom{position:absolute;bottom:7px;left:25px;right:25px;display:flex;justify-content:space-between;font-size:17px;color:#5e5155}
+.mock-callout{position:absolute;right:9px;bottom:37px;background:#ad3949;color:#fff;border-radius:20px;padding:4px 9px;font-size:9px}
+.install-share-visual{background:linear-gradient(145deg,#e9dce0,#f7efeb)}
+.mock-share-sheet{width:85%;background:#fff;border-radius:15px;padding:12px;color:#292526;box-shadow:0 7px 20px #0002}
+.mock-share-grip{width:35px;height:4px;border-radius:5px;background:#d7d2d2;margin:0 auto 10px}.mock-share-sheet>b{font-size:12px}
+.mock-share-icons{display:flex;gap:12px;margin:12px 0}.mock-share-icons span{width:30px;height:30px;border-radius:50%;background:#edf0f5;display:grid;place-items:center;font-size:14px}
+.mock-share-option{font-size:10px;padding:9px 4px;border-top:1px solid #eee;display:flex;gap:8px;align-items:center}.mock-share-option.active{background:#f9e9eb;border-radius:7px;color:#a93645}.mock-share-option strong{margin-left:auto}.mock-arrow{position:absolute;right:12px;top:15px;color:#a93645;font-size:28px}
+.install-add-visual,.install-android-done{flex-wrap:wrap;gap:13px}
+.mock-add-card{width:100%;display:flex;align-items:center;gap:9px;background:#fff;padding:12px;border-radius:12px;color:#292526;box-shadow:0 5px 15px #0001}
+.mock-add-card b{display:block;font-size:10px}.mock-add-card small{display:block;font-size:8px;color:#817579}.mock-add-card>span{margin-left:auto;background:#a93645;color:white;padding:7px;border-radius:8px;font-size:9px}
+.mock-home-icon{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--text);font-size:9px}
+.mock-browser-menu{width:85%;background:#fff;border-radius:12px;padding:9px;color:#292526;box-shadow:0 8px 20px #0002;font-size:10px}
+.mock-browser-menu>div{padding:9px 7px;border-bottom:1px solid #f0eded}.mock-browser-menu .mock-menu-selected{background:#f9e8eb;color:#a93645;font-weight:800;border-radius:7px}
+.mock-menu-dots{position:absolute;right:13px;top:8px;color:#a93645;font-size:28px}
+.mock-install-dialog{width:100%;background:#fff;border-radius:13px;padding:14px;color:#292526;box-shadow:0 6px 18px #0002}
+.mock-install-dialog .install-app-icon{margin-bottom:9px}.mock-install-dialog>b{font-size:11px}.mock-install-dialog p{font-size:9px;color:#817579;margin:5px 0 12px}.mock-install-dialog>div:last-child{display:flex;justify-content:flex-end;gap:16px;font-size:10px;color:#817579}.mock-install-dialog strong{color:#a93645}
+.install-tip{margin-top:18px;padding:15px 18px;border-left:3px solid var(--red);border-radius:0 12px 12px 0;background:var(--soft);font-size:13px;line-height:1.6;color:var(--text)}
+.install-other-browser{display:flex;gap:15px;align-items:flex-start;margin:28px 0;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+.install-other-icon{font-size:25px}.install-other-browser h3{margin:0 0 6px;font-size:17px}.install-other-browser p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.install-guide-bottom{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:27px;border-radius:22px;background:var(--soft);margin-top:26px}
+.install-guide-bottom h2{font-size:24px;margin:7px 0}.install-guide-bottom p{color:var(--muted);font-size:13px;margin:0}.install-guide-bottom .primary{flex-shrink:0}
+.install-back-home{display:block;margin:20px auto 0;border:0;background:transparent;color:var(--muted);font-weight:700;padding:12px}
+@media(max-width:650px){.install-guide-hero{min-height:260px;padding:30px 22px}.install-guide-hero>p{max-width:68%}.install-guide-hero-mark{right:-12px;transform:scale(.78);transform-origin:right center}.install-step{grid-template-columns:1fr;padding:17px;gap:14px}.install-visual{min-height:165px}.install-guide-bottom{align-items:stretch;flex-direction:column;padding:21px}.install-guide-bottom .primary{width:100%}.install-platform-tab{flex:1;min-width:0}.install-guide-intro h2{font-size:26px}}
+@media(max-width:390px){.install-guide-hero>p{max-width:100%;padding-right:60px}.install-guide-hero-mark{opacity:.55;right:-35px}.install-guide-hero h1{font-size:38px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1009,16 +1068,6 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
   <section id="announcementPanel" class="announcement-panel" hidden aria-label="Объявления и новости">
     <div class="announcement-panel-head"><div><strong>Объявления</strong><small>Новости тренажёра</small></div><button type="button" id="announcementClose" aria-label="Закрыть">×</button></div>
     <div id="announcementPublicList" class="announcement-public-list"><p class="announcement-empty">Пока нет новых объявлений.</p></div>
-  </section>
-</div>
-<div id="installAppOverlay" hidden style="position:fixed;inset:0;z-index:3000;background:rgba(15,12,14,.62);backdrop-filter:blur(7px);padding:20px;display:none;align-items:center;justify-content:center;">
-  <section role="dialog" aria-modal="true" aria-labelledby="installAppTitle" style="width:min(440px,100%);padding:25px;border-radius:22px;background:var(--paper);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.28);position:relative;">
-    <button id="installAppClose" type="button" aria-label="Закрыть" style="position:absolute;right:14px;top:10px;border:0;background:transparent;color:var(--muted);font-size:27px;">×</button>
-    <div style="font-size:30px;margin-bottom:8px;">📲</div>
-    <h2 id="installAppTitle" style="margin:0 30px 10px 0;font-size:23px;">Установить ЕГЭ Тренажёр</h2>
-    <p style="color:var(--muted);line-height:1.55;margin:0 0 15px;">Добавь тренажёр на главный экран — он будет запускаться отдельно, как обычное приложение.</p>
-    <div id="installAppInstructions" style="padding:15px;border-radius:14px;background:var(--soft);line-height:1.65;font-size:14px;"></div>
-    <button id="installAppDone" type="button" class="primary" style="width:100%;margin-top:18px;">Понятно</button>
   </section>
 </div>
 <button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку"><span>✉</span><b>Поддержка</b></button>
@@ -1533,6 +1582,40 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
 
 </div>
   </div>
+</section>
+<section id="installGuide" class="view install-guide">
+  <div class="install-guide-hero">
+    <div class="install-guide-kicker">ЕГЭ ТРЕНАЖЁР · УСТАНОВКА</div>
+    <h1>Тренажёр всегда<br><span>под рукой</span></h1>
+    <p>Добавь сайт на главный экран телефона. Он будет открываться отдельно — почти как обычное приложение.</p>
+    <div class="install-guide-hero-mark" aria-hidden="true"><div class="install-phone"><div class="install-phone-speaker"></div><div class="install-phone-screen"><div class="install-app-icon">Р</div><b>ЕГЭ Тренажёр</b><small>Русский язык · задание 12</small><div class="install-phone-lines"></div><div class="install-phone-lines short"></div></div></div><span class="install-guide-spark">✦</span><span class="install-guide-plus">＋</span></div>
+  </div>
+  <div class="install-guide-intro"><div><span class="eyebrow">ВЫБЕРИ СВОЁ УСТРОЙСТВО</span><h2>Как установить?</h2><p>Инструкция зависит от телефона и браузера.</p></div></div>
+  <div class="install-platform-tabs" role="tablist" aria-label="Выбор устройства">
+    <button type="button" class="install-platform-tab active" data-install-platform="iphone" role="tab" aria-selected="true"> iPhone</button>
+    <button type="button" class="install-platform-tab" data-install-platform="android" role="tab" aria-selected="false">🤖 Android</button>
+  </div>
+  <div class="install-platform-panel active" data-install-panel="iphone">
+    <div class="install-platform-heading"><span class="install-platform-icon"></span><div><h3>Установка на iPhone</h3><p>Через браузер Safari</p></div></div>
+    <div class="install-steps">
+      <article class="install-step"><div class="install-step-copy"><span class="install-step-number">01</span><h4>Открой сайт в Safari</h4><p>Перейди на страницу тренажёра именно через Safari. В других браузерах на iPhone установка может быть недоступна.</p></div><div class="install-visual install-safari-visual"><div class="mock-status"><span>9:41</span><span>•••</span></div><div class="mock-address">🔒 pisarev-vlad-11b.github.io</div><div class="mock-page"><div class="mock-logo">Р</div><b>РУССКИЙ ЯЗЫК</b><small>Тренажёр ЕГЭ · задание 12</small><div class="mock-page-bar"></div><div class="mock-page-bar tiny"></div></div><div class="mock-browser-bottom"><span>‹</span><span>↗</span><span>▢</span><span>•••</span></div><span class="mock-callout">Safari</span></div></article>
+      <article class="install-step"><div class="install-step-copy"><span class="install-step-number">02</span><h4>Нажми «Поделиться»</h4><p>В нижней панели Safari нажми значок квадрата со стрелкой вверх.</p></div><div class="install-visual install-share-visual"><div class="mock-share-sheet"><div class="mock-share-grip"></div><b>Поделиться</b><div class="mock-share-icons"><span>✉</span><span>ⓐ</span><span>✈</span></div><div class="mock-share-option active"><span>＋</span><b>На экран «Домой»</b><strong>›</strong></div><div class="mock-share-option"><span>☆</span>В избранное</div></div><span class="mock-arrow">↗</span></div></article>
+      <article class="install-step"><div class="install-step-copy"><span class="install-step-number">03</span><h4>Добавь на экран «Домой»</h4><p>Проверь название и нажми «Добавить» в правом верхнем углу.</p></div><div class="install-visual install-add-visual"><div class="mock-add-card"><div class="install-app-icon">Р</div><div><b>ЕГЭ Тренажёр</b><small>pisarev-vlad-11b.github.io</small></div><span>Добавить</span></div><div class="mock-home-icon"><div class="install-app-icon">Р</div><b>ЕГЭ Тренажёр</b></div></div></article>
+    </div>
+    <div class="install-tip">Важно: на iPhone добавление на главный экран выполняется через Safari → «Поделиться» → «На экран Домой».</div>
+  </div>
+  <div class="install-platform-panel" data-install-panel="android" hidden>
+    <div class="install-platform-heading"><span class="install-platform-icon">🤖</span><div><h3>Установка на Android</h3><p>Chrome, Samsung Internet и другие браузеры</p></div></div>
+    <div class="install-steps">
+      <article class="install-step"><div class="install-step-copy"><span class="install-step-number">01</span><h4>Открой тренажёр</h4><p>Запусти сайт в браузере. Для лучшей совместимости рекомендуем Google Chrome или Samsung Internet.</p></div><div class="install-visual install-android-visual"><div class="mock-android-top"><span>9:41</span><span>● ● ●</span></div><div class="mock-android-address">🔒 pisarev-vlad-11b.github.io <b>⋮</b></div><div class="mock-page"><div class="mock-logo">Р</div><b>РУССКИЙ ЯЗЫК</b><small>Тренажёр ЕГЭ · задание 12</small><div class="mock-page-bar"></div><div class="mock-page-bar tiny"></div></div></div></article>
+      <article class="install-step"><div class="install-step-copy"><span class="install-step-number">02</span><h4>Открой меню браузера</h4><p>Нажми на три точки ⋮ в правом верхнем углу. В Samsung Internet открой меню ☰.</p></div><div class="install-visual install-menu-visual"><div class="mock-browser-menu"><div>Новая вкладка</div><div>История</div><div class="mock-menu-selected">⊕　Установить приложение</div><div>Добавить на главный экран</div><div>Настройки</div></div><span class="mock-menu-dots">⋮</span></div></article>
+      <article class="install-step"><div class="install-step-copy"><span class="install-step-number">03</span><h4>Установи приложение</h4><p>Выбери «Установить приложение» или «Добавить на главный экран» и подтверди действие.</p></div><div class="install-visual install-android-done"><div class="mock-install-dialog"><div class="install-app-icon">Р</div><b>Установить приложение?</b><p>ЕГЭ Тренажёр</p><div><span>Отмена</span><strong>Установить</strong></div></div><div class="mock-home-icon"><div class="install-app-icon">Р</div><b>ЕГЭ Тренажёр</b></div></div></article>
+    </div>
+    <div class="install-tip">Названия пунктов меню могут отличаться. Если кнопки установки нет, попробуй открыть сайт в Google Chrome.</div>
+  </div>
+  <div class="install-other-browser"><div class="install-other-icon">🌐</div><div><h3>Другой браузер?</h3><p>Открой меню браузера и найди пункт «Установить приложение» или «Добавить на главный экран». Возможность установки зависит от поддержки браузера.</p></div></div>
+  <div class="install-guide-bottom"><div><span class="eyebrow">ГОТОВ К ТРЕНИРОВКЕ?</span><h2>Установи и занимайся где угодно</h2><p>После установки запускай тренажёр с главного экрана телефона.</p></div><button type="button" class="primary" id="installGuideAction">Установить приложение <span>→</span></button></div>
+  <button type="button" class="install-back-home" id="installGuideBack">← Вернуться на главную</button>
 </section>
 </main>
 
@@ -5777,54 +5860,51 @@ themeToggle.addEventListener("click", () => {
  // и понятная инструкция для браузеров с ручной установкой.
 let deferredInstallPrompt = null;
 const installAppBtn = document.getElementById("installAppBtn");
-const installAppOverlay = document.getElementById("installAppOverlay");
-const installAppInstructions = document.getElementById("installAppInstructions");
-function showInstallHelp() {
-  const ua = navigator.userAgent || "";
-  const isIOS = /iPhone|iPad|iPod/i.test(ua);
-  const isSamsung = /SamsungBrowser/i.test(ua);
-  const isFirefox = /Firefox/i.test(ua);
-  if (isIOS) {
-    installAppInstructions.innerHTML = "<b>Safari на iPhone или iPad</b><br>1. Нажми «Поделиться» (квадрат со стрелкой вверх).<br>2. Выбери «На экран Домой».<br>3. Нажми «Добавить».";
-  } else if (isSamsung) {
-    installAppInstructions.innerHTML = "<b>Samsung Internet</b><br>1. Открой меню браузера (☰).<br>2. Выбери «Добавить страницу» → «Главный экран» (название пункта может отличаться).";
-  } else if (isFirefox) {
-    installAppInstructions.innerHTML = "<b>Firefox</b><br>Открой меню браузера (⋮) и найди пункт «Установить» или «Добавить на главный экран». Если пункта нет, открой сайт в Chrome или Samsung Internet.";
-  } else {
-    installAppInstructions.innerHTML = "<b>Установка через меню браузера</b><br>1. Открой меню браузера (⋮ или ☰).<br>2. Выбери «Установить приложение», «Установить» или «Добавить на главный экран».<br>3. Подтверди действие.<br><br>Если такого пункта нет, попробуй открыть сайт в Chrome (Android) или Safari (iPhone).";
-  }
-  installAppOverlay.hidden = false;
-  installAppOverlay.style.display = "flex";
+const installGuideAction = document.getElementById("installGuideAction");
+function openInstallGuide(){
+  showView("installGuide");
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-function closeInstallHelp() {
-  installAppOverlay.hidden = true;
-  installAppOverlay.style.display = "none";
-}
-installAppBtn.addEventListener("click", async () => {
-  if (deferredInstallPrompt) {
+installAppBtn.addEventListener("click",openInstallGuide);
+document.getElementById("installGuideBack").addEventListener("click",()=>showView("home"));
+document.querySelectorAll("[data-install-platform]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const platform=button.dataset.installPlatform;
+    document.querySelectorAll("[data-install-platform]").forEach(tab=>{
+      const active=tab===button;
+      tab.classList.toggle("active",active);
+      tab.setAttribute("aria-selected",String(active));
+    });
+    document.querySelectorAll("[data-install-panel]").forEach(panel=>{
+      const active=panel.dataset.installPanel===platform;
+      panel.hidden=!active;
+      panel.classList.toggle("active",active);
+    });
+  });
+});
+installGuideAction.addEventListener("click",async()=>{
+  if(deferredInstallPrompt){
     deferredInstallPrompt.prompt();
-    const choice = await deferredInstallPrompt.userChoice;
-    if (choice && choice.outcome === "accepted") installAppBtn.hidden = true;
-    deferredInstallPrompt = null;
+    const choice=await deferredInstallPrompt.userChoice;
+    if(choice&&choice.outcome==="accepted") installAppBtn.hidden=true;
+    deferredInstallPrompt=null;
     return;
   }
-  showInstallHelp();
+  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent||"");
+  const platform=isIOS?"iphone":"android";
+  document.querySelector('[data-install-platform="'+platform+'"]').click();
+  const panel=document.querySelector('[data-install-panel="'+platform+'"]');
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
 });
-document.getElementById("installAppClose").addEventListener("click", closeInstallHelp);
-document.getElementById("installAppDone").addEventListener("click", closeInstallHelp);
-installAppOverlay.addEventListener("click", event => {
-  if (event.target === installAppOverlay) closeInstallHelp();
-});
-window.addEventListener("beforeinstallprompt", event => {
+window.addEventListener("beforeinstallprompt",event=>{
   event.preventDefault();
-  deferredInstallPrompt = event;
-  installAppBtn.hidden = false;
+  deferredInstallPrompt=event;
+  installAppBtn.hidden=false;
 });
-window.addEventListener("appinstalled", () => {
-  deferredInstallPrompt = null;
-  installAppBtn.hidden = true;
+window.addEventListener("appinstalled",()=>{
+  deferredInstallPrompt=null;
+  installAppBtn.hidden=true;
 });
-
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/ege-trainer/sw.js")
