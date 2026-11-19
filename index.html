@@ -6473,6 +6473,116 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 @media(max-width:700px){.avatar-frame-decor{inset:-15px}.avatar-frame-decor .frame-snowman{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.avatar-frame-decor .frame-falling-snow,.avatar-frame-decor .frame-flake,.avatar-frame-decor .frame-star{animation:none}}
 </style>
+
+<style>
+/* Возвращён крупный дизайн всплывающего профиля из рейтинга */
+.public-profile-overlay{
+  padding:16px!important;
+  background:rgba(13,10,12,.68)!important;
+  backdrop-filter:blur(7px)!important;
+}
+.public-profile-window{
+  width:min(550px,calc(100vw - 32px))!important;
+  max-height:88vh!important;
+  padding:22px!important;
+  border-radius:26px!important;
+  background:#222326!important;
+  border:1px solid #3b3b40!important;
+  color:#f2f0f1!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.48)!important;
+  scrollbar-color:#75414f transparent!important;
+}
+.public-profile-window .public-profile-card{
+  min-height:345px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding:26px 18px 24px!important;
+  margin:6px 0 20px!important;
+  border-radius:25px!important;
+  background:#222326!important;
+  border:1px solid #3b3b40!important;
+  color:#f2f0f1!important;
+}
+.public-profile-window .public-profile-avatar-wrap{
+  width:112px!important;
+  height:112px!important;
+  margin:0 auto 14px!important;
+  flex:0 0 112px;
+}
+.public-profile-window .public-profile-avatar,
+.public-profile-window .public-profile-avatar-fallback{
+  width:112px!important;
+  height:112px!important;
+}
+.public-profile-window .public-profile-card h2{
+  width:100%;
+  margin:0 0 5px!important;
+  color:inherit!important;
+  text-align:center;
+  font-size:28px;
+  line-height:1.2;
+}
+.public-profile-window .public-profile-username{
+  margin:0!important;
+  color:#c1bdc0!important;
+  text-align:center;
+  font-size:17px;
+}
+.public-profile-window .public-profile-about{
+  min-height:54px;
+  display:flex!important;
+  align-items:center;
+  margin:0 5px 20px!important;
+  padding:15px 19px!important;
+  border:1px solid #3b3b40!important;
+  border-radius:18px!important;
+  background:#29292d!important;
+  color:#aaa5a9!important;
+  font-size:15px!important;
+}
+.public-profile-window .public-profile-streak{
+  display:flex;
+  align-items:center;
+  min-height:70px;
+  box-sizing:border-box;
+  margin:0 5px 18px!important;
+  padding:18px 21px!important;
+  border-radius:20px!important;
+  background:#29292d!important;
+  color:#f2f0f1!important;
+  font-size:20px!important;
+  line-height:1.3;
+}
+.public-profile-window .public-profile-pet{
+  min-height:88px;
+  box-sizing:border-box;
+  margin:0 5px 3px!important;
+  padding:14px 20px!important;
+  border:1px solid #3b3b40!important;
+  border-radius:19px!important;
+  background:#29292d!important;
+  color:#f2f0f1!important;
+}
+.public-profile-window .public-profile-pet strong{color:#f2f0f1!important;font-size:15px!important}
+.public-profile-window .public-profile-pet span{color:#aaa5a9!important;font-size:13px!important}
+.public-profile-window .public-profile-close{
+  z-index:5;
+  top:14px!important;
+  right:14px!important;
+  background:#303035!important;
+  color:#c9c5c8!important;
+}
+@media(max-width:600px){
+  .public-profile-window{width:calc(100vw - 24px)!important;max-height:90vh!important;padding:15px!important;border-radius:22px!important}
+  .public-profile-window .public-profile-card{min-height:300px;padding:24px 14px 22px!important;margin-top:5px!important}
+  .public-profile-window .public-profile-card h2{font-size:23px}
+  .public-profile-window .public-profile-streak{font-size:17px!important;padding:15px!important}
+}
+</style>
+
 </body>
   <script>
 // Локальные настройки панели разработчика
