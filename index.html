@@ -1933,6 +1933,30 @@ document.addEventListener("click", function(e) {
 
     return;
   }
+  // Резервное открытие авторизации без ожидания Firebase-модуля.
+  // Основной обработчик внутри module-скрипта дополнит это поведение.
+  if (el.id === "profileAuthBtn" || (el.dataset && el.dataset.view === "profile" && !window.__isTrainerAuthenticated?.())) {
+    const overlay = document.getElementById("authOverlay");
+    if (overlay) {
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden", "false");
+      const loginBtn = document.getElementById("loginModeBtn");
+      const registerBtn = document.getElementById("registerModeBtn");
+      const title = document.getElementById("authTitle");
+      const subtitle = document.getElementById("authSubtitle");
+      const submit = document.getElementById("authSubmitBtn");
+      if (loginBtn && registerBtn && title && subtitle && submit) {
+        loginBtn.classList.add("active");
+        registerBtn.classList.remove("active");
+        loginBtn.setAttribute("aria-selected", "true");
+        registerBtn.setAttribute("aria-selected", "false");
+        title.textContent = "Вход в тренажёр";
+        subtitle.textContent = "Введи свой логин и пароль, чтобы продолжить подготовку.";
+        submit.textContent = "Войти";
+      }
+    }
+    if (el.id === "profileAuthBtn") return;
+  }
   const view = el.dataset && el.dataset.view;
   if (view) {
   showView(view);
