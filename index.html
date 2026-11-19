@@ -1085,7 +1085,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 #winterAtmosphereDecor .winter-ground-emoji:nth-child(5){right:8%;bottom:17px;animation-delay:-1.6s}
 @keyframes winterFall{0%{transform:translate3d(0,-5vh,0) rotate(0deg)}50%{transform:translate3d(22px,52vh,0) rotate(180deg)}100%{transform:translate3d(-12px,110vh,0) rotate(360deg)}}
 @keyframes winterBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@media(prefers-reduced-motion:reduce){#winterAtmosphereLayer .winter-flake,#winterAtmosphereLayer .winter-drift,#winterAtmosphereDecor .winter-ground-emoji{animation:none}}
+@media(prefers-reduced-motion:reduce){#winterAtmosphereLayer .winter-flake,#winterAtmosphereLayer .winter-drift{animation-duration:24s!important}#winterAtmosphereDecor .winter-ground-emoji{animation:none}}
 </style>
 </head>
 <body>
@@ -1749,6 +1749,7 @@ window.__restoreCloudState = cloudState => {
  state={...freshState(),...cloudState};
  localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
  updateStats();
+ window.__refreshProfileCustomization?.();
  if(typeof renderTask==='function')renderTask();
  if(typeof renderAchievements==='function')renderAchievements();
  if(window.__updateProfileProgress)window.__updateProfileProgress(state);
@@ -1953,6 +1954,7 @@ function applyProfileHeader(){
  const item=PROFILE_HEADERS.find(x=>x.id===state.activeProfileHeader);
  if(item)card.classList.add(item.className);
 }
+window.__refreshProfileCustomization = () => { applyProfileFrame(); applyProfileHeader(); };
 function renderProfileHeaders(){
  const host=$("profileHeaderItems");if(!host)return;
  host.innerHTML=PROFILE_HEADERS.map(item=>{
@@ -6134,6 +6136,8 @@ function applyWinterAtmosphere(enabled){
   }
 }
 window.__applyWinterAtmosphere = applyWinterAtmosphere;
+// Если Firebase успел сообщить состояние до загрузки этого скрипта — применяем его сейчас.
+if (window.__globalWinterAtmosphereEnabled === true) applyWinterAtmosphere(true);
 function initDeveloperSettings() {
   applyDeveloperSettings();
   document.getElementById("devOnlineRefresh")?.addEventListener("change", event => {
