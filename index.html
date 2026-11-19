@@ -1196,6 +1196,28 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
 .dev-cheat-account small{font-size:11px;color:var(--muted)}
 @media(max-width:760px){.dev-cheat-toolbar{grid-template-columns:1fr}}
 </style>
+<style>
+/* Восстановление мини-профилей в рейтинге */
+#leaderboardList .leaderboard-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;margin:7px 0;border:1px solid var(--line);border-radius:14px;background:var(--paper);cursor:pointer;transition:background .2s,border-color .2s,transform .2s;min-height:66px}
+#leaderboardList .leaderboard-entry:hover{transform:translateY(-1px);border-color:var(--red);background:var(--soft)}
+#leaderboardList .leaderboard-mini-left{display:flex;align-items:center;gap:9px;min-width:0}
+#leaderboardList .leaderboard-place{width:27px;flex:0 0 27px;text-align:center;font-size:14px;font-weight:800}
+#leaderboardList .leaderboard-mini-avatar-wrap{position:relative;display:block;width:42px;height:42px;flex:0 0 42px;border-radius:50%;padding:2px;background:var(--paper2);box-shadow:0 0 0 2px rgba(139,58,74,.18)}
+#leaderboardList .leaderboard-mini-avatar{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+#leaderboardList .leaderboard-mini-fallback{display:grid;place-items:center;background:var(--soft);color:var(--red);font-size:17px;font-weight:850}
+#leaderboardList .leaderboard-mini-avatar-wrap.frame-rose{box-shadow:0 0 0 2px #e88fa9,0 0 8px #e88fa966}
+#leaderboardList .leaderboard-mini-avatar-wrap.frame-gold{box-shadow:0 0 0 2px #d6a83c,0 0 8px #d6a83c66}
+#leaderboardList .leaderboard-mini-avatar-wrap.frame-ruby{box-shadow:0 0 0 2px #a92f49,0 0 8px #a92f4966}
+#leaderboardList .leaderboard-mini-identity{display:flex;flex-direction:column;gap:2px;min-width:0}
+#leaderboardList .leaderboard-mini-name{font-size:13px;font-weight:800;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#leaderboardList .leaderboard-mini-username{font-size:11px;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#leaderboardList .leaderboard-mini-streak{white-space:nowrap;font-size:14px;font-weight:850}
+html:not([data-theme="dark"]) #leaderboardList .leaderboard-entry{color:#171315}
+html[data-theme="dark"] #leaderboardList .leaderboard-entry{color:#fff}
+html:not([data-theme="dark"]) #leaderboardList .leaderboard-entry.is-me{background:#f8e8eb;border-color:#8b3a4a;border-left:5px solid #8b3a4a}
+html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#633b46;border-color:#8b3a4a;border-left:5px solid #8b3a4a}
+@media(max-width:600px){#leaderboardList .leaderboard-entry{padding:9px 10px;min-height:60px}#leaderboardList .leaderboard-mini-avatar-wrap{width:38px;height:38px;flex-basis:38px}#leaderboardList .leaderboard-mini-left{gap:7px}#leaderboardList .leaderboard-mini-name{font-size:12px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -3468,25 +3490,38 @@ if (myRank) {
       return;
     }
 
-    list.innerHTML = leaders.map((item, index) => {
-      const username = String(item.username || "Ученик")
-        .replace(/[&<>"']/g, ch => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;"
-        }[ch]));
+    const escapeRankHTML = value => String(value || "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+    const publicProfiles = await Promise.all(leaders.map(async item => {
+      try {
+        const profileSnap = await getDoc(doc(db, "publicProfiles", item.id));
+        return profileSnap.exists() ? profileSnap.data() : {};
+      } catch (error) {
+        console.warn("Не удалось загрузить мини-профиль:", item.id, error);
+        return {};
+      }
+    }));
 
+    list.innerHTML = leaders.map((item, index) => {
+      const profile = publicProfiles[index] || {};
+      const username = escapeRankHTML(item.username || profile.username || "ученик");
+      const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(" ").trim() || item.username || "Ученик";
+      const avatar = profile.avatarUrl
+        ? `<img class="leaderboard-mini-avatar" src="${escapeRankHTML(profile.avatarUrl)}" alt="" loading="lazy">`
+        : `<span class="leaderboard-mini-avatar leaderboard-mini-fallback">${escapeRankHTML(fullName.slice(0,1).toUpperCase())}</span>`;
+      const frameClass = profile.activeFrame ? " frame-" + escapeRankHTML(profile.activeFrame) : "";
+      const headerClass = profile.activeProfileHeader ? " has-profile-header " + escapeRankHTML(profile.activeProfileHeader) : "";
       return `
-        <div
-  class="leaderboard-entry ${item.id === auth.currentUser.uid ? 'is-me' : ''}"
-  data-user-id="${item.id}"
-  style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd;cursor:pointer;border-radius:10px;font-weight:${item.id === auth.currentUser.uid ? '800' : '400'}"
->
-  <span>${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1) + '.'} ${username}</span>
-  <strong>🔥 ${Number(item.streak) || 0}</strong>
-</div>
+        <div class="leaderboard-entry ${item.id === auth.currentUser.uid ? "is-me" : ""}${headerClass}" data-user-id="${item.id}">
+          <div class="leaderboard-mini-left">
+            <span class="leaderboard-place">${index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : (index + 1) + "."}</span>
+            <span class="leaderboard-mini-avatar-wrap${frameClass}">${avatar}</span>
+            <span class="leaderboard-mini-identity">
+              <strong class="leaderboard-mini-name">${escapeRankHTML(fullName)}</strong>
+              <small class="leaderboard-mini-username">@${username}</small>
+            </span>
+          </div>
+          <strong class="leaderboard-mini-streak">🔥 ${Number(item.streak) || 0}</strong>
+        </div>
       `;
     }).join("");
 
