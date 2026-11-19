@@ -1863,7 +1863,7 @@ function applyProfileFrame(){
  if(!state.activeFrame.startsWith("newyear-"))return;
  const decorations={
   "newyear-snow":[["☃️","frame-snowman"],["❄️","frame-flake frame-flake-left"],["❄️","frame-flake frame-flake-right"]],
-  "newyear-tree":[["🎄","frame-mini-tree"],["❄️","frame-flake frame-flake-right"],["✨","frame-star frame-star-top"]],
+  "newyear-tree":[["🎄","frame-mini-tree"],["🎁","frame-mini-gift frame-mini-gift-left"],["🎁","frame-mini-gift frame-mini-gift-right"],["❄️","frame-flake frame-flake-right"],["✨","frame-star frame-star-top"]],
   "newyear-gold":[["⭐","frame-star frame-star-left"],["✨","frame-star frame-star-top"],["⭐","frame-star frame-star-right"]]
  };
  const layer=document.createElement("span");
@@ -5905,8 +5905,11 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 .avatar-frame-decor .frame-falling-snow{color:#dff8ff;text-shadow:0 0 4px #5ebde8;font-size:13px;z-index:4;animation:avatarSnowFall 3.2s ease-in infinite}
 .avatar-frame-decor .snow-p0{left:8%;top:-15%;animation-delay:-.2s}.avatar-frame-decor .snow-p1{left:25%;top:-30%;animation-delay:-1.8s}.avatar-frame-decor .snow-p2{left:43%;top:-12%;animation-delay:-.9s}.avatar-frame-decor .snow-p3{left:60%;top:-25%;animation-delay:-2.4s}.avatar-frame-decor .snow-p4{left:79%;top:-18%;animation-delay:-1.2s}.avatar-frame-decor .snow-p5{left:94%;top:-30%;animation-delay:-2.8s}.avatar-frame-decor .snow-p6{left:17%;top:5%;animation-delay:-2.1s}.avatar-frame-decor .snow-p7{left:72%;top:0%;animation-delay:-.6s}.avatar-frame-decor .snow-p8{left:51%;top:-22%;animation-delay:-1.5s}
 @keyframes avatarSnowFall{0%{transform:translate3d(0,-5px,0) rotate(0);opacity:0}15%{opacity:.95}85%{opacity:.9}100%{transform:translate3d(10px,112px,0) rotate(180deg);opacity:0}}
-.avatar-frame-decor .frame-mini-tree{left:-9px;bottom:1px;font-size:21px;z-index:6;transform:rotate(-7deg);filter:drop-shadow(0 2px 2px rgba(25,65,40,.28))}
-@media(max-width:700px){.avatar-frame-decor .frame-mini-tree{font-size:19px;left:-8px;bottom:2px}}
+.avatar-frame-decor .frame-mini-tree{left:50%;bottom:-12px;font-size:35px;z-index:7;transform:translateX(-50%);filter:drop-shadow(0 2px 2px rgba(25,65,40,.3))}
+.avatar-frame-decor .frame-mini-gift{bottom:-9px;font-size:17px;z-index:8;filter:drop-shadow(0 2px 2px rgba(70,35,35,.25))}
+.avatar-frame-decor .frame-mini-gift-left{left:13px;transform:rotate(-9deg)}
+.avatar-frame-decor .frame-mini-gift-right{right:12px;transform:rotate(8deg);font-size:15px}
+@media(max-width:700px){.avatar-frame-decor .frame-mini-tree{font-size:31px;bottom:-11px}.avatar-frame-decor .frame-mini-gift{font-size:15px;bottom:-8px}.avatar-frame-decor .frame-mini-gift-left{left:13px}.avatar-frame-decor .frame-mini-gift-right{right:12px;font-size:14px}}
 .avatar-frame-decor .frame-snowman{right:-8px;bottom:0;font-size:27px;z-index:5;transform:rotate(8deg)}
 .avatar-frame-decor .frame-flake{color:#83d5f2;text-shadow:0 0 7px #fff;font-size:23px;z-index:5;animation:flakeFloat 3s ease-in-out infinite}
 .avatar-frame-decor .frame-flake-left{left:-8px;top:8px}.avatar-frame-decor .frame-flake-right{right:-8px;top:40px;font-size:18px;animation-delay:-1.4s}
