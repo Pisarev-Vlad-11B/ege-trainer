@@ -1180,7 +1180,7 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
     <div><span class="theory-index-num">03</span><span><b>Суффиксы</b><small>прошедшее время</small></span></div>
     <div><span class="theory-index-num">04</span><span><b>Алгоритм</b><small>порядок решения</small></span></div>
   </div>
-  <div class="theory-workspace-heading">
+  <div class="theory-workspace-heading" id="theoryWorkspaceHeading">
     <div><span class="theory-section-overline">ТВОЙ КОНСПЕКТ</span><h3>Разложим всё по полочкам</h3><p>Изучай последовательно или возвращайся к нужному правилу.</p></div>
     <div class="theory-progress-mark"><b>12</b><span>ЗАДАНИЕ<br>ЕГЭ</span></div>
   </div>
@@ -1721,7 +1721,7 @@ function renderMistakes(){
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
 window.scrollToTheoryMaterials=function(){
-  const target=document.getElementById("theoryBody");
+  const target=document.getElementById("theoryWorkspaceHeading");
   if(!target)return;
 
   /* Отключаем глобальный scroll-behavior:smooth на время собственной анимации,
@@ -1735,7 +1735,7 @@ window.scrollToTheoryMaterials=function(){
   body.style.scrollBehavior="auto";
 
   const startY=window.scrollY||window.pageYOffset||0;
-  const targetY=Math.max(0,target.getBoundingClientRect().top+startY-220);
+  const targetY=Math.max(0,target.getBoundingClientRect().top+startY-90);
   const distance=targetY-startY;
   const duration=2500;
   const startTime=performance.now();
@@ -2204,23 +2204,39 @@ async function loadAccount(user, fallbackUsername = "") {
   const username = stored.username || publicData.username ||
     fallbackUsername || (user.email || "ученик").split("@")[0];
 
+  // Пустые строки в users не должны перекрывать заполненные поля
+  // из publicProfiles: такое могло приводить к пустым полям при входе.
+  const pickText = (primary, backup) =>
+    (typeof primary === "string" && primary.trim()) ? primary : 
+    (typeof backup === "string" ? backup : "");
+
   const data = {
     ...stored,
     username,
-    firstName: stored.firstName || publicData.firstName || "",
-    lastName: stored.lastName || publicData.lastName || "",
-    about: stored.about || publicData.about || "",
-    avatarUrl: stored.avatarUrl || publicData.avatarUrl || "",
+    firstName: pickText(stored.firstName, publicData.firstName),
+    lastName: pickText(stored.lastName, publicData.lastName),
+    about: pickText(stored.about, publicData.about),
+    avatarUrl: pickText(stored.avatarUrl, publicData.avatarUrl),
     isPublic: stored.isPublic === true || publicData.isPublic === true
   };
 
-  if (!snap.exists()) {
-    const initial = {
-      ...data,
-      createdAt: serverTimestamp(),
+  // Создаём документ или восстанавливаем в нём отсутствующие личные поля.
+  const needsProfileRepair = !snap.exists() ||
+    ["firstName", "lastName", "about", "avatarUrl"].some(key =>
+      !(typeof stored[key] === "string" && stored[key].trim()) &&
+      typeof data[key] === "string" && data[key].trim()
+    );
+  if (needsProfileRepair) {
+    await setDoc(ref, {
+      ...(!snap.exists() ? { createdAt: serverTimestamp() } : {}),
+      username: data.username,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      about: data.about,
+      avatarUrl: data.avatarUrl,
+      isPublic: data.isPublic,
       updatedAt: serverTimestamp()
-    };
-    await setDoc(ref, initial, { merge: true });
+    }, { merge: true });
   }
 
   return data;
