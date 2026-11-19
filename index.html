@@ -3231,6 +3231,15 @@ async function restoreAccount(user, username = "") {
     await syncCloudState(window.__getLocalState());
   }
 
+  // При входе обновляем публичную копию оформления профиля.
+  if (data.isPublic === true) {
+    try {
+      await syncPublicProfile(data, window.__getLocalState?.());
+    } catch (error) {
+      console.warn("Не удалось синхронизировать оформление публичного профиля:", error);
+    }
+  }
+
   closeAuth();
   showView("profile");
   message("");
