@@ -6116,11 +6116,11 @@ function applyWinterAtmosphere(enabled){
   if(!layer){
     layer=document.createElement("div");layer.id="winterAtmosphereLayer";layer.setAttribute("aria-hidden","true");
     const elements=[];
-    for(let i=0;i<18;i++){
+    for(let i=0;i<8;i++){
       const el=document.createElement("span");el.className="winter-flake";el.textContent="❄";
-      el.style.setProperty("--x",(i*29%100)+"%");
-      el.style.setProperty("--duration",(10+i%9)+"s");el.style.setProperty("--delay",(-((i*7)%190)/10)+"s");
-      el.style.setProperty("--opacity",String(.20+(i%5)*.04));elements.push(el);
+      el.style.setProperty("--x",(i*37%100)+"%");
+      el.style.setProperty("--duration",(15+i%8)+"s");el.style.setProperty("--delay",(-((i*11)%230)/10)+"s");
+      el.style.setProperty("--opacity",String(.10+(i%4)*.025));elements.push(el);
     }
     ["❄️","✨","❄️","🌟","❄️","🎄","❄️","🎁"].forEach((emoji,i)=>{
       const el=document.createElement("span");el.className="winter-drift";el.textContent=emoji;
