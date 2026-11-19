@@ -1179,13 +1179,13 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
 </style>
 <style>
 /* Исправление декора публичного аватара и панель выбора аккаунта для накрутки */
-.public-profile-avatar-wrap{margin:0 auto 88px!important;}
-.public-profile-card h2{display:block;clear:both;position:relative;z-index:4;margin:0 auto 8px!important;line-height:1.2;}
+.public-profile-avatar-wrap{margin:0 auto 8px!important;}
+.public-profile-card h2{display:block;clear:both;position:relative;z-index:4;margin:0 auto 4px!important;line-height:1.2;}
 .public-profile-card .avatar-frame-decor{z-index:2;}
 .dev-cheat-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(280px,360px)!important;}
 .dev-cheat-account{min-height:132px;position:relative;z-index:2;}
 .dev-cheat-account select{min-height:44px;display:block!important;visibility:visible!important;opacity:1!important;}
-@media(max-width:760px){.dev-cheat-toolbar{grid-template-columns:1fr!important;}.public-profile-avatar-wrap{margin-bottom:78px!important;}}
+@media(max-width:760px){.dev-cheat-toolbar{grid-template-columns:1fr!important;}.public-profile-avatar-wrap{margin-bottom:8px!important;}}
 .public-profile-card h2{position:relative;z-index:1;margin-top:0}
 .public-profile-card .avatar-frame-decor{pointer-events:none}
 .dev-cheat-toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,330px);gap:16px;align-items:stretch;margin-bottom:18px}
@@ -2096,11 +2096,23 @@ async function loadDevCheatAccounts(){
     devCheatSelectedUid=select.value;
     if(status)status.textContent=users.length+" аккаунтов доступно";
     await refreshDevCheatTarget();
-  }catch(error){console.error("Не удалось загрузить аккаунты для накрутки:",error);if(status)status.textContent="Не удалось загрузить аккаунты. Проверь доступ к users.";select.innerHTML='<option value="">Ошибка загрузки</option>';}
+  }catch(error){console.error("Не удалось загрузить аккаунты для накрутки:",error);if(status)status.textContent="Ошибка: "+(error?.code||"без кода")+" — "+(error?.message||"не удалось прочитать users");select.innerHTML='<option value="">Ошибка загрузки</option>';}
   finally{select.disabled=false;}
 }
 // Делаем загрузчик доступным для общего обработчика навигации панели разработчика.
 window.__loadDevCheatAccounts = loadDevCheatAccounts;
+// Делегированный обработчик в capture-фазе: гарантированно запускает загрузку при открытии вкладки.
+document.addEventListener("click",function(event){
+  const button=event.target?.closest?.('[data-dev-page="stats-tools"]');
+  if(!button)return;
+  if(window.__isDeveloper===true){loadDevCheatAccounts();}
+  else {
+    const status=document.getElementById("devCheatAccountStatus");
+    if(status)status.textContent="Нет доступа разработчика: проверь developerAccess/{твой UID}, role: developer.";
+    const select=document.getElementById("devCheatAccountSelect");
+    if(select)select.innerHTML='<option value="">Нет доступа разработчика</option>';
+  }
+},true);
 async function refreshDevCheatTarget(){
   const select=document.getElementById("devCheatAccountSelect"),uid=select?.value||"";
   devCheatSelectedUid=uid;const status=document.getElementById("devCheatAccountStatus");
@@ -2462,10 +2474,7 @@ document.addEventListener("click", function(e) {
       });
     }
 
-    if(devPage==="stats-tools"){
-      refreshDeveloperCheatPanel();
-      if(window.__isDeveloper===true) window.__loadDevCheatAccounts?.();
-    }
+    if(devPage==="stats-tools") refreshDeveloperCheatPanel();
     if (devPage === "users" && window.__loadDeveloperUsers) {
       window.__loadDeveloperUsers();
     }
