@@ -672,6 +672,24 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
 .profile-card.profile-header-burgundy .profile-main-info p,.profile-card.profile-header-midnight .profile-main-info p,.profile-card.profile-header-burgundy .profile-status,.profile-card.profile-header-midnight .profile-status{color:#f7e9ed}
 .profile-card.profile-header-burgundy .profile-status,.profile-card.profile-header-midnight .profile-status{background:#ffffff22}
 .profile-card.profile-header-winter .profile-main-info p,.profile-card.profile-header-winter .profile-status{color:#42677a}
+
+.public-profile-card{position:relative;overflow:hidden;text-align:center;padding:24px 16px 20px;margin:-4px -4px 16px;border:1px solid var(--line);border-radius:20px;background:var(--paper);color:var(--text)}
+.public-profile-card.profile-header-burgundy{background:radial-gradient(ellipse at 85% 10%,rgba(255,220,224,.25),transparent 42%),linear-gradient(125deg,#5e1728,#a9344b 58%,#6e1d35);border-color:#a84b60;color:#fff}
+.public-profile-card.profile-header-midnight{background:radial-gradient(circle at 80% 15%,rgba(145,176,255,.35),transparent 35%),linear-gradient(125deg,#111a38,#263e70 60%,#17264b);border-color:#526b9d;color:#fff}
+.public-profile-card.profile-header-winter{background:radial-gradient(ellipse at 80% 5%,rgba(255,255,255,.9),transparent 38%),linear-gradient(125deg,#b6dce9,#e7f7fc 55%,#a6d4e6);border-color:#8ec7dc;color:#23465a}
+.public-profile-avatar-wrap{position:relative;width:88px;height:88px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center}
+.public-profile-avatar-wrap:after{content:"";position:absolute;inset:-4px;border:3px solid rgba(255,255,255,.85);border-radius:50%;pointer-events:none}
+.public-profile-avatar-wrap.frame-rose:after{border-color:#e88fa9;box-shadow:0 0 12px #e88fa966}
+.public-profile-avatar-wrap.frame-gold:after{border-color:#d6a83c;box-shadow:0 0 12px #d6a83c66}
+.public-profile-avatar-wrap.frame-ruby:after{border-color:#a92f49;box-shadow:0 0 12px #a92f4966}
+.public-profile-avatar-wrap.frame-newyear-snow:after{border-color:#9ed9f1;box-shadow:0 0 12px #9ed9f188}
+.public-profile-avatar-wrap.frame-newyear-tree:after{border-color:#4d9a68;box-shadow:0 0 12px #4d9a6888}
+.public-profile-avatar-wrap.frame-newyear-gold:after{border-color:#e6c35e;box-shadow:0 0 12px #e6c35e88}
+.public-profile-avatar{width:88px;height:88px;object-fit:cover;border-radius:50%;display:block;border:3px solid rgba(255,255,255,.85)}
+.public-profile-avatar-fallback{display:grid;place-items:center;background:var(--soft);color:var(--red);font-size:34px;font-weight:800}
+.public-profile-card h2{margin:6px 0 4px;color:inherit}
+.public-profile-username{margin:0;color:inherit;opacity:.82}
+
 .profile-header-shop{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
 .profile-header-shop-heading{margin-bottom:16px}
 .profile-header-shop-heading h3{margin:5px 0;font-size:21px}
@@ -2999,6 +3017,8 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
     lastName: String(data.lastName || "").slice(0, 50),
     about: String(data.about || "").slice(0, 300),
     avatarUrl: String(data.avatarUrl || ""),
+    activeFrame: String(state?.activeFrame || ""),
+    activeProfileHeader: String(state?.activeProfileHeader || ""),
     streak,
     isPublic: data.isPublic === true,
     updatedAt: serverTimestamp()
@@ -3139,13 +3159,19 @@ window.__renderLeaderboard = renderLeaderboard;
 
     const fullName = [data.firstName, data.lastName].filter(Boolean).join(" ") || data.username || "Ученик";
 
+    const allowedHeaders = ["burgundy","midnight","winter"];
+    const allowedFrames = ["rose","gold","ruby","newyear-snow","newyear-tree","newyear-gold"];
+    const headerClass = allowedHeaders.includes(data.activeProfileHeader) ? "profile-header-" + data.activeProfileHeader : "";
+    const frameClass = allowedFrames.includes(data.activeFrame) ? "frame-" + data.activeFrame : "";
     content.innerHTML = `
-      <div style="text-align:center">
-        ${data.avatarUrl
-          ? `<img class="public-profile-avatar" src="${escapeHTML(data.avatarUrl)}" alt="Аватар">`
-          : ""}
+      <div class="public-profile-card ${headerClass}">
+        <div class="public-profile-avatar-wrap ${frameClass}">
+          ${data.avatarUrl
+            ? `<img class="public-profile-avatar" src="${escapeHTML(data.avatarUrl)}" alt="Аватар">`
+            : `<div class="public-profile-avatar public-profile-avatar-fallback">${escapeHTML((fullName || "У").slice(0,1).toUpperCase())}</div>`}
+        </div>
         <h2>${escapeHTML(fullName)}</h2>
-        <p>${escapeHTML(data.username)}</p>
+        <p class="public-profile-username">@${escapeHTML(data.username || "ученик")}</p>
       </div>
       <div class="public-profile-about">${escapeHTML(data.about || "Ученик пока ничего не рассказал о себе.")}</div>
       <div class="public-profile-streak">🔥 Серия правильных ответов: ${Number(data.streak) || 0}</div>
@@ -3287,6 +3313,8 @@ await setDoc(doc(db, "publicProfiles", auth.currentUser.uid), {
   lastName,
   about,
   avatarUrl: profile.avatarUrl || "",
+  activeFrame: String(window.__getLocalState?.()?.activeFrame || ""),
+  activeProfileHeader: String(window.__getLocalState?.()?.activeProfileHeader || ""),
   streak: Math.max(0, Math.floor(Number(window.__getLocalState?.()?.streak) || 0)),
   isPublic,
   updatedAt: serverTimestamp()
