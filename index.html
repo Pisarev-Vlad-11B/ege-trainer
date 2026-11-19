@@ -1076,6 +1076,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
     <span class="brandmark">Р</span>
     <span class="brand-copy">РУССКИЙ ЯЗЫК<small>Тренажёр ЕГЭ · задание 12</small></span>
   </button>
+  <button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку" title="Поддержка"><span aria-hidden="true">✉</span><b>Поддержка</b></button>
   <nav class="nav">
   <button data-view="leaderboard" data-protected="true" hidden>🔥 Рейтинг</button>
   <button data-view="tasks" data-protected="true" hidden>Задания</button>
@@ -1104,7 +1105,7 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
     <div id="announcementPublicList" class="announcement-public-list"><p class="announcement-empty">Пока нет новых объявлений.</p></div>
   </section>
 </div>
-<button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку"><span>✉</span><b>Поддержка</b></button>
+
 <div id="supportUserOverlay" class="support-overlay" hidden>
   <section class="support-dialog" role="dialog" aria-modal="true" aria-labelledby="supportUserTitle">
     <button class="support-close" id="supportUserClose" type="button" aria-label="Закрыть">×</button>
@@ -5915,7 +5916,7 @@ html[data-theme="dark"] .dev-support-status.is-answered{background:rgba(54,157,1
 .dev-support-open-all:hover{gap:12px}
 @media(max-width:600px){.dev-support-waiting-card{padding:17px}.dev-support-waiting-head h3{font-size:19px}.dev-home-support-item{padding:10px;gap:9px}}
 
-@media(max-width:600px){.support-float-btn{right:14px;bottom:14px;padding:12px 15px}.support-dialog{padding:25px 19px;border-radius:20px}.support-form-bottom{align-items:stretch;flex-direction:column}.support-form-bottom button{width:100%}.support-my-heading{align-items:flex-start;flex-direction:column}.dev-support-summary{gap:7px}.dev-support-summary>div{padding:12px}.dev-support-summary strong{font-size:22px}.dev-support-toolbar{align-items:flex-start;flex-direction:column}.dev-support-toolbar select{width:100%}.dev-support-ticket{align-items:flex-start}.dev-support-ticket-meta{flex-direction:column;gap:3px}}
+@media(max-width:600px){.topbar{position:sticky;padding-right:62px}.support-float-btn{position:absolute;right:12px;top:50%;bottom:auto;transform:translateY(-50%);width:38px;height:38px;padding:0;justify-content:center;gap:0;border-radius:13px;box-shadow:0 5px 15px rgba(112,43,64,.22)}.support-float-btn span{font-size:19px}.support-float-btn b{display:none}.support-float-btn:hover{transform:translateY(-50%)}.support-dialog{padding:25px 19px;border-radius:20px}.support-form-bottom{align-items:stretch;flex-direction:column}.support-form-bottom button{width:100%}.support-my-heading{align-items:flex-start;flex-direction:column}.dev-support-summary{gap:7px}.dev-support-summary>div{padding:12px}.dev-support-summary strong{font-size:22px}.dev-support-toolbar{align-items:flex-start;flex-direction:column}.dev-support-toolbar select{width:100%}.dev-support-ticket{align-items:flex-start}.dev-support-ticket-meta{flex-direction:column;gap:3px}}
 
 /* Одинаковая анимация наведения для статистики и обращений */
 #developer .dev-stat-card,
