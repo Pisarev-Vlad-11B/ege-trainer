@@ -663,7 +663,10 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
 
 <style>
 /* Личный кабинет и авторизация */
-.profile-shell{max-width:850px;margin:0 auto;display:grid;gap:18px}
+.profile-shell{max-width:1050px;margin:0 auto;display:grid;grid-template-columns:minmax(250px,310px) minmax(0,1fr);grid-template-rows:auto auto 1fr;align-items:start;gap:18px}
+.profile-shell>.profile-pet-card{grid-column:1;grid-row:1 / span 3;position:sticky;top:96px;max-width:none}
+.profile-shell>.profile-card,.profile-shell>.profile-form-card,.profile-shell>.profile-progress-card{grid-column:2;min-width:0}
+@media(max-width:760px){.profile-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}.profile-shell>.profile-pet-card,.profile-shell>.profile-card,.profile-shell>.profile-form-card,.profile-shell>.profile-progress-card{grid-column:1;grid-row:auto;position:static}}
 .profile-card,.profile-form-card,.profile-progress-card{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
 .profile-card{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .profile-card.profile-header-burgundy{background:radial-gradient(ellipse at 85% 10%,rgba(255,220,224,.25),transparent 42%),linear-gradient(125deg,#5e1728,#a9344b 58%,#6e1d35)!important;border-color:#a84b60!important;color:#fff!important}
@@ -1103,8 +1106,8 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 .profile-pet-body{display:flex;align-items:center;gap:22px;margin-top:18px}.profile-pet-art{width:142px;height:142px;flex:none;display:grid;place-items:center;border-radius:26px;background:radial-gradient(circle at 50% 38%,#fff 0%,#f9e7e9 65%,#efd7df 100%);font-size:76px;filter:drop-shadow(0 8px 9px rgba(119,62,81,.12));animation:petFloat 3s ease-in-out infinite}
 @keyframes petFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
 .profile-pet-info{flex:1;min-width:0}.profile-pet-name-row{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.profile-pet-name-row strong{font-size:19px}.profile-pet-name-row span{font-size:11px;color:var(--muted);padding:4px 8px;border-radius:99px;background:rgba(120,90,110,.09)}
-.profile-pet-info>p{margin:8px 0 14px;color:var(--muted);font-size:13px;line-height:1.5}.profile-pet-xp-row{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px;font-weight:750}.profile-pet-xp-track{height:9px;margin-top:7px;border-radius:99px;background:rgba(135,89,105,.13);overflow:hidden}.profile-pet-xp-track i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#c56c83,#e6a4a4);transition:width .45s ease}
-.profile-pet-name-editor{display:flex;gap:8px;margin-top:14px}.profile-pet-name-editor input{min-width:0;flex:1;border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:var(--paper);color:var(--ink);font:inherit;font-size:13px}.profile-pet-name-editor button{padding:9px 12px;font-size:12px;white-space:nowrap}
+.profile-pet-info>p{margin:8px 0 14px;color:var(--muted);font-size:13px;line-height:1.5}.profile-pet-select-label{display:block;margin-top:13px;margin-bottom:6px;color:var(--muted);font-size:11px;font-weight:800}.profile-pet-select-row{display:flex;gap:7px}.profile-pet-select-row select{min-width:0;flex:1;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);font:inherit;font-size:12px}.profile-pet-select-row button{padding:8px 10px;font-size:11px;white-space:nowrap}.profile-pet-xp-row{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px;font-weight:750}.profile-pet-xp-track{height:9px;margin-top:7px;border-radius:99px;background:rgba(135,89,105,.13);overflow:hidden}.profile-pet-xp-track i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#c56c83,#e6a4a4);transition:width .45s ease}
+.profile-pet-name-editor{display:flex;gap:8px;margin-top:10px}.profile-pet-name-editor input{min-width:0;flex:1;border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:var(--paper);color:var(--ink);font:inherit;font-size:13px}.profile-pet-name-editor button{padding:9px 12px;font-size:12px;white-space:nowrap}
 .profile-pet-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:17px;padding-top:14px;border-top:1px solid rgba(150,105,120,.16);color:var(--muted);font-size:11px}.pet-pat-btn{border:0;background:transparent;color:#a34862;font:800 12px inherit;cursor:pointer;padding:5px 0;white-space:nowrap}.pet-pat-btn:hover{color:#d05d7d}
 .profile-pet-card.pet-level-up .profile-pet-art{animation:petLevelPop .65s ease}.profile-pet-card.pet-level-up{border-color:rgba(207,119,143,.6);box-shadow:0 0 0 3px rgba(207,119,143,.10),var(--shadow)}
 @keyframes petLevelPop{0%{transform:scale(.88)}55%{transform:scale(1.12) rotate(5deg)}100%{transform:scale(1)}}
@@ -1384,16 +1387,18 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
     </div>
     <div class="profile-pet-card" id="profilePetCard" hidden>
       <div class="profile-pet-top">
-        <div><span class="eyebrow">ТВОЙ СПУТНИК</span><h3>Питомец профиля</h3><p>Решай задания, чтобы он рос и открывал новые формы.</p></div>
+        <div><span class="eyebrow">ТВОЙ СПУТНИК</span><h3>Питомец профиля</h3><p>Выбери друга и помогай ему расти за правильные ответы.</p></div>
         <span class="profile-pet-level" id="petLevelBadge">Уровень 1</span>
       </div>
       <div class="profile-pet-body">
         <div class="profile-pet-art" id="petArt" aria-label="Твой питомец">🥚</div>
         <div class="profile-pet-info">
-          <div class="profile-pet-name-row"><strong id="petDisplayName">Пушок</strong><span id="petStageLabel">Таинственное яйцо</span></div>
-          <p id="petMoodText">Кажется, внутри кто-то шевелится… Реши первое задание, чтобы помочь ему появиться!</p>
+          <div class="profile-pet-name-row"><strong id="petDisplayName">Пушок</strong><span id="petStageLabel">Малыш</span></div>
+          <p id="petMoodText">Твой новый друг уже ждёт приключений!</p>
           <div class="profile-pet-xp-row"><span id="petXpLabel">0 / 50 опыта</span><span id="petXpPercent">0%</span></div>
           <div class="profile-pet-xp-track"><i id="petXpBar"></i></div>
+          <label class="profile-pet-select-label" for="petTypeSelect">Кого выращиваем?</label>
+          <div class="profile-pet-select-row"><select id="petTypeSelect" aria-label="Выбор питомца"><option value="dragon">🐉 Дракончик</option><option value="cat">🐱 Котёнок</option><option value="fox">🦊 Лисёнок</option><option value="panda">🐼 Пандочка</option><option value="owl">🦉 Совёнок</option></select><button class="secondary" id="petSaveTypeBtn" type="button">Выбрать</button></div>
           <div class="profile-pet-name-editor"><input id="petNameInput" type="text" maxlength="18" placeholder="Имя питомца" aria-label="Имя питомца"><button class="secondary" id="petSaveNameBtn" type="button">Сохранить имя</button></div>
         </div>
       </div>
@@ -1629,6 +1634,7 @@ html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{backgrou
       <article class="dev-cheat-card"><div class="dev-cheat-icon">🔥</div><div class="dev-cheat-copy"><span>СЕРИЯ ПРАВИЛЬНЫХ ОТВЕТОВ</span><h3>Огоньки</h3><p>Установи текущую серию. Рекорд обновится автоматически, если новое значение окажется выше.</p></div><div class="dev-cheat-current">Сейчас: <strong id="devCheatStreakCurrent">0</strong></div><label for="devCheatStreakInput">Новое количество</label><input id="devCheatStreakInput" type="number" min="0" max="1000000" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatStreakApply">Применить огоньки</button></article>
       <article class="dev-cheat-card"><div class="dev-cheat-icon">✦</div><div class="dev-cheat-copy"><span>ВАЛЮТА МАГАЗИНА</span><h3>Баллы магазина</h3><p>Установи количество баллов. Их можно будет потратить на рамки аватара.</p></div><div class="dev-cheat-current">Баланс: <strong id="devCheatCoinsCurrent">0</strong> ✦</div><label for="devCheatCoinsInput">Новое количество</label><input id="devCheatCoinsInput" type="number" min="0" max="1000000" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatCoinsApply">Применить баллы</button></article>
       <article class="dev-cheat-card"><div class="dev-cheat-icon">✅</div><div class="dev-cheat-copy"><span>ПРОГРЕСС ТРЕНАЖЁРА</span><h3>Правильно решённые</h3><p>Установи количество заданий, засчитанных как решённые правильно. Максимум — 143.</p></div><div class="dev-cheat-current">Сейчас: <strong id="devCheatCorrectCurrent">0</strong> / 143</div><label for="devCheatCorrectInput">Новое количество</label><input id="devCheatCorrectInput" type="number" min="0" max="143" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatCorrectApply">Применить результат</button></article>
+      <article class="dev-cheat-card"><div class="dev-cheat-icon">✨</div><div class="dev-cheat-copy"><span>ПИТОМЕЦ ПРОФИЛЯ</span><h3>Опыт питомца</h3><p>Установи количество опыта питомца в своём аккаунте. Уровень и внешний вид обновятся автоматически.</p></div><div class="dev-cheat-current">Сейчас: <strong id="devCheatPetXpCurrent">0</strong> XP</div><label for="devCheatPetXpInput">Новое количество опыта</label><input id="devCheatPetXpInput" type="number" min="0" max="1000000" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatPetXpApply">Применить опыт</button></article>
       <article class="dev-cheat-card"><div class="dev-cheat-icon">❌</div><div class="dev-cheat-copy"><span>АНАЛИТИКА ОШИБОК</span><h3>Неправильно решённые</h3><p>Установи количество заданий с ошибками. Они появятся во вкладке ошибок и в аналитике.</p></div><div class="dev-cheat-current">Сейчас: <strong id="devCheatWrongCurrent">0</strong></div><label for="devCheatWrongInput">Новое количество</label><input id="devCheatWrongInput" type="number" min="0" max="143" step="1" value="0"><button type="button" class="dev-cheat-apply" id="devCheatWrongApply">Применить ошибки</button></article>
     </div>
   </div>
@@ -1790,8 +1796,8 @@ const TASKS = [{"id":1,"question":"1) скоропорт..щиеся, донос
 const STORAGE_KEY = "ege12_trainer_state_v3";
 const $ = id => document.getElementById(id);
 const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
-const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],mistakeCounts:{},favorites:[],coins:0,ownedFrames:[],activeFrame:"",ownedProfileHeaders:[],activeProfileHeader:"",correct:0,completed:[],round:1,streak:0,bestStreak:0,pet:{name:"Пушок",xp:0}});
-function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;if(!s.mistakeCounts||typeof s.mistakeCounts!=="object")s.mistakeCounts={};if(!Array.isArray(s.favorites))s.favorites=[];if(!Number.isFinite(s.coins))s.coins=0;if(!Array.isArray(s.ownedFrames))s.ownedFrames=[];if(typeof s.activeFrame!=="string")s.activeFrame="";if(!Array.isArray(s.ownedProfileHeaders))s.ownedProfileHeaders=[];if(typeof s.activeProfileHeader!=="string")s.activeProfileHeader="";if(!s.pet||typeof s.pet!=="object")s.pet={name:"Пушок",xp:0};if(typeof s.pet.name!=="string")s.pet.name="Пушок";s.pet.name=s.pet.name.trim().slice(0,18)||"Пушок";s.pet.xp=Math.max(0,Math.floor(Number(s.pet.xp)||0));return s;}}catch(e){}return freshState();}
+const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],mistakeCounts:{},favorites:[],coins:0,ownedFrames:[],activeFrame:"",ownedProfileHeaders:[],activeProfileHeader:"",correct:0,completed:[],round:1,streak:0,bestStreak:0,pet:{name:"Пушок",xp:0,type:"dragon"}});
+function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;if(!s.mistakeCounts||typeof s.mistakeCounts!=="object")s.mistakeCounts={};if(!Array.isArray(s.favorites))s.favorites=[];if(!Number.isFinite(s.coins))s.coins=0;if(!Array.isArray(s.ownedFrames))s.ownedFrames=[];if(typeof s.activeFrame!=="string")s.activeFrame="";if(!Array.isArray(s.ownedProfileHeaders))s.ownedProfileHeaders=[];if(typeof s.activeProfileHeader!=="string")s.activeProfileHeader="";if(!s.pet||typeof s.pet!=="object")s.pet={name:"Пушок",xp:0,type:"dragon"};if(typeof s.pet.name!=="string")s.pet.name="Пушок";s.pet.name=s.pet.name.trim().slice(0,18)||"Пушок";s.pet.xp=Math.max(0,Math.floor(Number(s.pet.xp)||0));if(!["dragon","cat","fox","panda","owl"].includes(s.pet.type))s.pet.type="dragon";return s;}}catch(e){}return freshState();}
 let state=loadState(), activePane="bank";
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));updateStats();if(window.__syncCloudState)window.__syncCloudState(state);if(window.__updateProfileProgress)window.__updateProfileProgress(state);}
 // Мост между локальным тренажёром и облачным аккаунтом Firebase.
@@ -1855,21 +1861,31 @@ function markPracticeDay(){
  }else state.practiceDayStreak=1;
  state.lastPracticeDate=today;
 }
-function petDetails(petState=state.pet||{name:"Пушок",xp:0}){
+const PET_SPECIES={
+ dragon:{label:"Дракончик",stages:[["🥚","Яйцо","Внутри яйца шевелится маленький дракон."],["🐣","Дракончик вылупился","Твой дракончик только начинает познавать мир."],["🐲","Юный дракон","Он уже умеет пускать маленькие искры."],["🐉","Взрослый дракон","Настоящий хранитель твоих успехов!"],["🐉","Легендарный дракон","Легендарный дракон гордится твоими достижениями!"]]},
+ cat:{label:"Котёнок",stages:[["🥚","Кошачье яйцо","Совсем скоро появится любопытный котёнок."],["🐱","Маленький котёнок","Котёнок знакомится с новым домом."],["🐈","Подросший кот","Он уже самостоятельный и очень ласковый."],["🐈‍⬛","Взрослый кот","Твой пушистый друг стал настоящим красавцем."],["🐈‍⬛","Королевский кот","Королевский любимец с особым характером!"]]},
+ fox:{label:"Лисёнок",stages:[["🥚","Лисье яйцо","Внутри прячется хитрый и добрый лисёнок."],["🦊","Маленький лисёнок","Лисёнок делает первые шаги."],["🦊","Любопытная лиса","Он исследует всё вокруг."],["🦊","Взрослая лиса","Ловкий и умный спутник."],["🦊","Легендарная лиса","Самая яркая звезда леса!"]]},
+ panda:{label:"Пандочка",stages:[["🥚","Бамбуковое яйцо","Скоро появится маленькая любительница бамбука."],["🐼","Маленькая панда","Пандочка учится лазать и играть."],["🐼","Подросшая панда","Она стала сильнее и обожает приключения."],["🐼","Взрослая панда","Спокойный и надёжный друг."],["🐼","Редкая панда","Настоящая гордость бамбукового леса!"]]},
+ owl:{label:"Совёнок",stages:[["🥚","Таинственное яйцо","Внутри растёт внимательный совёнок."],["🐣","Маленький совёнок","Совёнок только учится расправлять крылья."],["🦉","Юная сова","Она уже замечает самые мелкие детали."],["🦉","Мудрая сова","Мудрый спутник, который всегда рядом."],["🦉","Хранитель знаний","Самая мудрая птица в округе!"]]}
+};
+function petDetails(petState=state.pet||{name:"Пушок",xp:0,type:"dragon"}){
  const xp=Math.max(0,Math.floor(Number(petState.xp)||0)),level=Math.floor(xp/50)+1,inside=xp%50;
- const stages=[{min:10,icon:"🐉",name:"Дракончик",mood:"Ты вырастил настоящего дракончика! Он гордится твоими успехами."},{min:7,icon:"🦉",name:"Мудрая совушка",mood:"Твой питомец стал мудрым и внимательным."},{min:4,icon:"🐥",name:"Любознательный птенец",mood:"Птенец подрос и с интересом изучает мир."},{min:2,icon:"🐣",name:"Маленький птенец",mood:"Птенец вылупился! Продолжай заниматься, и он подрастёт."},{min:1,icon:"🥚",name:"Таинственное яйцо",mood:"Кажется, внутри кто-то шевелится… Реши первое задание, чтобы помочь ему появиться!"}];
- const stage=stages.find(item=>level>=item.min)||stages[stages.length-1];
- return {xp,level,inside,icon:stage.icon,stage:stage.name,mood:stage.mood,percent:Math.round(inside/50*100)};
+ const type=PET_SPECIES[petState.type]?petState.type:"dragon";
+ const stageIndex=level>=10?4:level>=7?3:level>=4?2:level>=2?1:0;
+ const stage=PET_SPECIES[type].stages[stageIndex];
+ return {xp,level,inside,type,icon:stage[0],stage:stage[1],mood:stage[2],percent:Math.round(inside/50*100),species:PET_SPECIES[type].label};
 }
 function renderPetCard(){
  const card=$("profilePetCard");if(!card)return;
  const signed=!!window.__isTrainerAuthenticated?.();card.hidden=!signed;if(!signed)return;
- if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0};
+ if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"dragon"};
+ if(!PET_SPECIES[state.pet.type])state.pet.type="dragon";
  const details=petDetails(state.pet),name=String(state.pet.name||"Пушок").slice(0,18);
  $("petArt").textContent=details.icon;$("petArt").setAttribute("aria-label",name+", "+details.stage);
  $("petLevelBadge").textContent="Уровень "+details.level;$("petDisplayName").textContent=name;$("petStageLabel").textContent=details.stage;
  $("petMoodText").textContent=details.mood;$("petXpLabel").textContent=details.inside+" / 50 опыта";$("petXpPercent").textContent=details.percent+"%";$("petXpBar").style.width=details.percent+"%";
  const input=$("petNameInput");if(input&&document.activeElement!==input)input.value=name;
+ const selector=$("petTypeSelect");if(selector)selector.value=details.type;
 }
 window.__refreshProfilePet=renderPetCard;
 function updateStats(){
@@ -1967,8 +1983,8 @@ function renderMistakes(){
  host.innerHTML="";
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
-function refreshDeveloperCheatPanel(){if(window.__isDeveloper!==true)return;const streak=$("devCheatStreakCurrent"),coins=$("devCheatCoinsCurrent"),si=$("devCheatStreakInput"),ci=$("devCheatCoinsInput"),correct=$("devCheatCorrectCurrent"),wrong=$("devCheatWrongCurrent"),cInput=$("devCheatCorrectInput"),wInput=$("devCheatWrongInput");const done=Array.isArray(state.completed)?state.completed.length:0,errors=Array.isArray(state.mistakes)?state.mistakes.length:0;if(streak)streak.textContent=Number(state.streak)||0;if(coins)coins.textContent=Number(state.coins)||0;if(si)si.value=Number(state.streak)||0;if(ci)ci.value=Number(state.coins)||0;if(correct)correct.textContent=done;if(wrong)wrong.textContent=errors;if(cInput)cInput.value=done;if(wInput){wInput.value=errors;wInput.max=Math.max(0,143-done);}}
-function applyDeveloperCheat(kind){if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!"})[kind]);}
+function refreshDeveloperCheatPanel(){if(window.__isDeveloper!==true)return;const streak=$("devCheatStreakCurrent"),coins=$("devCheatCoinsCurrent"),si=$("devCheatStreakInput"),ci=$("devCheatCoinsInput"),correct=$("devCheatCorrectCurrent"),wrong=$("devCheatWrongCurrent"),cInput=$("devCheatCorrectInput"),wInput=$("devCheatWrongInput"),petXp=$("devCheatPetXpCurrent"),petInput=$("devCheatPetXpInput");const done=Array.isArray(state.completed)?state.completed.length:0,errors=Array.isArray(state.mistakes)?state.mistakes.length:0;if(streak)streak.textContent=Number(state.streak)||0;if(coins)coins.textContent=Number(state.coins)||0;if(si)si.value=Number(state.streak)||0;if(ci)ci.value=Number(state.coins)||0;if(correct)correct.textContent=done;if(wrong)wrong.textContent=errors;if(cInput)cInput.value=done;if(wInput){wInput.value=errors;wInput.max=Math.max(0,143-done);}if(petXp)petXp.textContent=Number(state.pet?.xp)||0;if(petInput)petInput.value=Number(state.pet?.xp)||0;}
+function applyDeveloperCheat(kind){if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="petXp"){if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"dragon"};state.pet.xp=value;}else if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!",petXp:"Опыт питомца обновлён!"})[kind]);}
 function renderMistakeAnalytics(){const host=$("mistakeAnalyticsList");if(!host)return;const entries=Object.entries(state.mistakeCounts||{}).map(([id,count])=>({id:Number(id),count:Number(count)||0})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,6);if(!entries.length){host.innerHTML='<div class="analytics-empty">Пока нет ошибок. Здесь появится статистика после первых попыток.</div>';return;}const max=entries[0].count;host.innerHTML=entries.map(x=>`<div class="analytics-row"><div class="analytics-row-top"><strong>Задание №${x.id}</strong><span>${x.count} ${x.count===1?"ошибка":x.count<5?"ошибки":"ошибок"}</span></div><div class="analytics-track"><i style="width:${Math.max(8,x.count/max*100)}%"></i></div><button type="button" class="analytics-repeat" data-repeat-task="${x.id}">Повторить задание →</button></div>`).join("");}
 const SHOP_FRAMES=[
  {id:"rose",name:"Розовая рамка",price:30,icon:"🌸",desc:"Нежное розовое свечение",category:"regular"},
@@ -2358,12 +2374,19 @@ case "developerGear":
     case "favoritesTab": try { showPane("favorites"); } catch(err) { console.error(err); } break;
     case "taskFavoriteBtn": try { toggleFavorite(); } catch(err) { console.error(err); } break;
     case "errorsTab": try { showPane("errors"); } catch(err) { console.error(err); } break;
+    case "petSaveTypeBtn": try {
+      const type=$("petTypeSelect")?.value;
+      if(!PET_SPECIES[type]){toast("Выбери питомца из списка.");break;}
+      state.pet={...(state.pet||{name:"Пушок",xp:0}),type};
+      save();renderPetCard();toast("Теперь ты выращиваешь: "+PET_SPECIES[type].label+"!");
+    } catch(err) { console.error(err); } break;
     case "petSaveNameBtn": try {
       const input=$("petNameInput"),name=String(input?.value||"").trim().replace(/[<>]/g,"").slice(0,18);
       if(!name){toast("Введи имя питомца.");break;}
       state.pet={...(state.pet||{}),name,xp:Math.max(0,Number(state.pet?.xp)||0)};
       save();renderPetCard();toast("Имя питомца сохранено!");
     } catch(err) { console.error(err); } break;
+    case "devCheatPetXpApply": try { applyDeveloperCheat("petXp"); } catch(err) { console.error(err); } break;
     case "petPatBtn": try {
       const lines=["Питомец довольно мурлычет от внимания ♡","Питомец рад тебя видеть!","Кажется, настроение стало ещё лучше ✨","Питомец благодарит за заботу!"];
       $("petMoodText").textContent=lines[Math.floor(Math.random()*lines.length)];
@@ -3128,8 +3151,10 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
     activeFrame: String(state?.activeFrame || ""),
     activeProfileHeader: String(state?.activeProfileHeader || ""),
     petName: String(state?.pet?.name || "Пушок").slice(0,18),
+    petType: String(state?.pet?.type || "dragon"),
     petLevel: Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1,
-    petIcon: (Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=10?"🐉":(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=7?"🦉":(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=4?"🐥":(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=2?"🐣":"🥚",
+    petSpecies: (PET_SPECIES[state?.pet?.type||"dragon"]||PET_SPECIES.dragon).label,
+    petIcon: (PET_SPECIES[state?.pet?.type||"dragon"]||PET_SPECIES.dragon).stages[(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=10?4:(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=7?3:(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=4?2:(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=2?1:0][0],
     streak,
     isPublic: data.isPublic === true,
     updatedAt: serverTimestamp()
@@ -3286,7 +3311,7 @@ window.__renderLeaderboard = renderLeaderboard;
       </div>
       <div class="public-profile-about">${escapeHTML(data.about || "Ученик пока ничего не рассказал о себе.")}</div>
       <div class="public-profile-streak">🔥 Серия правильных ответов: ${Number(data.streak) || 0}</div>
-      ${data.petName ? `<div class="public-profile-pet"><div class="public-profile-pet-icon">${escapeHTML(data.petIcon || "🥚")}</div><div><strong>${escapeHTML(data.petName)}</strong><span>${Number(data.petLevel)||1} уровень питомца</span></div></div>` : ""}
+      ${data.petName ? `<div class="public-profile-pet"><div class="public-profile-pet-icon">${escapeHTML(data.petIcon || "🥚")}</div><div><strong>${escapeHTML(data.petName)}</strong><span>${escapeHTML(data.petSpecies||"Питомец")} · ${Number(data.petLevel)||1} уровень</span></div></div>` : ""}
     `;
   } catch (error) {
     console.error("Ошибка загрузки публичного профиля:", error);
