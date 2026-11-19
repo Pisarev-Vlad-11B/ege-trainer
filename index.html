@@ -3486,7 +3486,8 @@ function startGlobalWinterAtmosphereListener() {
   if (!db || globalWinterAtmosphereUnsubscribe) return;
   globalWinterAtmosphereUnsubscribe = onSnapshot(doc(db, "siteSettings", "winterAtmosphere"), snapshot => {
     globalWinterAtmosphereEnabled = snapshot.exists() && snapshot.data().enabled === true;
-    applyWinterAtmosphere(globalWinterAtmosphereEnabled);
+    window.__globalWinterAtmosphereEnabled = globalWinterAtmosphereEnabled;
+    window.__applyWinterAtmosphere?.(globalWinterAtmosphereEnabled);
     const checkbox = document.getElementById("devWinterAtmosphere");
     if (checkbox) checkbox.checked = globalWinterAtmosphereEnabled;
     const status = document.getElementById("devWinterStatus");
@@ -3495,11 +3496,21 @@ function startGlobalWinterAtmosphereListener() {
       : "Зимний режим выключен для всех посетителей сайта.";
   }, error => {
     console.error("Не удалось получить глобальные настройки зимнего режима:", error);
-    applyWinterAtmosphere(false);
+    window.__applyWinterAtmosphere?.(false);
     const status = document.getElementById("devWinterStatus");
     if (status) status.textContent = "Нет доступа к общим настройкам. Проверь правила Firestore для siteSettings.";
   });
 }
+window.__setGlobalWinterAtmosphere = async enabled => {
+  if (window.__isDeveloper !== true || !auth?.currentUser || !db) {
+    throw new Error("Недостаточно прав для изменения зимнего режима.");
+  }
+  await setDoc(doc(db, "siteSettings", "winterAtmosphere"), {
+    enabled: enabled === true,
+    updatedAt: serverTimestamp(),
+    updatedBy: auth.currentUser.uid
+  }, { merge: true });
+};
 startGlobalWinterAtmosphereListener();
 
 // ===== СЛУЖБА ПОДДЕРЖКИ =====
@@ -6122,6 +6133,7 @@ function applyWinterAtmosphere(enabled){
     document.body.appendChild(decor);
   }
 }
+window.__applyWinterAtmosphere = applyWinterAtmosphere;
 function initDeveloperSettings() {
   applyDeveloperSettings();
   document.getElementById("devOnlineRefresh")?.addEventListener("change", event => {
@@ -6134,25 +6146,21 @@ function initDeveloperSettings() {
   document.getElementById("devWinterAtmosphere")?.addEventListener("change", async event => {
     const checkbox = event.target;
     const status = document.getElementById("devWinterStatus");
-    if (window.__isDeveloper !== true || !auth?.currentUser || !db) {
-      checkbox.checked = globalWinterAtmosphereEnabled;
+    if (window.__isDeveloper !== true || typeof window.__setGlobalWinterAtmosphere !== "function") {
+      checkbox.checked = window.__globalWinterAtmosphereEnabled === true;
       if (status) status.textContent = "Изменять зимний режим может только разработчик.";
       return;
     }
     checkbox.disabled = true;
     if (status) status.textContent = "Сохраняем общее состояние для всех посетителей…";
     try {
-      await setDoc(doc(db, "siteSettings", "winterAtmosphere"), {
-        enabled: checkbox.checked,
-        updatedAt: serverTimestamp(),
-        updatedBy: auth.currentUser.uid
-      }, { merge: true });
+      await window.__setGlobalWinterAtmosphere(checkbox.checked);
       if (status) status.textContent = checkbox.checked
         ? "Зимний режим включён для всех посетителей сайта."
         : "Зимний режим выключен для всех посетителей сайта.";
     } catch (error) {
       console.error("Не удалось изменить глобальный зимний режим:", error);
-      checkbox.checked = globalWinterAtmosphereEnabled;
+      checkbox.checked = window.__globalWinterAtmosphereEnabled === true;
       if (status) status.textContent = "Не удалось сохранить. Проверь правила Firestore для siteSettings.";
       alert("Не удалось изменить зимний режим. Проверь правила Firestore для siteSettings.");
     } finally {
