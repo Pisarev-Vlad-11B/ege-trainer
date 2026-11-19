@@ -2132,11 +2132,42 @@ window.__updateProfileProgress = state => {
 async function loadAccount(user, fallbackUsername = "") {
   const ref = userDoc(user.uid);
   const snap = await getDoc(ref);
-  if (snap.exists()) return snap.data();
-  const username = fallbackUsername || (user.email || "ученик").split("@")[0];
-  const initial = { username, firstName: "", lastName: "", about: "", avatarUrl: "", createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
-  await setDoc(ref, initial, { merge: true });
-  return { ...initial, username };
+  const stored = snap.exists() ? (snap.data() || {}) : {};
+
+  // Восстанавливаем недостающие поля из публичной копии профиля.
+  // Это помогает, если личный документ users оказался неполным,
+  // но данные профиля ранее были сохранены в publicProfiles.
+  let publicData = {};
+  try {
+    const publicSnap = await getDoc(doc(db, "publicProfiles", user.uid));
+    if (publicSnap.exists()) publicData = publicSnap.data() || {};
+  } catch (error) {
+    console.warn("Не удалось прочитать резервные данные профиля:", error);
+  }
+
+  const username = stored.username || publicData.username ||
+    fallbackUsername || (user.email || "ученик").split("@")[0];
+
+  const data = {
+    ...stored,
+    username,
+    firstName: stored.firstName || publicData.firstName || "",
+    lastName: stored.lastName || publicData.lastName || "",
+    about: stored.about || publicData.about || "",
+    avatarUrl: stored.avatarUrl || publicData.avatarUrl || "",
+    isPublic: stored.isPublic === true || publicData.isPublic === true
+  };
+
+  if (!snap.exists()) {
+    const initial = {
+      ...data,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    };
+    await setDoc(ref, initial, { merge: true });
+  }
+
+  return data;
 }
   function escapeDevHTML(value) {
   return String(value || "").replace(/[&<>"']/g, ch => ({
@@ -2862,7 +2893,24 @@ async function restoreAccount(user, username = "") {
   message("");
 }
 
-$id("profileNav").addEventListener("click", () => { showView("profile"); if (!profile) openAuth("login"); });
+$id("profileNav").addEventListener("click", async () => {
+  showView("profile");
+  const user = auth?.currentUser;
+  if (!user) {
+    if (!profile) openAuth("login");
+    return;
+  }
+
+  // При каждом открытии профиля перечитываем данные из Firestore,
+  // чтобы не показывать пустую или устаревшую локальную копию.
+  try {
+    const freshProfile = await loadAccount(user);
+    paintProfile(freshProfile);
+  } catch (error) {
+    console.error("Не удалось обновить личный профиль:", error);
+    toast("Не удалось загрузить данные профиля. Проверь соединение.");
+  }
+});
 $id("profileAuthBtn").addEventListener("click", () => openAuth("login"));
 $id("authClose").addEventListener("click", closeAuth);
 $id("authOverlay").addEventListener("click", e => { if (e.target === $id("authOverlay")) closeAuth(); });
