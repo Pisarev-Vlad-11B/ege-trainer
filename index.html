@@ -1485,23 +1485,16 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
 
       <div class="dev-setting-card dev-notification-settings">
         <div class="dev-setting-heading">
-          <span class="dev-setting-icon">♫</span>
-          <div><strong>Звуковые уведомления</strong><p>Звуковой сигнал при поступлении нового обращения от ученика</p></div>
+          <span class="dev-setting-icon">♢</span>
+          <div><strong>Уведомления поддержки</strong><p>Узнавай сразу, когда ученик отправляет новое обращение</p></div>
         </div>
         <label class="dev-setting-switch">
-          <span><strong>Включить звук</strong><small>Воспроизводить короткий сигнал о новом обращении</small></span>
+          <span><strong>Звуковой сигнал</strong><small>Короткий звук при поступлении нового обращения</small></span>
           <input type="checkbox" id="devSupportSound">
           <i></i>
         </label>
-      </div>
-
-      <div class="dev-setting-card dev-notification-settings">
-        <div class="dev-setting-heading">
-          <span class="dev-setting-icon">♢</span>
-          <div><strong>Уведомления браузера</strong><p>Получай оповещения о новых обращениях, даже когда открыта другая вкладка</p></div>
-        </div>
         <label class="dev-setting-switch">
-          <span><strong>Показывать уведомления</strong><small>Разрешить браузеру выводить системные уведомления</small></span>
+          <span><strong>Уведомления браузера</strong><small>Показывать уведомление, даже если открыта другая вкладка</small></span>
           <input type="checkbox" id="devSupportBrowserNotifications">
           <i></i>
         </label>
@@ -5332,6 +5325,50 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-algorithm>div:hover{
 #developer.dev-compact .dev-stats-grid{gap:10px}
 #developer.dev-compact .dev-stat-card{padding:16px}
 @media(max-width:700px){#developer .dev-settings-grid{grid-template-columns:1fr}#developer .dev-settings-footer{align-items:flex-start;flex-direction:column}}
+
+/* Отдельные карточки настроек только на телефонах.
+   Десктопное оформление намеренно не затрагиваем. */
+@media(max-width:700px){
+  #developer .dev-settings-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:14px!important;
+    width:100%;
+  }
+  #developer .dev-settings-grid>.dev-setting-card{
+    display:flex!important;
+    flex-direction:column;
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:18px!important;
+    border:1px solid var(--border)!important;
+    border-radius:16px!important;
+    background:var(--card)!important;
+    box-shadow:0 5px 18px rgba(30,20,25,.07)!important;
+  }
+  #developer .dev-settings-grid>.dev-setting-card .dev-setting-heading{margin-bottom:16px}
+  #developer .dev-settings-grid>.dev-setting-card .dev-setting-switch{
+    min-width:0;
+    padding:11px 0;
+    border-top:1px solid var(--border);
+  }
+  #developer .dev-settings-grid>.dev-setting-card .dev-setting-switch span{min-width:0}
+  #developer .dev-settings-grid>.dev-setting-card .dev-setting-switch small{overflow-wrap:anywhere}
+  #developer .dev-settings-grid>.dev-settings-footer{
+    grid-column:1;
+    padding:6px 2px 14px;
+  }
+  #developer .dev-settings-grid>.dev-setting-card .dev-notification-permission-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+  }
+}
 
 /* Плавающий виджет объявлений */
 .announcement-widget{position:fixed;z-index:1200;top:92px;right:22px;width:min(320px,calc(100vw - 28px));font-family:inherit}
