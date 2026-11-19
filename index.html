@@ -1095,6 +1095,26 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
 @keyframes winterBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media(prefers-reduced-motion:reduce){#winterAtmosphereLayer .winter-flake,#winterAtmosphereLayer .winter-drift{animation-duration:24s!important}#winterAtmosphereDecor .winter-ground-emoji{animation:none}}
 </style>
+<style>
+/* Питомец профиля */
+.profile-pet-card{max-width:850px;margin:0 auto;background:linear-gradient(135deg,rgba(255,244,238,.96),rgba(255,250,246,.98) 55%,rgba(247,235,244,.96));border:1px solid rgba(176,112,124,.22);border-radius:24px;padding:22px 24px;box-shadow:var(--shadow);color:var(--ink)}
+.profile-pet-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.profile-pet-top h3{margin:4px 0 5px;font-size:21px}.profile-pet-top p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.profile-pet-level{flex:none;padding:7px 11px;border-radius:99px;background:rgba(164,74,100,.12);color:#963e58;font-size:12px;font-weight:850}
+.profile-pet-body{display:flex;align-items:center;gap:22px;margin-top:18px}.profile-pet-art{width:142px;height:142px;flex:none;display:grid;place-items:center;border-radius:26px;background:radial-gradient(circle at 50% 38%,#fff 0%,#f9e7e9 65%,#efd7df 100%);font-size:76px;filter:drop-shadow(0 8px 9px rgba(119,62,81,.12));animation:petFloat 3s ease-in-out infinite}
+@keyframes petFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+.profile-pet-info{flex:1;min-width:0}.profile-pet-name-row{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.profile-pet-name-row strong{font-size:19px}.profile-pet-name-row span{font-size:11px;color:var(--muted);padding:4px 8px;border-radius:99px;background:rgba(120,90,110,.09)}
+.profile-pet-info>p{margin:8px 0 14px;color:var(--muted);font-size:13px;line-height:1.5}.profile-pet-xp-row{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px;font-weight:750}.profile-pet-xp-track{height:9px;margin-top:7px;border-radius:99px;background:rgba(135,89,105,.13);overflow:hidden}.profile-pet-xp-track i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#c56c83,#e6a4a4);transition:width .45s ease}
+.profile-pet-name-editor{display:flex;gap:8px;margin-top:14px}.profile-pet-name-editor input{min-width:0;flex:1;border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:var(--paper);color:var(--ink);font:inherit;font-size:13px}.profile-pet-name-editor button{padding:9px 12px;font-size:12px;white-space:nowrap}
+.profile-pet-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:17px;padding-top:14px;border-top:1px solid rgba(150,105,120,.16);color:var(--muted);font-size:11px}.pet-pat-btn{border:0;background:transparent;color:#a34862;font:800 12px inherit;cursor:pointer;padding:5px 0;white-space:nowrap}.pet-pat-btn:hover{color:#d05d7d}
+.profile-pet-card.pet-level-up .profile-pet-art{animation:petLevelPop .65s ease}.profile-pet-card.pet-level-up{border-color:rgba(207,119,143,.6);box-shadow:0 0 0 3px rgba(207,119,143,.10),var(--shadow)}
+@keyframes petLevelPop{0%{transform:scale(.88)}55%{transform:scale(1.12) rotate(5deg)}100%{transform:scale(1)}}
+.public-profile-pet{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:15px;background:var(--paper2);color:var(--ink)}.public-profile-pet-icon{font-size:34px}.public-profile-pet strong{display:block;font-size:13px}.public-profile-pet span{display:block;margin-top:3px;color:var(--muted);font-size:11px}
+@media(prefers-color-scheme:dark){.profile-pet-card{background:linear-gradient(135deg,#29222a,#30242d 58%,#282532);border-color:rgba(225,155,177,.2)}.profile-pet-art{background:radial-gradient(circle at 50% 38%,#51414c 0%,#40313e 68%,#352a39 100%)}.profile-pet-level{background:rgba(232,143,169,.14);color:#f0b2c5}}
+html[data-theme="dark"] .profile-pet-card,body.dark .profile-pet-card{background:linear-gradient(135deg,#29222a,#30242d 58%,#282532);border-color:rgba(225,155,177,.2)}
+html[data-theme="dark"] .profile-pet-art,body.dark .profile-pet-art{background:radial-gradient(circle at 50% 38%,#51414c 0%,#40313e 68%,#352a39 100%)}
+html[data-theme="dark"] .profile-pet-level,body.dark .profile-pet-level{background:rgba(232,143,169,.14);color:#f0b2c5}
+@media(max-width:600px){.profile-pet-card{padding:18px}.profile-pet-body{align-items:flex-start;gap:14px}.profile-pet-art{width:94px;height:94px;border-radius:20px;font-size:52px}.profile-pet-name-editor{flex-direction:column}.profile-pet-name-editor button{width:100%}.profile-pet-footer{align-items:flex-start;flex-direction:column}.profile-pet-top h3{font-size:19px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1361,6 +1381,23 @@ html[data-theme="dark"] .install-visual{background:linear-gradient(145deg,#39303
   <button class="secondary" id="deleteAccountBtn" type="button" hidden style="color:#b4233a;border-color:#b4233a;">Удалить аккаунт</button>
 </div>
       <p class="profile-privacy-note">Мы не запрашиваем номер телефона, электронную почту или дату рождения. Указывай только ту информацию о себе, которой готов поделиться.</p>
+    </div>
+    <div class="profile-pet-card" id="profilePetCard">
+      <div class="profile-pet-top">
+        <div><span class="eyebrow">ТВОЙ СПУТНИК</span><h3>Питомец профиля</h3><p>Решай задания, чтобы он рос и открывал новые формы.</p></div>
+        <span class="profile-pet-level" id="petLevelBadge">Уровень 1</span>
+      </div>
+      <div class="profile-pet-body">
+        <div class="profile-pet-art" id="petArt" aria-label="Твой питомец">🥚</div>
+        <div class="profile-pet-info">
+          <div class="profile-pet-name-row"><strong id="petDisplayName">Пушок</strong><span id="petStageLabel">Таинственное яйцо</span></div>
+          <p id="petMoodText">Кажется, внутри кто-то шевелится… Реши первое задание, чтобы помочь ему появиться!</p>
+          <div class="profile-pet-xp-row"><span id="petXpLabel">0 / 50 опыта</span><span id="petXpPercent">0%</span></div>
+          <div class="profile-pet-xp-track"><i id="petXpBar"></i></div>
+          <div class="profile-pet-name-editor"><input id="petNameInput" type="text" maxlength="18" placeholder="Имя питомца" aria-label="Имя питомца"><button class="secondary" id="petSaveNameBtn" type="button">Сохранить имя</button></div>
+        </div>
+      </div>
+      <div class="profile-pet-footer"><span>✨ +5 опыта за новое правильно решённое задание</span><button class="pet-pat-btn" id="petPatBtn" type="button">Погладить ♡</button></div>
     </div>
     <div class="profile-progress-card"><h3>Твой прогресс</h3><div class="profile-progress-grid"><div><strong id="profileDone">0</strong><span>решено заданий</span></div><div><strong id="profileAccuracy">—</strong><span>точность</span></div><div><strong id="profileStreak">0</strong><span>серия ответов</span></div></div><p>После подключения сервера твой прогресс будет храниться в аккаунте и синхронизироваться между устройствами.</p></div>
   </div>
@@ -1753,8 +1790,8 @@ const TASKS = [{"id":1,"question":"1) скоропорт..щиеся, донос
 const STORAGE_KEY = "ege12_trainer_state_v3";
 const $ = id => document.getElementById(id);
 const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
-const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],mistakeCounts:{},favorites:[],coins:0,ownedFrames:[],activeFrame:"",ownedProfileHeaders:[],activeProfileHeader:"",correct:0,completed:[],round:1,streak:0,bestStreak:0});
-function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;if(!s.mistakeCounts||typeof s.mistakeCounts!=="object")s.mistakeCounts={};if(!Array.isArray(s.favorites))s.favorites=[];if(!Number.isFinite(s.coins))s.coins=0;if(!Array.isArray(s.ownedFrames))s.ownedFrames=[];if(typeof s.activeFrame!=="string")s.activeFrame="";if(!Array.isArray(s.ownedProfileHeaders))s.ownedProfileHeaders=[];if(typeof s.activeProfileHeader!=="string")s.activeProfileHeader="";return s;}}catch(e){}return freshState();}
+const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],mistakeCounts:{},favorites:[],coins:0,ownedFrames:[],activeFrame:"",ownedProfileHeaders:[],activeProfileHeader:"",correct:0,completed:[],round:1,streak:0,bestStreak:0,pet:{name:"Пушок",xp:0}});
+function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;if(!s.mistakeCounts||typeof s.mistakeCounts!=="object")s.mistakeCounts={};if(!Array.isArray(s.favorites))s.favorites=[];if(!Number.isFinite(s.coins))s.coins=0;if(!Array.isArray(s.ownedFrames))s.ownedFrames=[];if(typeof s.activeFrame!=="string")s.activeFrame="";if(!Array.isArray(s.ownedProfileHeaders))s.ownedProfileHeaders=[];if(typeof s.activeProfileHeader!=="string")s.activeProfileHeader="";if(!s.pet||typeof s.pet!=="object")s.pet={name:"Пушок",xp:0};if(typeof s.pet.name!=="string")s.pet.name="Пушок";s.pet.name=s.pet.name.trim().slice(0,18)||"Пушок";s.pet.xp=Math.max(0,Math.floor(Number(s.pet.xp)||0));return s;}}catch(e){}return freshState();}
 let state=loadState(), activePane="bank";
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));updateStats();if(window.__syncCloudState)window.__syncCloudState(state);if(window.__updateProfileProgress)window.__updateProfileProgress(state);}
 // Мост между локальным тренажёром и облачным аккаунтом Firebase.
@@ -1818,6 +1855,22 @@ function markPracticeDay(){
  }else state.practiceDayStreak=1;
  state.lastPracticeDate=today;
 }
+function petDetails(petState=state.pet||{name:"Пушок",xp:0}){
+ const xp=Math.max(0,Math.floor(Number(petState.xp)||0)),level=Math.floor(xp/50)+1,inside=xp%50;
+ const stages=[{min:10,icon:"🐉",name:"Дракончик",mood:"Ты вырастил настоящего дракончика! Он гордится твоими успехами."},{min:7,icon:"🦉",name:"Мудрая совушка",mood:"Твой питомец стал мудрым и внимательным."},{min:4,icon:"🐥",name:"Любознательный птенец",mood:"Птенец подрос и с интересом изучает мир."},{min:2,icon:"🐣",name:"Маленький птенец",mood:"Птенец вылупился! Продолжай заниматься, и он подрастёт."},{min:1,icon:"🥚",name:"Таинственное яйцо",mood:"Кажется, внутри кто-то шевелится… Реши первое задание, чтобы помочь ему появиться!"}];
+ const stage=stages.find(item=>level>=item.min)||stages[stages.length-1];
+ return {xp,level,inside,icon:stage.icon,stage:stage.name,mood:stage.mood,percent:Math.round(inside/50*100)};
+}
+function renderPetCard(){
+ const card=$("profilePetCard");if(!card)return;
+ const signed=!!window.__isTrainerAuthenticated?.();card.hidden=!signed;if(!signed)return;
+ if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0};
+ const details=petDetails(state.pet),name=String(state.pet.name||"Пушок").slice(0,18);
+ $("petArt").textContent=details.icon;$("petArt").setAttribute("aria-label",name+", "+details.stage);
+ $("petLevelBadge").textContent="Уровень "+details.level;$("petDisplayName").textContent=name;$("petStageLabel").textContent=details.stage;
+ $("petMoodText").textContent=details.mood;$("petXpLabel").textContent=details.inside+" / 50 опыта";$("petXpPercent").textContent=details.percent+"%";$("petXpBar").style.width=details.percent+"%";
+ const input=$("petNameInput");if(input&&document.activeElement!==input)input.value=name;
+}
 function updateStats(){
  const done=state.completed.length, remaining=143-done, percent=Math.round(done/143*100);
  $("errorCount").textContent=state.mistakes.length;$("bankCount").textContent=143;
@@ -1835,7 +1888,7 @@ function updateStats(){
  if($("practiceDaysHint"))$("practiceDaysHint").textContent=state.lastPracticeDate===localPracticeDate()?"Отлично! Сегодня ты уже занимался.":"Реши хотя бы одно задание сегодня";
  if($("favoriteCount"))$("favoriteCount").textContent=(state.favorites||[]).length;
  if($("analyticsMistakesTotal"))$("analyticsMistakesTotal").textContent=Object.values(state.mistakeCounts||{}).reduce((a,b)=>a+(Number(b)||0),0);
- renderMistakeAnalytics();renderShop();applyProfileFrame();
+ renderMistakeAnalytics();renderShop();applyProfileFrame();renderPetCard();
  renderAchievements();
 }
 function renderTask(){
@@ -1863,7 +1916,7 @@ function checkAnswer(){
  const wasCompleted=state.completed.includes(t.id);
  state.answers[t.id]={value,status:ok?"correct":"wrong"};
  if(ok){
-   if(!wasCompleted){state.completed.push(t.id);state.coins=(Number(state.coins)||0)+10;state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);markPracticeDay();}
+   if(!wasCompleted){state.completed.push(t.id);state.coins=(Number(state.coins)||0)+10;state.streak=(state.streak||0)+1;state.bestStreak=Math.max(state.bestStreak||0,state.streak);if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0};state.pet.xp=Math.max(0,Number(state.pet.xp)||0)+5;markPracticeDay();}
    state.mistakes=state.mistakes.filter(x=>x!==t.id);state.correct=state.completed.length;
  } else {
    state.streak=0;
@@ -2304,6 +2357,17 @@ case "developerGear":
     case "favoritesTab": try { showPane("favorites"); } catch(err) { console.error(err); } break;
     case "taskFavoriteBtn": try { toggleFavorite(); } catch(err) { console.error(err); } break;
     case "errorsTab": try { showPane("errors"); } catch(err) { console.error(err); } break;
+    case "petSaveNameBtn": try {
+      const input=$("petNameInput"),name=String(input?.value||"").trim().replace(/[<>]/g,"").slice(0,18);
+      if(!name){toast("Введи имя питомца.");break;}
+      state.pet={...(state.pet||{}),name,xp:Math.max(0,Number(state.pet?.xp)||0)};
+      save();renderPetCard();toast("Имя питомца сохранено!");
+    } catch(err) { console.error(err); } break;
+    case "petPatBtn": try {
+      const lines=["Питомец довольно мурлычет от внимания ♡","Питомец рад тебя видеть!","Кажется, настроение стало ещё лучше ✨","Питомец благодарит за заботу!"];
+      $("petMoodText").textContent=lines[Math.floor(Math.random()*lines.length)];
+      $("petArt").animate([{transform:"scale(1)"},{transform:"scale(1.12) rotate(5deg)"},{transform:"scale(1)"}],{duration:420,easing:"ease-out"});
+    } catch(err) { console.error(err); } break;
     case "checkBtn": try { checkAnswer(); } catch(err) { console.error(err); } break;
     case "prevBtn": try { prev(); } catch(err) { console.error(err); } break;
     case "nextBtn": try { next(); } catch(err) { console.error(err); } break;
@@ -3061,6 +3125,9 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
     avatarUrl: String(data.avatarUrl || ""),
     activeFrame: String(state?.activeFrame || ""),
     activeProfileHeader: String(state?.activeProfileHeader || ""),
+    petName: String(state?.pet?.name || "Пушок").slice(0,18),
+    petLevel: Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1,
+    petIcon: (Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=10?"🐉":(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=7?"🦉":(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=4?"🐥":(Math.floor(Math.max(0,Number(state?.pet?.xp)||0)/50)+1)>=2?"🐣":"🥚",
     streak,
     isPublic: data.isPublic === true,
     updatedAt: serverTimestamp()
@@ -3217,6 +3284,7 @@ window.__renderLeaderboard = renderLeaderboard;
       </div>
       <div class="public-profile-about">${escapeHTML(data.about || "Ученик пока ничего не рассказал о себе.")}</div>
       <div class="public-profile-streak">🔥 Серия правильных ответов: ${Number(data.streak) || 0}</div>
+      ${data.petName ? `<div class="public-profile-pet"><div class="public-profile-pet-icon">${escapeHTML(data.petIcon || "🥚")}</div><div><strong>${escapeHTML(data.petName)}</strong><span>${Number(data.petLevel)||1} уровень питомца</span></div></div>` : ""}
     `;
   } catch (error) {
     console.error("Ошибка загрузки публичного профиля:", error);
