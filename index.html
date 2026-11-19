@@ -1880,13 +1880,15 @@ const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j
 const freshState = () => ({order:shuffle(TASKS.map(t=>t.id)),index:0,answers:{},mistakes:[],mistakeCounts:{},favorites:[],coins:0,ownedFrames:[],activeFrame:"",ownedProfileHeaders:[],activeProfileHeader:"",correct:0,completed:[],round:1,streak:0,bestStreak:0,pet:{name:"Пушок",xp:0,type:"arcticFox"}});
 function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s&&Array.isArray(s.order)&&s.order.length===143&&s.answers){if(!Number.isFinite(s.streak))s.streak=0;if(!Number.isFinite(s.bestStreak))s.bestStreak=s.streak;if(!s.mistakeCounts||typeof s.mistakeCounts!=="object")s.mistakeCounts={};if(!Array.isArray(s.favorites))s.favorites=[];if(!Number.isFinite(s.coins))s.coins=0;if(!Array.isArray(s.ownedFrames))s.ownedFrames=[];if(typeof s.activeFrame!=="string")s.activeFrame="";if(!Array.isArray(s.ownedProfileHeaders))s.ownedProfileHeaders=[];if(typeof s.activeProfileHeader!=="string")s.activeProfileHeader="";if(!s.pet||typeof s.pet!=="object")s.pet={name:"Пушок",xp:0,type:"arcticFox"};if(typeof s.pet.name!=="string")s.pet.name="Пушок";s.pet.name=s.pet.name.trim().slice(0,18)||"Пушок";s.pet.xp=Math.max(0,Math.floor(Number(s.pet.xp)||0));if(!["arcticFox","reindeer","polarBear","snowyOwl"].includes(s.pet.type))s.pet.type="arcticFox";return s;}}catch(e){}return freshState();}
 let state=loadState(), activePane="bank";
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));updateStats();if(window.__syncCloudState)window.__syncCloudState(state);if(window.__updateProfileProgress)window.__updateProfileProgress(state);}
+function getAccountStorageKey(){return window.__currentFirebaseUid?STORAGE_KEY+"_"+window.__currentFirebaseUid:STORAGE_KEY;}
+function persistLocalState(){localStorage.setItem(getAccountStorageKey(),JSON.stringify(state));}
+function save(){persistLocalState();updateStats();if(window.__syncCloudState)window.__syncCloudState(state);if(window.__updateProfileProgress)window.__updateProfileProgress(state);}
 // Мост между локальным тренажёром и облачным аккаунтом Firebase.
 window.__getLocalState = () => state;
 window.__restoreCloudState = cloudState => {
  if(!cloudState || !Array.isArray(cloudState.order) || cloudState.order.length!==143 || !cloudState.answers) return;
  state={...freshState(),...cloudState};
- localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+ persistLocalState();
  updateStats();
  window.__refreshProfileCustomization?.();
  if(typeof renderTask==='function')renderTask();
@@ -1895,7 +1897,7 @@ window.__restoreCloudState = cloudState => {
 };
 window.__resetLocalState = () => {
  state=freshState();
- localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+ persistLocalState();
  updateStats();
  if(typeof renderTask==='function')renderTask();
  if(typeof renderAchievements==='function')renderAchievements();
@@ -2834,7 +2836,10 @@ async function loadAccount(user, fallbackUsername = "") {
       ...stored.progress,
       coins: Number.isFinite(Number(stored.shopCoins))
         ? Math.max(0, Math.floor(Number(stored.shopCoins)))
-        : Math.max(0, Math.floor(Number(stored.progress.coins) || 0))
+        : Math.max(0, Math.floor(Number(stored.progress.coins) || 0)),
+      activeProfileHeader: typeof stored.progress.activeProfileHeader === "string"
+        ? stored.progress.activeProfileHeader
+        : ""
     };
   }
 
@@ -3389,9 +3394,10 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
 
   // Сохраняем личный прогресс
   try {
+    const safeCoins = Math.max(0, Math.floor(Number(state.coins) || 0));
     await setDoc(userDoc(auth.currentUser.uid), {
-      progress: state,
-      shopCoins: Math.max(0, Math.floor(Number(state.coins) || 0)),
+      progress: { ...state, coins: safeCoins, activeProfileHeader: String(state.activeProfileHeader || "") },
+      shopCoins: safeCoins,
       updatedAt: serverTimestamp()
     }, { merge: true });
   } catch (e) {
@@ -3598,7 +3604,9 @@ async function restoreAccount(user, username = "") {
 
   if (data.progress && window.__restoreCloudState) {
     window.__restoreCloudState(data.progress);
-  } else if (window.__getLocalState) {
+  } else if (window.__resetLocalState) {
+    // Новый аккаунт не должен наследовать прогресс гостя или другого аккаунта на устройстве.
+    window.__resetLocalState();
     await syncCloudState(window.__getLocalState());
   }
 
