@@ -1260,6 +1260,16 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
 #siteQrBtn.site-qr-btn:focus-visible{outline:2px solid #ff8294;outline-offset:3px}
 @media(max-width:650px){#siteQrBtn.site-qr-btn{width:38px!important;min-width:38px!important;height:38px!important;border-radius:12px!important}#siteQrBtn.site-qr-btn svg{width:20px;height:20px}}
 </style>
+
+<style id="installIconButtonStyles">
+#installAppBtn.install-icon-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box;width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;margin:0 0 0 3px!important;border:1px solid rgba(255,105,125,.62)!important;border-radius:13px!important;background:linear-gradient(145deg,#a91e35 0%,#6e0b1c 100%)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 3px 12px rgba(125,12,32,.3)!important;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+#installAppBtn.install-icon-btn svg{display:block;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#installAppBtn.install-icon-btn:hover{transform:translateY(-2px)!important;filter:brightness(1.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 6px 17px rgba(190,28,57,.4)!important}
+#installAppBtn.install-icon-btn:active{transform:translateY(0) scale(.96)!important}
+#installAppBtn.install-icon-btn:focus-visible{outline:2px solid #ff8294;outline-offset:3px}
+#installAppBtn.install-icon-btn[hidden]{display:none!important}
+@media(max-width:650px){#installAppBtn.install-icon-btn{width:38px!important;min-width:38px!important;height:38px!important;border-radius:12px!important}#installAppBtn.install-icon-btn svg{width:20px;height:20px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1278,12 +1288,14 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
     <img id="profileNavAvatar" class="profile-nav-avatar" alt="" hidden>
     <span id="profileNavText">Профиль</span>
   </button>
-  <button id="installAppBtn" class="secondary" type="button" aria-label="Установить приложение" style="padding:10px 13px;white-space:nowrap;">＋ Установить</button>
   <button id="themeToggle" class="secondary" type="button">🌙</button>
 
     <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
     <button id="siteQrBtn" type="button" title="Показать постер с QR-кодом" aria-label="Показать постер с QR-кодом" class="site-qr-btn">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM19 14h2v2h-2zM19 19h2v2h-2zM14 19h2v2h-2zM17 17h2v2h-2z"/></svg>
+    </button>
+    <button id="installAppBtn" class="install-icon-btn" type="button" aria-label="Установить приложение" title="Установить приложение">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 16v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>
     </button>
 </nav>
 </header>
