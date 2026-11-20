@@ -1251,6 +1251,15 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
 @keyframes siteQrIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:650px){.site-qr-btn{width:36px;height:36px;font-size:22px;margin-left:2px}.site-qr-dialog{padding:25px 16px 18px}}
 </style>
+
+<style id="siteQrButtonPolish">
+#siteQrBtn.site-qr-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box;width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;margin:0 0 0 3px!important;border:1px solid rgba(255,105,125,.62)!important;border-radius:13px!important;background:linear-gradient(145deg,#a91e35 0%,#6e0b1c 100%)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 3px 12px rgba(125,12,32,.3)!important;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+#siteQrBtn.site-qr-btn svg{display:block;width:22px;height:22px;fill:currentColor}
+#siteQrBtn.site-qr-btn:hover{transform:translateY(-2px)!important;filter:brightness(1.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 6px 17px rgba(190,28,57,.4)!important}
+#siteQrBtn.site-qr-btn:active{transform:translateY(0) scale(.96)!important}
+#siteQrBtn.site-qr-btn:focus-visible{outline:2px solid #ff8294;outline-offset:3px}
+@media(max-width:650px){#siteQrBtn.site-qr-btn{width:38px!important;min-width:38px!important;height:38px!important;border-radius:12px!important}#siteQrBtn.site-qr-btn svg{width:20px;height:20px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1273,8 +1282,9 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
   <button id="themeToggle" class="secondary" type="button">🌙</button>
 
     <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
-    <button id="siteQrBtn" type="button" title="QR-код сайта" aria-label="Показать QR-код сайта" class="site-qr-btn">▦</button>
-    <button id="siteQrBtn" type="button" aria-label="Открыть QR-код сайта" title="QR-код сайта">▦</button>
+    <button id="siteQrBtn" type="button" title="Показать постер с QR-кодом" aria-label="Показать постер с QR-кодом" class="site-qr-btn">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM19 14h2v2h-2zM19 19h2v2h-2zM14 19h2v2h-2zM17 17h2v2h-2z"/></svg>
+    </button>
 </nav>
 </header>
 <div id="siteQrModal" class="site-qr-modal" aria-hidden="true">
