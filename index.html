@@ -1270,6 +1270,10 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
 #installAppBtn.install-icon-btn[hidden]{display:none!important}
 @media(max-width:650px){#installAppBtn.install-icon-btn{width:38px!important;min-width:38px!important;height:38px!important;border-radius:12px!important}#installAppBtn.install-icon-btn svg{width:20px;height:20px}}
 </style>
+
+<style id="iphoneInstallCtaVisibility">
+.install-guide-bottom[hidden]{display:none!important}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -6869,6 +6873,8 @@ document.querySelectorAll("[data-install-platform]").forEach(button=>{
       panel.hidden=!active;
       panel.classList.toggle("active",active);
     });
+    const installBottom=document.querySelector(".install-guide-bottom");
+    if(installBottom) installBottom.hidden=(platform==="iphone");
   });
 });
 installGuideAction.addEventListener("click",async()=>{
