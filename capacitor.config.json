@@ -1,0 +1,17 @@
+{
+  "appId": "com.pisarev.egetrainer",
+  "appName": "ЕГЭ Тренажёр",
+  "webDir": "www",
+  "backgroundColor": "#171515",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#171515",
+      "showSpinner": false
+    }
+  }
+}
