@@ -6858,7 +6858,19 @@ function openInstallGuide(){
   showView("installGuide");
   window.scrollTo({top:0,behavior:"smooth"});
 }
-installAppBtn.addEventListener("click",openInstallGuide);
+function downloadAndroidApk(){
+  window.location.href = "https://github.com/Pisarev-Vlad-11B/ege-trainer/releases/latest/download/ege-trainer-android.apk";
+}
+function isAndroidDevice(){
+  return /Android/i.test(navigator.userAgent || "");
+}
+installAppBtn.addEventListener("click",()=>{
+  if(isAndroidDevice()){
+    downloadAndroidApk();
+    return;
+  }
+  openInstallGuide();
+});
 document.getElementById("installGuideBack").addEventListener("click",()=>showView("home"));
 document.querySelectorAll("[data-install-platform]").forEach(button=>{
   button.addEventListener("click",()=>{
@@ -6878,6 +6890,10 @@ document.querySelectorAll("[data-install-platform]").forEach(button=>{
   });
 });
 installGuideAction.addEventListener("click",async()=>{
+  if(isAndroidDevice()){
+    downloadAndroidApk();
+    return;
+  }
   if(deferredInstallPrompt){
     deferredInstallPrompt.prompt();
     const choice=await deferredInstallPrompt.userChoice;
