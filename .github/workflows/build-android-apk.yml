@@ -17,7 +17,7 @@ on:
       - ".github/workflows/build-android-apk.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -64,6 +64,7 @@ jobs:
         run: |
           mkdir -p dist
           cp android/app/build/outputs/apk/debug/app-debug.apk dist/ege-trainer-android-debug.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/ege-trainer-android.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -72,3 +73,13 @@ jobs:
           path: dist/ege-trainer-android-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish APK download
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-latest
+          name: ЕГЭ Тренажёр — Android
+          body: Автоматическая актуальная Android-сборка ЕГЭ Тренажёра.
+          files: dist/ege-trainer-android.apk
+          make_latest: true
+          fail_on_unmatched_files: true
