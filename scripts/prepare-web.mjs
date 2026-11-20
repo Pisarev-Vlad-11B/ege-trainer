@@ -3,7 +3,12 @@ import { resolve } from "node:path";
 
 const root = process.cwd();
 const webDir = resolve(root, "www");
+const assetsDir = resolve(root, "assets");
 await mkdir(webDir, { recursive: true });
+await mkdir(assetsDir, { recursive: true });
+
+// Use the exact iPhone home-screen artwork as the Android launcher icon source.
+await copyFile(resolve(root, "apple-touch-icon.png"), resolve(assetsDir, "icon.png"));
 
 let html = await readFile(resolve(root, "index.html"), "utf8");
 
