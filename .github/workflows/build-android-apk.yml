@@ -2,22 +2,31 @@ name: Build Android APK
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Pages Build and Deployment"]
-    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "manifest.json"
+      - "favicon.svg"
+      - "apple-touch-icon.png"
+      - "4568EABA-61D0-4512-982E-D2756D728869.png"
+      - "package.json"
+      - "capacitor.config.json"
+      - "scripts/**"
+      - "assets/**"
+      - ".github/workflows/build-android-apk.yml"
 
 permissions:
   contents: read
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+          ref: ${{ github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
