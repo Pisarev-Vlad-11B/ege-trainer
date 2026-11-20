@@ -2206,7 +2206,7 @@ async function loadDevCheatAccounts(){
     const users=await firebase.listUsers();
     if(!Array.isArray(users))throw new Error("Firebase вернул список аккаунтов в неизвестном формате.");
     users.sort((a,b)=>String(a.username||a.firstName||a.uid).localeCompare(String(b.username||b.firstName||b.uid),"ru"));
-    const preferred=devCheatSelectedUid||firebase.currentUid()||"";
+    const preferred=devCheatSelectedUid||localStorage.getItem("egeDevCheatSelectedUid")||firebase.currentUid()||"";
     select.innerHTML='<option value="">Выбери аккаунт…</option>'+users.map(user=>{
       const fullName=[user.firstName,user.lastName].filter(Boolean).join(" ");
       const label=(fullName?fullName+" · ":"")+"@"+String(user.username||"без логина");
@@ -2214,6 +2214,7 @@ async function loadDevCheatAccounts(){
     }).join("");
     if(users.some(user=>user.uid===preferred))select.value=preferred;
     devCheatSelectedUid=select.value;
+    if(devCheatSelectedUid)localStorage.setItem("egeDevCheatSelectedUid",devCheatSelectedUid);
     if(status)status.textContent=users.length?users.length+" аккаунтов доступно":"В Firestore пока нет документов в users.";
     await refreshDevCheatTarget();
   }catch(error){console.error("Не удалось загрузить аккаунты для накрутки:",error);if(status)status.textContent="Не удалось загрузить аккаунты: "+(error?.code||"без кода")+" — "+(error?.message||"не удалось прочитать users");select.innerHTML='<option value="">Ошибка загрузки — смотри сообщение ниже</option>';}
@@ -2264,6 +2265,11 @@ async function applyDeveloperCheatToTarget(kind){
       progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
     }
     await window.__devCheatFirebase.saveProgress(uid,progress,account);
+    // Если накрутка применена к текущему аккаунту разработчика, обновляем
+    // и состояние в памяти: последующее обычное сохранение не затрёт изменения.
+    if(uid===window.__devCheatFirebase.currentUid() && typeof window.__restoreCloudState==="function"){
+      window.__restoreCloudState(progress);
+    }
     if(kind==="streak"){
       // Ошибка записи в рейтинг не должна скрываться: иначе интерфейс сообщает об успехе,
       // хотя сортировка по огонькам остаётся прежней.
@@ -2275,7 +2281,7 @@ async function applyDeveloperCheatToTarget(kind){
   }catch(error){console.error("Ошибка накрутки выбранного аккаунта:",error);alert(error.message||"Не удалось сохранить изменения. Проверь правила Firestore.");}
   finally{if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}}
 }
-document.getElementById("devCheatAccountSelect")?.addEventListener("change",refreshDevCheatTarget);
+document.getElementById("devCheatAccountSelect")?.addEventListener("change",()=>{const select=document.getElementById("devCheatAccountSelect");devCheatSelectedUid=select?.value||"";if(devCheatSelectedUid)localStorage.setItem("egeDevCheatSelectedUid",devCheatSelectedUid);refreshDevCheatTarget();});
 function applyDeveloperCheat(kind){if(document.getElementById("devCheatAccountSelect")){applyDeveloperCheatToTarget(kind);return;}if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="petXp"){if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"arcticFox"};const currentXp=Math.max(0,Math.floor(Number(state.pet.xp)||0));if(currentXp+value>1000000){alert("Общий опыт питомца не может превышать 1 000 000 XP.");return;}state.pet.xp=currentXp+value;}else if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!",petXp:"Добавлено "+value+" опыта питомцу! Теперь у него "+(Number(state.pet?.xp)||0)+" XP."})[kind]);}
 function renderMistakeAnalytics(){const host=$("mistakeAnalyticsList");if(!host)return;const entries=Object.entries(state.mistakeCounts||{}).map(([id,count])=>({id:Number(id),count:Number(count)||0})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,6);if(!entries.length){host.innerHTML='<div class="analytics-empty">Пока нет ошибок. Здесь появится статистика после первых попыток.</div>';return;}const max=entries[0].count;host.innerHTML=entries.map(x=>`<div class="analytics-row"><div class="analytics-row-top"><strong>Задание №${x.id}</strong><span>${x.count} ${x.count===1?"ошибка":x.count<5?"ошибки":"ошибок"}</span></div><div class="analytics-track"><i style="width:${Math.max(8,x.count/max*100)}%"></i></div><button type="button" class="analytics-repeat" data-repeat-task="${x.id}">Повторить задание →</button></div>`).join("");}
 const SHOP_FRAMES=[
