@@ -2183,6 +2183,12 @@ function renderMistakes(){
  state.mistakes.forEach(id=>{const t=TASKS.find(x=>x.id===id);const el=document.createElement("div");el.className="mistake-item";const left=document.createElement("div");left.innerHTML=`<strong>Задание из банка · №${id}</strong><p>${t.question.split("\\n")[0].replace(/</g,"&lt;")}</p>`;const btn=document.createElement("button");btn.className="secondary";btn.textContent="Повторить";btn.onclick=()=>{state.index=state.order.indexOf(id);showPane("bank");renderTask();};el.append(left,btn);host.append(el);});
 }
 function refreshDeveloperCheatPanel(){if(window.__isDeveloper!==true)return;const streak=$("devCheatStreakCurrent"),coins=$("devCheatCoinsCurrent"),si=$("devCheatStreakInput"),ci=$("devCheatCoinsInput"),correct=$("devCheatCorrectCurrent"),wrong=$("devCheatWrongCurrent"),cInput=$("devCheatCorrectInput"),wInput=$("devCheatWrongInput"),petXp=$("devCheatPetXpCurrent"),petInput=$("devCheatPetXpInput");const done=Array.isArray(state.completed)?state.completed.length:0,errors=Array.isArray(state.mistakes)?state.mistakes.length:0;if(streak)streak.textContent=Number(state.streak)||0;if(coins)coins.textContent=Number(state.coins)||0;if(si)si.value=Number(state.streak)||0;if(ci)ci.value=Number(state.coins)||0;if(correct)correct.textContent=done;if(wrong)wrong.textContent=errors;if(cInput)cInput.value=done;if(wInput){wInput.value=errors;wInput.max=Math.max(0,143-done);}if(petXp)petXp.textContent=Number(state.pet?.xp)||0;if(petInput&&document.activeElement!==petInput)petInput.value=0;}
+// Локальный экранировщик: escapeDevHTML объявлен внутри другого скрипта.
+function escapeDevCheatOption(value){
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
 let devCheatSelectedUid="";
 let devCheatAccountsLoading=false;
 async function loadDevCheatAccounts(){
@@ -2204,7 +2210,7 @@ async function loadDevCheatAccounts(){
     select.innerHTML='<option value="">Выбери аккаунт…</option>'+users.map(user=>{
       const fullName=[user.firstName,user.lastName].filter(Boolean).join(" ");
       const label=(fullName?fullName+" · ":"")+"@"+String(user.username||"без логина");
-      return '<option value="'+escapeDevHTML(user.uid)+'">'+escapeDevHTML(label)+'</option>';
+      return '<option value="'+escapeDevCheatOption(user.uid)+'">'+escapeDevCheatOption(label)+'</option>';
     }).join("");
     if(users.some(user=>user.uid===preferred))select.value=preferred;
     devCheatSelectedUid=select.value;
