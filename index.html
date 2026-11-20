@@ -1559,7 +1559,7 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
     <input type="checkbox" id="profileIsPublic" disabled>
     Показывать мой профиль другим ученикам в рейтинге
   </label>
-  <p>Если включить, другие ученики смогут увидеть твоё имя, аватар, описание и серию огоньков.</p>
+  <p>Если включить, другие ученики смогут открыть мини-профиль и увидеть твоё имя, аватар, рамку, фон, описание, серию огоньков и питомца с уровнем.</p>
 </div>
       <div class="profile-actions">
   <button class="primary" id="saveProfileBtn" disabled>Сохранить профиль</button>
@@ -3814,19 +3814,10 @@ $id("saveProfileBtn").addEventListener("click", async () => {
   updatedAt: serverTimestamp()
 }, { merge: true });
 
-await setDoc(doc(db, "publicProfiles", auth.currentUser.uid), {
-  username: profile.username || "Ученик",
-  firstName,
-  lastName,
-  about,
-  avatarUrl: profile.avatarUrl || "",
-  activeFrame: String(window.__getLocalState?.()?.activeFrame || ""),
-  activeProfileHeader: String(window.__getLocalState?.()?.activeProfileHeader || ""),
-  streak: Math.max(0, Math.floor(Number(window.__getLocalState?.()?.streak) || 0)),
-  isPublic,
-  updatedAt: serverTimestamp()
-});
-    paintProfile({ ...profile, firstName, lastName, about });
+const updatedProfile = { ...profile, firstName, lastName, about, isPublic };
+    paintProfile(updatedProfile);
+    // Публикуем единый актуальный снимок: оформление, огоньки и питомец.
+    await syncPublicProfile(updatedProfile, window.__getLocalState?.());
     await logActivity("Изменение собственного профиля", `Логин @${profile.username || "пользователь"}`);
     toast("Профиль сохранён!");
   } catch (e) { toast(errorText(e)); }
@@ -3855,7 +3846,11 @@ $id("avatarFile").addEventListener("change", async e => {
       reader.readAsDataURL(file);
     });
     await setDoc(userDoc(auth.currentUser.uid), { avatarUrl: dataUrl, updatedAt: serverTimestamp() }, { merge: true });
-    paintProfile({ ...profile, avatarUrl: dataUrl });
+    const updatedProfile = { ...profile, avatarUrl: dataUrl };
+    paintProfile(updatedProfile);
+    if (updatedProfile.isPublic === true) {
+      await syncPublicProfile(updatedProfile, window.__getLocalState?.());
+    }
     toast("Аватар обновлён!");
   } catch (err) { toast(errorText(err)); }
   finally { e.target.value = ""; }
@@ -3871,7 +3866,11 @@ $id("avatarFile").addEventListener("change", async e => {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    paintProfile({ ...profile, avatarUrl: "" });
+    const updatedProfile = { ...profile, avatarUrl: "" };
+    paintProfile(updatedProfile);
+    if (updatedProfile.isPublic === true) {
+      await syncPublicProfile(updatedProfile, window.__getLocalState?.());
+    }
     toast("Аватар удалён!");
   } catch (err) {
     toast(errorText(err));
