@@ -3500,17 +3500,32 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
     updatedAt: serverTimestamp()
   });
 }
-  async function syncCloudState(state) {
+  // Все записи прогресса одного аккаунта выполняются последовательно.
+  // Это не позволяет запоздавшему автосохранению затереть только что применённую накрутку.
+  let userProgressWriteQueue = Promise.resolve();
+  function queueUserProgressWrite(write) {
+    const next = userProgressWriteQueue.then(write, write);
+    userProgressWriteQueue = next.catch(() => {});
+    return next;
+  }
+
+async function syncCloudState(state) {
   if (!auth?.currentUser || !db || !state) return;
 
-  // Сохраняем личный прогресс
+  // Сохраняем личный прогресс в общей очереди с накруткой.
   try {
+    const uid = auth.currentUser.uid;
     const safeCoins = Math.max(0, Math.floor(Number(state.coins) || 0));
-    await setDoc(userDoc(auth.currentUser.uid), {
-      progress: { ...state, coins: safeCoins, activeProfileHeader: String(state.activeProfileHeader || "") },
+    const progressSnapshot = {
+      ...state,
+      coins: safeCoins,
+      activeProfileHeader: String(state.activeProfileHeader || "")
+    };
+    await queueUserProgressWrite(() => setDoc(userDoc(uid), {
+      progress: progressSnapshot,
       shopCoins: safeCoins,
       updatedAt: serverTimestamp()
-    }, { merge: true });
+    }, { merge: true }));
   } catch (e) {
     console.warn("Не удалось сохранить прогресс:", e);
   }
@@ -3962,11 +3977,24 @@ if (FIREBASE_CONFIG_READY) {
       getUser: async uid => { const snap=await getDoc(doc(db,"users",uid)); return snap.exists()?snap.data():null; },
       saveProgress: async (uid,progress,account={}) => {
         const safeCoins=Math.max(0,Math.floor(Number(progress?.coins)||0));
-        await setDoc(doc(db,"users",uid),{
-          progress,
-          shopCoins:safeCoins,
-          updatedAt:serverTimestamp()
-        },{merge:true});
+        const savedProgress={...progress,coins:safeCoins};
+        await queueUserProgressWrite(async () => {
+          await setDoc(doc(db,"users",uid),{
+            progress:savedProgress,
+            shopCoins:safeCoins,
+            updatedAt:serverTimestamp()
+          },{merge:true});
+          // Проверяем, что Firestore действительно вернул записанный прогресс.
+          const check=await getDoc(doc(db,"users",uid));
+          const stored=check.exists()?check.data()?.progress:null;
+          if(!stored || Number(stored.streak||0)!==Number(savedProgress.streak||0)
+            || Number(stored.coins||0)!==safeCoins
+            || Number(stored.pet?.xp||0)!==Number(savedProgress.pet?.xp||0)
+            || (Array.isArray(savedProgress.completed)&&(!Array.isArray(stored.completed)||stored.completed.length!==savedProgress.completed.length))
+            || (Array.isArray(savedProgress.mistakes)&&(!Array.isArray(stored.mistakes)||stored.mistakes.length!==savedProgress.mistakes.length))) {
+            throw new Error("Firestore не подтвердил сохранение прогресса. Проверь правила доступа к users/{UID}.");
+          }
+        });
       },
       updateStreak: async (uid,value,account={}) => {
         const username=String(account.username||account.login||"ученик").slice(0,40);
