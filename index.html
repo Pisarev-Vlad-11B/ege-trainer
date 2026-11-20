@@ -2263,11 +2263,15 @@ async function applyDeveloperCheatToTarget(kind){
       const done=new Set(completed.map(Number)),ids=progress.order.map(Number).filter(id=>!done.has(id)).slice(0,value);
       progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
     }
-    await window.__devCheatFirebase.saveProgress(uid,progress);
+    await window.__devCheatFirebase.saveProgress(uid,progress,account);
     if(kind==="streak"){
-      try{await window.__devCheatFirebase.updateStreak(uid,value);}catch(e){console.warn("Не удалось обновить рейтинг выбранного пользователя:",e);}
+      // Ошибка записи в рейтинг не должна скрываться: иначе интерфейс сообщает об успехе,
+      // хотя сортировка по огонькам остаётся прежней.
+      await window.__devCheatFirebase.updateStreak(uid,value,account);
     }
-    await refreshDevCheatTarget();if(typeof toast==="function")toast("Данные выбранного аккаунта обновлены.");
+    await refreshDevCheatTarget();
+    if(typeof window.__renderLeaderboard==="function")await window.__renderLeaderboard();
+    if(typeof toast==="function")toast(kind==="streak"?"Огоньки сохранены, рейтинг обновлён.":"Данные выбранного аккаунта сохранены.");
   }catch(error){console.error("Ошибка накрутки выбранного аккаунта:",error);alert(error.message||"Не удалось сохранить изменения. Проверь правила Firestore.");}
   finally{if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}}
 }
@@ -3950,11 +3954,23 @@ if (FIREBASE_CONFIG_READY) {
     window.__devCheatFirebase = {
       listUsers: async () => { const snap=await getDocs(collection(db,"users")); return snap.docs.map(item=>({uid:item.id,...item.data()})); },
       getUser: async uid => { const snap=await getDoc(doc(db,"users",uid)); return snap.exists()?snap.data():null; },
-      saveProgress: async (uid,progress) => setDoc(doc(db,"users",uid),{progress,updatedAt:serverTimestamp()},{merge:true}),
-      updateStreak: async (uid,value) => {
-        await setDoc(doc(db,"leaderboard",uid),{streak:value,updatedAt:serverTimestamp()},{merge:true});
+      saveProgress: async (uid,progress,account={}) => {
+        const safeCoins=Math.max(0,Math.floor(Number(progress?.coins)||0));
+        await setDoc(doc(db,"users",uid),{
+          progress,
+          shopCoins:safeCoins,
+          updatedAt:serverTimestamp()
+        },{merge:true});
+      },
+      updateStreak: async (uid,value,account={}) => {
+        const username=String(account.username||account.login||"ученик").slice(0,40);
+        await setDoc(doc(db,"leaderboard",uid),{
+          username,
+          streak:Math.max(0,Math.floor(Number(value)||0)),
+          updatedAt:serverTimestamp()
+        },{merge:true});
         const pubRef=doc(db,"publicProfiles",uid),pub=await getDoc(pubRef);
-        if(pub.exists()) await setDoc(pubRef,{streak:value,updatedAt:serverTimestamp()},{merge:true});
+        if(pub.exists()) await setDoc(pubRef,{streak:Math.max(0,Math.floor(Number(value)||0)),updatedAt:serverTimestamp()},{merge:true});
       },
       isReady: () => !!auth && !!db,
       isAuthenticated: () => !!auth?.currentUser,
