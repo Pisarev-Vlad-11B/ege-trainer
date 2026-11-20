@@ -1237,6 +1237,20 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
 #siteQrDialog .site-qr-url{display:inline-block;margin-top:8px;color:#ffc4cc;font-size:11px;overflow-wrap:anywhere}
 @media(max-width:650px){#siteQrBtn{min-width:38px;width:38px;height:38px;padding:0!important}#siteQrDialog{padding:22px 16px 18px;border-radius:22px}#siteQrArt{width:min(300px,78vw);padding:10px;border-width:4px}}
 </style>
+
+<style>
+.site-qr-btn{display:inline-grid;place-items:center;width:40px;height:40px;margin-left:4px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--red);font-size:25px;font-weight:800;cursor:pointer;flex:0 0 auto;transition:transform .18s ease,background .18s ease}
+.site-qr-btn:hover{transform:translateY(-2px);background:var(--paper2)}
+.site-qr-modal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(12,5,8,.76);backdrop-filter:blur(5px)}
+.site-qr-modal.is-open{display:flex}
+.site-qr-dialog{position:relative;width:min(92vw,520px);max-height:90vh;overflow:auto;padding:28px 24px 24px;border:1px solid var(--line);border-radius:24px;background:var(--paper);box-shadow:0 24px 80px rgba(0,0,0,.35);text-align:center;animation:siteQrIn .22s ease-out}
+.site-qr-dialog h2{margin:0 35px 7px;color:var(--text);font-size:23px}
+.site-qr-dialog p{margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.5}
+.site-qr-dialog img{display:block;width:min(100%,440px);height:auto;margin:0 auto;border-radius:12px}
+.site-qr-close{position:absolute;top:10px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:var(--paper2);color:var(--text);font-size:27px;line-height:1;cursor:pointer}
+@keyframes siteQrIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:650px){.site-qr-btn{width:36px;height:36px;font-size:22px;margin-left:2px}.site-qr-dialog{padding:25px 16px 18px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1259,9 +1273,18 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
   <button id="themeToggle" class="secondary" type="button">🌙</button>
 
     <button id="developerGear" type="button" hidden title="Панель разработчика" aria-label="Панель разработчика" style="border:0;background:transparent;color:var(--muted);font-size:21px;padding:9px;border-radius:12px;">⚙️</button>
+    <button id="siteQrBtn" type="button" title="QR-код сайта" aria-label="Показать QR-код сайта" class="site-qr-btn">▦</button>
     <button id="siteQrBtn" type="button" aria-label="Открыть QR-код сайта" title="QR-код сайта">▦</button>
 </nav>
 </header>
+<div id="siteQrModal" class="site-qr-modal" aria-hidden="true">
+  <div class="site-qr-dialog" role="dialog" aria-modal="true" aria-labelledby="siteQrTitle">
+    <button id="siteQrClose" class="site-qr-close" type="button" aria-label="Закрыть">×</button>
+    <h2 id="siteQrTitle">QR-код сайта</h2>
+    <p>Отсканируй код, чтобы перейти на ЕГЭ Тренажёр</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=700x700&margin=16&data=https%3A%2F%2Fpisarev-vlad-11b.github.io%2Fege-trainer%2F" alt="QR-код для перехода на сайт ЕГЭ Тренажёр">
+  </div>
+</div>
   <button id="supportFloatBtn" class="support-float-btn" type="button" aria-label="Открыть поддержку" title="Поддержка"><span aria-hidden="true">✉</span><b>Поддержка</b></button>
 
 
@@ -6622,6 +6645,20 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 (()=>{const modal=document.getElementById("siteQrModal"),open=document.getElementById("siteQrBtn"),close=document.getElementById("siteQrClose");if(!modal||!open||!close)return;const show=()=>{modal.classList.add("is-open");modal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";close.focus()};const hide=()=>{modal.classList.remove("is-open");modal.setAttribute("aria-hidden","true");document.body.style.overflow="";open.focus()};open.addEventListener("click",show);close.addEventListener("click",hide);modal.addEventListener("click",e=>{if(e.target===modal)hide()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open"))hide()})})();
 </script>
 
+
+<script>
+(function(){
+ const modal=document.getElementById("siteQrModal");
+ const openBtn=document.getElementById("siteQrBtn");
+ const closeBtn=document.getElementById("siteQrClose");
+ if(!modal||!openBtn||!closeBtn)return;
+ const close=()=>{modal.classList.remove("is-open");modal.setAttribute("aria-hidden","true");};
+ openBtn.addEventListener("click",()=>{modal.classList.add("is-open");modal.setAttribute("aria-hidden","false");closeBtn.focus();});
+ closeBtn.addEventListener("click",close);
+ modal.addEventListener("click",e=>{if(e.target===modal)close();});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open"))close();});
+})();
+</script>
 </body>
   <script>
 // Локальные настройки панели разработчика
