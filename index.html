@@ -2247,7 +2247,15 @@ async function applyDeveloperCheatToTarget(kind){
   if(button){button.disabled=true;button.textContent="Сохраняем…";}
   try{
     const account=await window.__devCheatFirebase.getUser(uid);if(!account)throw new Error("Аккаунт не найден");
-     const progress={...(account.progress||{})};
+    const isCurrentAccount=uid===window.__devCheatFirebase.currentUid();
+    // Для собственного аккаунта приоритет у состояния открытого тренажёра:
+    // оно может быть новее последнего завершённого облачного автосохранения.
+    const liveProgress=isCurrentAccount?window.__getLocalState?.():null;
+    const progress={
+      ...(liveProgress && Array.isArray(liveProgress.order) && liveProgress.order.length===143
+        ? liveProgress
+        : (account.progress||{}))
+    };
     progress.order=Array.isArray(progress.order)&&progress.order.length?progress.order:(Array.isArray(state.order)?state.order.slice():TASKS.map(task=>task.id));
     progress.answers={...(progress.answers||{})};
     if(kind==="petXp"){
@@ -2264,11 +2272,16 @@ async function applyDeveloperCheatToTarget(kind){
       const done=new Set(completed.map(Number)),ids=progress.order.map(Number).filter(id=>!done.has(id)).slice(0,value);
       progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
     }
-    await window.__devCheatFirebase.saveProgress(uid,progress,account);
-    // Если накрутка применена к текущему аккаунту разработчика, обновляем
-    // и состояние в памяти: последующее обычное сохранение не затрёт изменения.
-    if(uid===window.__devCheatFirebase.currentUid() && typeof window.__restoreCloudState==="function"){
+    // Сначала обновляем состояние открытого приложения, чтобы любое следующее
+    // автосохранение уже содержало накрученные значения.
+    if(isCurrentAccount && typeof window.__restoreCloudState==="function"){
       window.__restoreCloudState(progress);
+    }
+    await window.__devCheatFirebase.saveProgress(uid,progress,account);
+    // Дублируем запись через обычный механизм синхронизации сайта.
+    // Обе записи используют общую очередь, поэтому последней останется актуальная версия.
+    if(isCurrentAccount && typeof window.__syncCloudState==="function"){
+      await window.__syncCloudState(progress);
     }
     if(kind==="streak"){
       // Ошибка записи в рейтинг не должна скрываться: иначе интерфейс сообщает об успехе,
