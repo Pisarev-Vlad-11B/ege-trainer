@@ -6864,13 +6864,7 @@ function downloadAndroidApk(){
 function isAndroidDevice(){
   return /Android/i.test(navigator.userAgent || "");
 }
-installAppBtn.addEventListener("click",()=>{
-  if(isAndroidDevice()){
-    downloadAndroidApk();
-    return;
-  }
-  openInstallGuide();
-});
+installAppBtn.addEventListener("click",openInstallGuide);
 document.getElementById("installGuideBack").addEventListener("click",()=>showView("home"));
 document.querySelectorAll("[data-install-platform]").forEach(button=>{
   button.addEventListener("click",()=>{
