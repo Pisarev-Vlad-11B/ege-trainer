@@ -2272,27 +2272,27 @@ async function applyDeveloperCheatToTarget(kind){
       const done=new Set(completed.map(Number)),ids=progress.order.map(Number).filter(id=>!done.has(id)).slice(0,value);
       progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
     }
-    // Сначала обновляем состояние открытого приложения, чтобы любое следующее
-    // автосохранение уже содержало накрученные значения.
-    if(isCurrentAccount && typeof window.__restoreCloudState==="function"){
-      window.__restoreCloudState(progress);
-    }
+    // Блокируем автосохранение старого состояния только для текущего аккаунта.
+    // Сначала завершаем прямую запись в Firestore и её проверку чтением.
+    if(isCurrentAccount) window.__devCheatSavingUid=uid;
     await window.__devCheatFirebase.saveProgress(uid,progress,account);
-    // Дублируем запись через обычный механизм синхронизации сайта.
-    // Обе записи используют общую очередь, поэтому последней останется актуальная версия.
-    if(isCurrentAccount && typeof window.__syncCloudState==="function"){
-      await window.__syncCloudState(progress);
-    }
     if(kind==="streak"){
       // Ошибка записи в рейтинг не должна скрываться: иначе интерфейс сообщает об успехе,
       // хотя сортировка по огонькам остаётся прежней.
       await window.__devCheatFirebase.updateStreak(uid,value,account);
     }
+    // Только после подтверждённой записи обновляем состояние открытого тренажёра.
+    if(isCurrentAccount && typeof window.__restoreCloudState==="function"){
+      window.__restoreCloudState(progress);
+    }
     await refreshDevCheatTarget();
     if(typeof window.__renderLeaderboard==="function")await window.__renderLeaderboard();
     if(typeof toast==="function")toast(kind==="streak"?"Огоньки сохранены, рейтинг обновлён.":"Данные выбранного аккаунта сохранены.");
   }catch(error){console.error("Ошибка накрутки выбранного аккаунта:",error);alert(error.message||"Не удалось сохранить изменения. Проверь правила Firestore.");}
-  finally{if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}}
+  finally{
+    if(window.__devCheatSavingUid===uid) window.__devCheatSavingUid="";
+    if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}
+  }
 }
 document.getElementById("devCheatAccountSelect")?.addEventListener("change",()=>{const select=document.getElementById("devCheatAccountSelect");devCheatSelectedUid=select?.value||"";if(devCheatSelectedUid)localStorage.setItem("egeDevCheatSelectedUid",devCheatSelectedUid);refreshDevCheatTarget();});
 function applyDeveloperCheat(kind){if(document.getElementById("devCheatAccountSelect")){applyDeveloperCheatToTarget(kind);return;}if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="petXp"){if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"arcticFox"};const currentXp=Math.max(0,Math.floor(Number(state.pet.xp)||0));if(currentXp+value>1000000){alert("Общий опыт питомца не может превышать 1 000 000 XP.");return;}state.pet.xp=currentXp+value;}else if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!",petXp:"Добавлено "+value+" опыта питомцу! Теперь у него "+(Number(state.pet?.xp)||0)+" XP."})[kind]);}
@@ -3524,6 +3524,9 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
 
 async function syncCloudState(state) {
   if (!auth?.currentUser || !db || !state) return;
+  // Пока накрутка собственного аккаунта выполняет контрольную запись,
+  // обычные автосохранения со старым снимком временно пропускаются.
+  if (window.__devCheatSavingUid === auth.currentUser.uid) return;
 
   // Сохраняем личный прогресс в общей очереди с накруткой.
   try {
