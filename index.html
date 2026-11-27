@@ -13,7 +13,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
 :root{--bg:#f6f2ef;--paper:#fffdfa;--paper2:#fbf7f3;--ink:#292526;--muted:#83797a;--line:#e9dfdc;--red:#a93645;--red2:#c65360;--soft:#f6e8e9;--green:#287a56;--greenbg:#e8f4ed;--bad:#b13d43;--badbg:#fae9e9;--shadow:0 18px 55px rgba(71,30,37,.09);--radius:22px}
-*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;padding-top:env(safe-area-inset-top);background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;padding-top:env(safe-area-inset-top);background:linear-gradient(to bottom,var(--paper) 0 env(safe-area-inset-top),var(--bg) env(safe-area-inset-top) 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
 button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #d99ba3;outline-offset:3px}
 .topbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,72px);border-bottom:1px solid rgba(120,80,80,.09);background:rgba(255,253,250,.78);backdrop-filter:blur(16px);position:sticky;top:0;z-index:10}
 .brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:-.4px}.brandmark{width:38px;height:38px;border-radius:13px;background:var(--red);color:white;display:grid;place-items:center;font-weight:800;box-shadow:0 6px 16px #a9364530}.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.2px;margin-top:2px}
@@ -4485,7 +4485,7 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] body {
-  background: var(--bg);
+  background: linear-gradient(to bottom,var(--paper) 0 env(safe-area-inset-top),var(--bg) env(safe-area-inset-top) 100%);
   color: var(--ink);
 }
 
@@ -6932,9 +6932,9 @@ const themeToggle = document.getElementById("themeToggle");
 
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
-  document.documentElement.style.setProperty("--status-bar-bg", theme === "dark" ? "#211f23" : "#f6f2ef");
+  document.documentElement.style.setProperty("--status-bar-bg", theme === "dark" ? "#222225" : "#fffdfa");
   const themeColor = document.querySelector('meta[name="theme-color"]');
-  if (themeColor) themeColor.setAttribute("content", theme === "dark" ? "#211f23" : "#f6f2ef");
+  if (themeColor) themeColor.setAttribute("content", theme === "dark" ? "#222225" : "#fffdfa");
   localStorage.setItem("egeTheme", theme);
   themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
 }
