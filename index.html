@@ -557,27 +557,29 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
 
 
 
-/* Чёткая рамка у переключателя светлой и тёмной темы */
+/* Красная акцентная кнопка переключения темы */
 #themeToggle{
-  border:1px solid var(--line)!important;
-  background:var(--paper)!important;
-  color:var(--ink)!important;
+  border:1px solid var(--red)!important;
+  background:var(--red)!important;
+  color:#fff!important;
   min-width:44px;
   min-height:42px;
   display:inline-grid;
   place-items:center;
-  box-shadow:0 2px 8px rgba(71,30,37,.06);
+  box-shadow:0 6px 16px rgba(169,54,69,.24);
   transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease;
 }
 #themeToggle:hover{
-  border-color:#d5a8ad!important;
-  box-shadow:0 5px 14px rgba(71,30,37,.12);
+  border-color:var(--red2)!important;
+  background:var(--red2)!important;
+  color:#fff!important;
+  box-shadow:0 8px 20px rgba(169,54,69,.30);
   transform:translateY(-2px);
 }
 html[data-theme="dark"] #themeToggle{
-  border-color:var(--line)!important;
-  background:var(--paper2)!important;
-  color:var(--ink)!important;
+  border-color:var(--red)!important;
+  background:var(--red)!important;
+  color:#fff!important;
 }
 </style>
 <style>
