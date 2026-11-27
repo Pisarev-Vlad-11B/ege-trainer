@@ -2910,7 +2910,7 @@ signOut, onAuthStateChanged, deleteUser,
 EmailAuthProvider, reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, getDocs, collection, setDoc, deleteDoc, serverTimestamp, onSnapshot, addDoc, query, orderBy, limit, where
+  getFirestore, doc, getDoc, getDocFromServer, getDocs, collection, setDoc, deleteDoc, serverTimestamp, onSnapshot, addDoc, query, orderBy, limit, where
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 /*
@@ -3069,7 +3069,9 @@ window.__updateProfileProgress = state => {
 };
 async function loadAccount(user, fallbackUsername = "") {
   const ref = userDoc(user.uid);
-  const snap = await getDoc(ref);
+  // При восстановлении прогресса читаем именно серверную версию, а не локальный кеш.
+  // Иначе устаревший кеш после перезагрузки может стать основой для автосохранения.
+  const snap = await getDocFromServer(ref);
   const stored = snap.exists() ? (snap.data() || {}) : {};
 
   // Восстанавливаем недостающие поля из публичной копии профиля.
@@ -4182,7 +4184,7 @@ if (FIREBASE_CONFIG_READY) {
       // Барьер общей очереди: ждём завершения всех ранее поставленных записей.
       flushProgressWrites: async () => { await queueUserProgressWrite(() => {}); },
       listUsers: async () => { const snap=await getDocs(collection(db,"users")); return snap.docs.map(item=>({uid:item.id,...item.data()})); },
-      getUser: async uid => { const snap=await getDoc(doc(db,"users",uid)); return snap.exists()?snap.data():null; },
+      getUser: async uid => { const snap=await getDocFromServer(doc(db,"users",uid)); return snap.exists()?snap.data():null; },
       saveProgress: async (uid,progress,account={}) => {
         const safeCoins=Math.max(0,Math.floor(Number(progress?.coins)||0));
         const savedProgress={...progress,coins:safeCoins};
