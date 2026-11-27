@@ -2247,6 +2247,7 @@ function updateStats(){
  if($("favoriteCount"))$("favoriteCount").textContent=(state.favorites||[]).length;
  if($("homeDoneCount"))$("homeDoneCount").textContent=done;
  if($("homePercent"))$("homePercent").textContent=percent+"%";
+ if($("homePercent")?.parentElement?.parentElement) $("homePercent").parentElement.parentElement.parentElement.style.background=`conic-gradient(#ffdfb4 ${percent}%,#ffffff38 0)`;
  if($("homeStreak"))$("homeStreak").textContent=(state.streak||0)+" 🔥";
  if($("homeProgressBar"))$("homeProgressBar").style.width=percent+"%";
  if($("analyticsMistakesTotal"))$("analyticsMistakesTotal").textContent=Object.values(state.mistakeCounts||{}).reduce((a,b)=>a+(Number(b)||0),0);
