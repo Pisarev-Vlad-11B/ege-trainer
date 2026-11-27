@@ -1481,7 +1481,7 @@ html[data-theme="dark"] #home .home-subject-card,html[data-theme="dark"] #home .
         <div class="home-progress-top"><span>ТВОЯ ПОДГОТОВКА</span><span class="home-live-dot">● В ПРОЦЕССЕ</span></div>
         <div class="home-progress-title">Маленькие шаги — большой результат</div>
         <div class="home-progress-ring-wrap">
-          <div class="home-progress-ring"><div><strong id="homePercent">0%</strong><span>пройдено</span></div></div>
+          <div class="home-progress-ring" id="homeProgressRing"><div><strong id="homePercent">0%</strong><span>пройдено</span></div></div>
           <div class="home-progress-details">
             <div><strong id="homeDoneCount">0</strong><span>верных ответов</span></div>
             <div><strong id="homeStreak">0 🔥</strong><span>серия подряд</span></div>
@@ -1497,7 +1497,7 @@ html[data-theme="dark"] #home .home-subject-card,html[data-theme="dark"] #home .
     <section class="home-available-section">
       <div class="home-section-heading">
         <div><div class="eyebrow">НАЧНИ СЕЙЧАС</div><h2>Выбери задание</h2><p>Постепенно здесь появятся все направления экзамена.</p></div>
-        <span class="home-section-counter">1 из 26 доступно</span>
+        <span class="home-section-counter">1 из 26 направлений доступно</span>
       </div>
       <div class="home-subject-card">
         <div class="home-subject-icon">А</div>
@@ -2250,6 +2250,7 @@ function updateStats(){
  if($("homePercent")?.parentElement?.parentElement) $("homePercent").parentElement.parentElement.parentElement.style.background=`conic-gradient(#ffdfb4 ${percent}%,#ffffff38 0)`;
  if($("homeStreak"))$("homeStreak").textContent=(state.streak||0)+" 🔥";
  if($("homeProgressBar"))$("homeProgressBar").style.width=percent+"%";
+ if($("homeProgressRing"))$("homeProgressRing").style.background=`conic-gradient(#ffdfb4 ${percent}%,#ffffff38 ${percent}% 100%)`;
  if($("analyticsMistakesTotal"))$("analyticsMistakesTotal").textContent=Object.values(state.mistakeCounts||{}).reduce((a,b)=>a+(Number(b)||0),0);
  renderMistakeAnalytics();renderShop();applyProfileFrame();renderPetCard();
  renderAchievements();
