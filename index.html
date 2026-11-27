@@ -2386,7 +2386,13 @@ async function applyDeveloperCheatToTarget(kind){
       const cloudProgress=confirmed?.progress||{};
       const localProgress=window.__getLocalState?.()||progress;
       const fields=["streak","bestStreak","coins","completed","mistakes","mistakeCounts","answers","pet"];
-      const mismatch=fields.filter(key=>JSON.stringify(cloudProgress[key]??null)!==JSON.stringify(localProgress[key]??null));
+      const containsExpected=(expected,actual)=>{
+        if(expected===undefined)return true;
+        if(expected===null||typeof expected!=="object")return expected===actual;
+        if(Array.isArray(expected))return Array.isArray(actual)&&expected.length===actual.length&&expected.every((item,index)=>containsExpected(item,actual[index]));
+        return !!actual&&typeof actual==="object"&&Object.keys(expected).every(key=>containsExpected(expected[key],actual[key]));
+      };
+      const mismatch=fields.filter(key=>!containsExpected(localProgress[key],cloudProgress[key]));
       if(mismatch.length) throw new Error("После повторной синхронизации не совпали поля: "+mismatch.join(", "));
     }catch(syncError){
       console.error("Не удалось закрепить накрутку в собственном аккаунте:",syncError);
@@ -4157,28 +4163,27 @@ if (FIREBASE_CONFIG_READY) {
             }
             return value;
           };
-          const expectedJson=JSON.stringify(normalize(savedProgress));
-          const storedJson=stored?JSON.stringify(normalize(stored)):null;
-          if(!stored || expectedJson!==storedJson){
-            const differences=[];
-            const compare=(expected,actual,path)=>{
-              if(differences.length>=12)return;
-              if(expected===actual)return;
-              if(Array.isArray(expected)||Array.isArray(actual)){
-                if(!Array.isArray(expected)||!Array.isArray(actual)){differences.push(path+": тип данных отличается");return;}
-                if(expected.length!==actual.length)differences.push(path+": количество элементов "+expected.length+" → "+actual.length);
-                for(let i=0;i<Math.min(expected.length,actual.length);i++)compare(expected[i],actual[i],path+"["+i+"]");
-                return;
-              }
-              if(expected&&actual&&typeof expected==="object"&&typeof actual==="object"){
-                const keys=new Set([...Object.keys(expected),...Object.keys(actual)]);
-                for(const key of keys)compare(expected[key],actual[key],path+"."+key);
-                return;
-              }
-              differences.push(path+": ожидалось "+JSON.stringify(expected)+"; в облаке "+JSON.stringify(actual));
-            };
-            if(!stored) differences.push("Документ users/"+uid+" или поле progress отсутствует");
-            else compare(normalize(savedProgress),normalize(stored),"progress");
+          const differences=[];
+          const compare=(expected,actual,path)=>{
+            if(differences.length>=12)return;
+            if(expected===actual)return;
+            if(Array.isArray(expected)||Array.isArray(actual)){
+              if(!Array.isArray(expected)||!Array.isArray(actual)){differences.push(path+": тип данных отличается");return;}
+              if(expected.length!==actual.length)differences.push(path+": количество элементов "+expected.length+" → "+actual.length);
+              for(let i=0;i<Math.min(expected.length,actual.length);i++)compare(expected[i],actual[i],path+"["+i+"]");
+              return;
+            }
+            if(expected&&actual&&typeof expected==="object"&&typeof actual==="object"){
+              // Проверяем все переданные поля, но разрешаем Firestore хранить
+              // дополнительные старые/необязательные поля вложенных объектов.
+              for(const key of Object.keys(expected))compare(expected[key],actual[key],path+"."+key);
+              return;
+            }
+            differences.push(path+": ожидалось "+JSON.stringify(expected)+"; в облаке "+JSON.stringify(actual));
+          };
+          if(!stored) differences.push("Документ users/"+uid+" или поле progress отсутствует");
+          else compare(normalize(savedProgress),normalize(stored),"progress");
+          if(differences.length){
             console.error("Полная проверка накрутки не пройдена",{
               uid,expected:savedProgress,stored,differences
             });
