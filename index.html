@@ -557,28 +557,45 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
 
 
 
-/* Красная акцентная кнопка переключения темы */
+/* Переключатель темы в стиле плашек разделов */
 #themeToggle{
-  border:1px solid var(--red)!important;
-  background:var(--red)!important;
-  color:#fff!important;
-  min-width:44px;
-  min-height:42px;
+  border:1px solid transparent!important;
+  border-radius:999px!important;
+  background:var(--soft)!important;
+  color:var(--red)!important;
+  min-width:48px;
+  min-height:44px;
+  padding:10px 15px!important;
   display:inline-grid;
   place-items:center;
-  box-shadow:0 6px 16px rgba(169,54,69,.24);
-  transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease;
+  box-shadow:none!important;
+  transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease,box-shadow .16s ease;
 }
 #themeToggle:hover{
-  border-color:var(--red2)!important;
-  background:var(--red2)!important;
+  background:var(--soft)!important;
+  color:var(--red)!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  transform:none;
+}
+#themeToggle:active{
+  background:var(--red)!important;
+  border-color:var(--red)!important;
   color:#fff!important;
-  box-shadow:0 8px 20px rgba(169,54,69,.30);
-  transform:translateY(-2px);
+  box-shadow:0 5px 14px rgba(169,54,69,.22)!important;
+  transform:scale(.96);
+}
+#themeToggle:focus-visible{
+  outline:3px solid #d99ba3!important;
+  outline-offset:3px;
 }
 html[data-theme="dark"] #themeToggle{
-  border-color:var(--red)!important;
+  background:var(--soft)!important;
+  color:var(--red2)!important;
+}
+html[data-theme="dark"] #themeToggle:active{
   background:var(--red)!important;
+  border-color:var(--red)!important;
   color:#fff!important;
 }
 
