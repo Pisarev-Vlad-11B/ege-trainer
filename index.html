@@ -557,26 +557,7 @@ html[data-theme="dark"] :is(#theory,.windowcontent) .theory-pair-examples>div:ho
 
 
 
-/* Переключатель темы: геометрия как у QR-кнопки, акцент только при нажатии */
-#themeToggle{
-  display:inline-flex!important;align-items:center;justify-content:center;
-  min-width:42px!important;width:42px;height:40px;min-height:40px!important;
-  padding:0!important;border:1px solid rgba(173,31,49,.22)!important;
-  border-radius:12px!important;background:linear-gradient(145deg,#fff5f5,#ffe5e8)!important;
-  color:#9f172c!important;font-size:21px!important;line-height:1;
-  box-shadow:0 5px 15px rgba(130,20,37,.10)!important;
-  cursor:pointer;transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease,box-shadow .16s ease;
-}
-#themeToggle:hover{transform:none!important;box-shadow:0 5px 15px rgba(130,20,37,.10)!important}
-#themeToggle:active,
-#themeToggle.is-pressed{
-  background:var(--red)!important;border-color:var(--red)!important;color:#fff!important;
-  box-shadow:0 5px 14px rgba(169,54,69,.22)!important;transform:scale(.96);
-}
-#themeToggle:focus-visible{outline:3px solid #d99ba3!important;outline-offset:3px}
-html[data-theme="dark"] #themeToggle{background:rgba(255,255,255,.07)!important;color:#ffdce1!important;border-color:rgba(255,190,200,.25)!important}
-html[data-theme="dark"] #themeToggle:active,
-html[data-theme="dark"] #themeToggle.is-pressed{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
+/* Переключатель темы использует исходное оформление навигации из index-backup.html. */
 
 /* Жест потягивания вниз для обновления приложения */
 #pullRefreshIndicator{position:absolute;z-index:99999;top:8px;left:50%;transform:translate(-50%,-90px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(169,54,69,.22);border-radius:999px;background:var(--paper);color:var(--red);font-size:13px;font-weight:700;box-shadow:0 6px 22px rgba(50,25,30,.14);transition:opacity .16s ease,transform .16s ease;will-change:transform,opacity}
