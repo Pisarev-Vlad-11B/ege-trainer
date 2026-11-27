@@ -2364,24 +2364,20 @@ async function applyDeveloperCheatToTarget(kind){
       // хотя сортировка по огонькам остаётся прежней.
       await window.__devCheatFirebase.updateStreak(uid,value,account);
     }
-    // Только после подтверждённой записи обновляем состояние открытого тренажёра.
+    // После единственной подтверждённой записи обновляем локальный интерфейс.
+    // ВАЖНО: не сохраняем состояние из интерфейса повторно. Если restoreCloudState
+    // откажется применить облачный снимок (например, из-за другой длины order),
+    // повторное чтение локального state и его запись затрут только что сохранённую накрутку.
     if(isCurrentAccount && typeof window.__restoreCloudState==="function"){
-      window.__restoreCloudState(progress);
-      // Пока блокировка автосохранения ещё активна, закрепляем именно
-      // итоговое состояние, которое сейчас находится в интерфейсе.
-      const finalProgress=window.__getLocalState?.()||progress;
-      await window.__devCheatFirebase.saveProgress(uid,finalProgress,account);
-      const finalAccount=await window.__devCheatFirebase.getUser(uid);
-      const finalCloud=finalAccount?.progress||{};
-      const finalFields=["streak","bestStreak","coins","completed","mistakes","mistakeCounts","answers","pet"];
-      const hasSameValue=(expected,actual)=>{
-        if(expected===undefined)return true;
-        if(expected===null||typeof expected!=="object")return expected===actual;
-        if(Array.isArray(expected))return Array.isArray(actual)&&expected.length===actual.length&&expected.every((item,index)=>hasSameValue(item,actual[index]));
-        return !!actual&&typeof actual==="object"&&Object.keys(expected).every(key=>hasSameValue(expected[key],actual[key]));
-      };
-      const failed=finalFields.filter(key=>!hasSameValue(finalProgress[key],finalCloud[key]));
-      if(failed.length)throw new Error("Итоговая запись в Firestore не совпала по полям: "+failed.join(", "));
+      if(Array.isArray(progress.order) && progress.order.length===143 &&
+         progress.answers && typeof progress.answers==="object"){
+        window.__restoreCloudState(progress);
+      }else{
+        console.warn("Накрутка сохранена в облаке; локальный снимок не обновлён из-за несовместимой структуры order/answers.",{
+          uid,orderLength:Array.isArray(progress.order)?progress.order.length:null,
+          hasAnswers:!!progress.answers
+        });
+      }
     }
     await refreshDevCheatTarget();
     if(typeof window.__renderLeaderboard==="function")await window.__renderLeaderboard();
