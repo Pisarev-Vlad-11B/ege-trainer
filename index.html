@@ -3681,6 +3681,11 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
 async function syncCloudState(state) {
   const uid = auth?.currentUser?.uid;
   if (!uid || !db || !state) return;
+  // Не сохраняем локальные данные, пока облачный прогресс этого аккаунта
+  // ещё не загружен. Иначе стартовое состояние может затереть данные Firestore.
+  if (window.__cloudProgressReadyUid !== uid) {
+    return;
+  }
   // Не принимаем снимки, которые были созданы до смены/восстановления
   // локального состояния аккаунта.
   if (state !== window.__getLocalState?.()) {
@@ -3907,6 +3912,8 @@ document.addEventListener("keydown", (e) => {
   }
 });
 async function restoreAccount(user, username = "") {
+  // Блокируем автосохранение до завершения восстановления именно этого аккаунта.
+  window.__cloudProgressReadyUid = "";
   window.__currentFirebaseUid = user.uid;
   startOnlineHeartbeat();
 
@@ -3938,6 +3945,13 @@ async function restoreAccount(user, username = "") {
   } else if (window.__resetLocalState) {
     // Новый аккаунт не должен наследовать прогресс гостя или другого аккаунта на устройстве.
     window.__resetLocalState();
+  }
+
+  // Только теперь разрешаем автосохранение для восстановленного аккаунта.
+  window.__cloudProgressReadyUid = user.uid;
+
+  // У нового аккаунта нет облачного прогресса — создаём его после снятия блокировки.
+  if (!data.progress && window.__getLocalState) {
     await syncCloudState(window.__getLocalState());
   }
 
@@ -4556,6 +4570,7 @@ document.querySelectorAll('[data-dev-page="support"]').forEach(button=>button.ad
     onlineHeartbeatTimer = null;
   }
   window.__currentFirebaseUid = null;
+        window.__cloudProgressReadyUid = "";
         window.__isDeveloper = false;
   lastHandledUid = null;
   paintProfile(null);
