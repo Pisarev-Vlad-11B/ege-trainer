@@ -2069,7 +2069,14 @@ function save(){persistLocalState();updateStats();if(window.__syncCloudState)win
 // Мост между локальным тренажёром и облачным аккаунтом Firebase.
 window.__getLocalState = () => state;
 window.__restoreCloudState = cloudState => {
- if(!cloudState || !Array.isArray(cloudState.order) || cloudState.order.length!==143 || !cloudState.answers) return;
+ if(!cloudState || !Array.isArray(cloudState.order) || cloudState.order.length!==143 || !cloudState.answers || typeof cloudState.answers!=="object") {
+  console.error("Облачный прогресс не восстановлен: несовместимая структура данных.", {
+   hasProgress:!!cloudState,
+   orderLength:Array.isArray(cloudState?.order)?cloudState.order.length:null,
+   hasAnswers:!!cloudState?.answers
+  });
+  return false;
+ }
  state={...freshState(),...cloudState};
  persistLocalState();
  updateStats();
@@ -2077,6 +2084,7 @@ window.__restoreCloudState = cloudState => {
  if(typeof renderTask==='function')renderTask();
  if(typeof renderAchievements==='function')renderAchievements();
  if(window.__updateProfileProgress)window.__updateProfileProgress(state);
+ return true;
 };
 window.__resetLocalState = () => {
  state=freshState();
@@ -3942,14 +3950,21 @@ async function restoreAccount(user, username = "") {
   paintProfile(data);
   if (window.__isDeveloper === true) window.__startDeveloperSupport?.();
 
+  let cloudProgressRestored = false;
   if (data.progress && window.__restoreCloudState) {
-    window.__restoreCloudState(data.progress);
+    cloudProgressRestored = window.__restoreCloudState(data.progress) === true;
+    if (!cloudProgressRestored) {
+      // Не разрешаем автосохранение, если облачный снимок не удалось применить:
+      // иначе стартовое локальное состояние может затереть реальные данные Firebase.
+      window.__cloudProgressReadyUid = "";
+      throw new Error("Облачный прогресс найден, но его структура не совпадает с текущей версией тренажёра. Автосохранение заблокировано, данные Firebase не изменены. Сообщи разработчику.");
+    }
   } else if (window.__resetLocalState) {
     // Новый аккаунт не должен наследовать прогресс гостя или другого аккаунта на устройстве.
     window.__resetLocalState();
   }
 
-  // Только теперь разрешаем автосохранение для восстановленного аккаунта.
+  // Разрешаем автосохранение только после успешного восстановления либо сброса нового аккаунта.
   window.__cloudProgressReadyUid = user.uid;
 
   // У нового аккаунта нет облачного прогресса — создаём его после снятия блокировки.
