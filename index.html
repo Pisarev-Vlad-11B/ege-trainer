@@ -2328,9 +2328,19 @@ async function applyDeveloperCheatToTarget(kind){
   if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}
   const button=document.getElementById("devCheat"+({streak:"Streak",coins:"Coins",correct:"Correct",wrong:"Wrong",petXp:"PetXp"}[kind])+"Apply");
   if(button){button.disabled=true;button.textContent="Сохраняем…";}
+  const isCurrentAccount=uid===window.__devCheatFirebase.currentUid();
+  let ownsCheatLock=false;
   try{
+    // Сначала блокируем автосохранение и инвалидируем все его старые снимки.
+    // Барьер ждёт завершения уже начатой записи, прежде чем читать актуальный документ.
+    if(isCurrentAccount){
+      if(window.__devCheatSavingUid===uid)throw new Error("Для этого аккаунта уже выполняется сохранение.");
+      window.__devCheatSavingUid=uid;
+      ownsCheatLock=true;
+      invalidateUserProgressWrites(uid);
+      await queueUserProgressWrite(()=>{});
+    }
     const account=await window.__devCheatFirebase.getUser(uid);if(!account)throw new Error("Аккаунт не найден");
-    const isCurrentAccount=uid===window.__devCheatFirebase.currentUid();
     // Для собственного аккаунта приоритет у состояния открытого тренажёра:
     // оно может быть новее последнего завершённого облачного автосохранения.
     const liveProgress=isCurrentAccount?window.__getLocalState?.():null;
@@ -2355,9 +2365,7 @@ async function applyDeveloperCheatToTarget(kind){
       const done=new Set(completed.map(Number)),ids=progress.order.map(Number).filter(id=>!done.has(id)).slice(0,value);
       progress.mistakes=ids;progress.mistakeCounts={};ids.forEach(id=>{progress.mistakeCounts[id]=1;progress.answers[id]={value:"",status:"wrong"};});
     }
-    // Блокируем автосохранение старого состояния только для текущего аккаунта.
-    // Сначала завершаем прямую запись в Firestore и её проверку чтением.
-    if(isCurrentAccount) window.__devCheatSavingUid=uid;
+    // Записываем через общую очередь после завершения всех старых автосохранений.
     await window.__devCheatFirebase.saveProgress(uid,progress,account);
     if(kind==="streak"){
       // Ошибка записи в рейтинг не должна скрываться: иначе интерфейс сообщает об успехе,
@@ -2384,7 +2392,7 @@ async function applyDeveloperCheatToTarget(kind){
     if(typeof toast==="function")toast(kind==="streak"?"Огоньки сохранены, рейтинг обновлён.":"Данные выбранного аккаунта сохранены.");
   }catch(error){console.error("Ошибка накрутки выбранного аккаунта:",error);alert(error.message||"Не удалось сохранить изменения. Проверь правила Firestore.");}
   finally{
-    if(window.__devCheatSavingUid===uid) window.__devCheatSavingUid="";
+    if(ownsCheatLock && window.__devCheatSavingUid===uid) window.__devCheatSavingUid="";
     if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}
   }
 
@@ -3655,6 +3663,14 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
   // Все записи прогресса одного аккаунта выполняются последовательно.
   // Это не позволяет запоздавшему автосохранению затереть только что применённую накрутку.
   let userProgressWriteQueue = Promise.resolve();
+  // Версия записи для каждого UID. Накрутка повышает её и тем самым
+  // аннулирует все автосохранения, поставленные в очередь до неё.
+  window.__progressWriteVersions = window.__progressWriteVersions || Object.create(null);
+  function invalidateUserProgressWrites(uid) {
+    const next = (Number(window.__progressWriteVersions[uid]) || 0) + 1;
+    window.__progressWriteVersions[uid] = next;
+    return next;
+  }
   function queueUserProgressWrite(write) {
     const next = userProgressWriteQueue.then(write, write);
     userProgressWriteQueue = next.catch(() => {});
@@ -3670,9 +3686,9 @@ async function syncCloudState(state) {
     console.warn("Пропущено устаревшее автосохранение прогресса:", { uid });
     return;
   }
-  // Пока накрутка собственного аккаунта выполняет контрольную запись,
-  // обычные автосохранения временно пропускаются.
+  // Во время накрутки своего аккаунта автосохранения не принимаются.
   if (window.__devCheatSavingUid === uid) return;
+  const writeVersion = Number(window.__progressWriteVersions?.[uid]) || 0;
 
   // Сохраняем личный прогресс в общей очереди с накруткой.
   try {
@@ -3686,6 +3702,7 @@ async function syncCloudState(state) {
       // Повторная проверка ВНУТРИ очереди: снимок мог устареть, пока ждал записи.
       if (auth?.currentUser?.uid !== uid ||
           window.__devCheatSavingUid === uid ||
+          (Number(window.__progressWriteVersions?.[uid]) || 0) !== writeVersion ||
           state !== window.__getLocalState?.()) {
         console.warn("Пропущена запись устаревшего снимка прогресса:", { uid });
         return;
@@ -3696,6 +3713,10 @@ async function syncCloudState(state) {
         updatedAt: serverTimestamp()
       }, { merge: true });
     });
+    // Если за время ожидания началась накрутка, не обновляем и связанные
+    // данные старым снимком (рейтинг/публичный профиль).
+    if (window.__devCheatSavingUid === uid ||
+        (Number(window.__progressWriteVersions?.[uid]) || 0) !== writeVersion) return;
   } catch (e) {
     console.warn("Не удалось сохранить прогресс:", e);
   }
