@@ -579,7 +579,7 @@ html[data-theme="dark"] #themeToggle:active,
 html[data-theme="dark"] #themeToggle.is-pressed{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
 
 /* Жест потягивания вниз для обновления приложения */
-#pullRefreshIndicator{position:fixed;z-index:99999;top:calc(env(safe-area-inset-top) + 8px);left:50%;transform:translate(-50%,-70px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(169,54,69,.22);border-radius:999px;background:var(--paper);color:var(--red);font-size:13px;font-weight:700;box-shadow:0 6px 22px rgba(50,25,30,.14);transition:opacity .16s ease,transform .16s ease}
+#pullRefreshIndicator{position:absolute;z-index:99999;top:8px;left:50%;transform:translate(-50%,-90px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(169,54,69,.22);border-radius:999px;background:var(--paper);color:var(--red);font-size:13px;font-weight:700;box-shadow:0 6px 22px rgba(50,25,30,.14);transition:opacity .16s ease,transform .16s ease;will-change:transform,opacity}
 #pullRefreshIndicator.visible{opacity:1;transform:translate(-50%,0)}
 #pullRefreshIndicator .pull-refresh-icon{display:inline-block;font-size:18px;line-height:1}
 #pullRefreshIndicator.refreshing .pull-refresh-icon{animation:pullRefreshSpin .7s linear infinite}
@@ -7125,7 +7125,7 @@ window.addEventListener("appinstalled",()=>{
     document.body.style.transform="translateY(0)";
     indicator.classList.remove("visible","refreshing");
     indicator.style.transition="opacity .16s ease,transform .16s ease";
-    indicator.style.transform="translate(-50%,-70px)";
+    indicator.style.transform="translate(-50%,-90px)";
     label.textContent="Потяни, чтобы обновить";
   }
   document.addEventListener("touchstart",event=>{
@@ -7146,7 +7146,7 @@ window.addEventListener("appinstalled",()=>{
     if(event.cancelable)event.preventDefault();
     indicator.classList.add("visible");
     indicator.style.transition="none";
-    indicator.style.transform="translate(-50%,"+Math.max(0,pullDistance-70)+"px)";
+    indicator.style.transform="translate(-50%,0)";
     document.body.style.transition="none";
     document.body.style.transform="translateY("+Math.max(0,pullDistance*.72)+"px)";
     label.textContent=pullDistance>=threshold?"Отпусти, чтобы обновить":"Потяни, чтобы обновить";
