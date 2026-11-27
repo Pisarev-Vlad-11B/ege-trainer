@@ -2367,6 +2367,21 @@ async function applyDeveloperCheatToTarget(kind){
     // Только после подтверждённой записи обновляем состояние открытого тренажёра.
     if(isCurrentAccount && typeof window.__restoreCloudState==="function"){
       window.__restoreCloudState(progress);
+      // Пока блокировка автосохранения ещё активна, закрепляем именно
+      // итоговое состояние, которое сейчас находится в интерфейсе.
+      const finalProgress=window.__getLocalState?.()||progress;
+      await window.__devCheatFirebase.saveProgress(uid,finalProgress,account);
+      const finalAccount=await window.__devCheatFirebase.getUser(uid);
+      const finalCloud=finalAccount?.progress||{};
+      const finalFields=["streak","bestStreak","coins","completed","mistakes","mistakeCounts","answers","pet"];
+      const hasSameValue=(expected,actual)=>{
+        if(expected===undefined)return true;
+        if(expected===null||typeof expected!=="object")return expected===actual;
+        if(Array.isArray(expected))return Array.isArray(actual)&&expected.length===actual.length&&expected.every((item,index)=>hasSameValue(item,actual[index]));
+        return !!actual&&typeof actual==="object"&&Object.keys(expected).every(key=>hasSameValue(expected[key],actual[key]));
+      };
+      const failed=finalFields.filter(key=>!hasSameValue(finalProgress[key],finalCloud[key]));
+      if(failed.length)throw new Error("Итоговая запись в Firestore не совпала по полям: "+failed.join(", "));
     }
     await refreshDevCheatTarget();
     if(typeof window.__renderLeaderboard==="function")await window.__renderLeaderboard();
@@ -2376,29 +2391,7 @@ async function applyDeveloperCheatToTarget(kind){
     if(window.__devCheatSavingUid===uid) window.__devCheatSavingUid="";
     if(button){button.disabled=false;button.textContent=({streak:"Применить огоньки",coins:"Применить баллы",correct:"Применить результат",wrong:"Применить ошибки",petXp:"Добавить опыт"})[kind];}
   }
-  // Для собственного аккаунта дополнительно отправляем итоговое состояние
-  // через обычный механизм синхронизации уже после снятия блокировки.
-  // Это не даёт следующей перезагрузке восстановить устаревший снимок.
-  if(uid===window.__devCheatFirebase.currentUid() && typeof window.__syncCloudState==="function"){
-    try{
-      await window.__syncCloudState(window.__getLocalState?.()||progress);
-      const confirmed=await window.__devCheatFirebase.getUser(uid);
-      const cloudProgress=confirmed?.progress||{};
-      const localProgress=window.__getLocalState?.()||progress;
-      const fields=["streak","bestStreak","coins","completed","mistakes","mistakeCounts","answers","pet"];
-      const containsExpected=(expected,actual)=>{
-        if(expected===undefined)return true;
-        if(expected===null||typeof expected!=="object")return expected===actual;
-        if(Array.isArray(expected))return Array.isArray(actual)&&expected.length===actual.length&&expected.every((item,index)=>containsExpected(item,actual[index]));
-        return !!actual&&typeof actual==="object"&&Object.keys(expected).every(key=>containsExpected(expected[key],actual[key]));
-      };
-      const mismatch=fields.filter(key=>!containsExpected(localProgress[key],cloudProgress[key]));
-      if(mismatch.length) throw new Error("После повторной синхронизации не совпали поля: "+mismatch.join(", "));
-    }catch(syncError){
-      console.error("Не удалось закрепить накрутку в собственном аккаунте:",syncError);
-      alert("Данные применены, но повторная синхронизация не подтвердилась: "+(syncError.message||"ошибка сохранения"));
-    }
-  }
+
 }
 document.getElementById("devCheatAccountSelect")?.addEventListener("change",()=>{const select=document.getElementById("devCheatAccountSelect");devCheatSelectedUid=select?.value||"";if(devCheatSelectedUid)localStorage.setItem("egeDevCheatSelectedUid",devCheatSelectedUid);refreshDevCheatTarget();});
 function applyDeveloperCheat(kind){if(document.getElementById("devCheatAccountSelect")){applyDeveloperCheatToTarget(kind);return;}if(window.__isDeveloper!==true){alert("Недостаточно прав.");return;}const config={streak:"devCheatStreakInput",coins:"devCheatCoinsInput",correct:"devCheatCorrectInput",wrong:"devCheatWrongInput",petXp:"devCheatPetXpInput"},input=$(config[kind]);if(!input)return;const value=Number(input.value);const max=(kind==="correct"||kind==="wrong")?143:1000000;if(!Number.isSafeInteger(value)||value<0||value>max){alert("Введи целое число от 0 до "+max+".");return;}if(kind==="petXp"){if(!state.pet||typeof state.pet!=="object")state.pet={name:"Пушок",xp:0,type:"arcticFox"};const currentXp=Math.max(0,Math.floor(Number(state.pet.xp)||0));if(currentXp+value>1000000){alert("Общий опыт питомца не может превышать 1 000 000 XP.");return;}state.pet.xp=currentXp+value;}else if(kind==="streak"){state.streak=value;state.bestStreak=Math.max(Number(state.bestStreak)||0,value);}else if(kind==="coins"){state.coins=value;}else if(kind==="correct"){const ids=state.order.slice(0,value).map(Number);state.completed=ids;state.correct=ids.length;state.mistakes=(state.mistakes||[]).filter(id=>!ids.includes(Number(id)));ids.forEach(id=>{const task=TASKS.find(t=>t.id===id);if(task)state.answers[id]={value:task.answers[0],status:"correct"};});}else{const available=143-(state.completed||[]).length;if(value>available){alert("При текущем количестве правильных ответов можно установить не более "+available+" заданий с ошибками.");input.value=available;return;}const done=new Set((state.completed||[]).map(Number));const ids=state.order.map(Number).filter(id=>!done.has(id)).slice(0,value);state.mistakes=ids;state.mistakeCounts={};ids.forEach(id=>{state.mistakeCounts[id]=1;state.answers[id]={value:"",status:"wrong"};});}save();renderShop();renderMistakes();refreshDeveloperCheatPanel();if(typeof toast==="function")toast(({streak:"Серия огоньков обновлена!",coins:"Баланс магазина обновлён!",correct:"Количество правильных ответов обновлено!",wrong:"Количество заданий с ошибками обновлено!",petXp:"Добавлено "+value+" опыта питомцу! Теперь у него "+(Number(state.pet?.xp)||0)+" XP."})[kind]);}
