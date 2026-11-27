@@ -3690,6 +3690,12 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
 
 async function syncCloudState(state) {
   const uid = auth?.currentUser?.uid;
+  if (uid) console.warn("[STREAK TRACE] Автосохранение вызвано", {
+    uid, streak: state?.streak, bestStreak: state?.bestStreak,
+    readyUid: window.__cloudProgressReadyUid,
+    devCheatSavingUid: window.__devCheatSavingUid,
+    time: new Date().toISOString()
+  });
   if (!uid || !db || !state) return;
   // Не сохраняем локальные данные, пока облачный прогресс этого аккаунта
   // ещё не загружен. Иначе стартовое состояние может затереть данные Firestore.
@@ -3723,6 +3729,11 @@ async function syncCloudState(state) {
         console.warn("Пропущена запись устаревшего снимка прогресса:", { uid });
         return;
       }
+      console.warn("[STREAK TRACE] Отправляем прогресс в Firestore", {
+        uid, streak: progressSnapshot?.streak,
+        bestStreak: progressSnapshot?.bestStreak,
+        time: new Date().toISOString()
+      });
       return setDoc(userDoc(uid), {
         progress: progressSnapshot,
         shopCoins: safeCoins,
@@ -3929,6 +3940,13 @@ async function restoreAccount(user, username = "") {
 
   // Сначала загружаем и сразу отображаем личный профиль
   const data = await loadAccount(user, username);
+  console.warn("[STREAK TRACE] Прочитали прогресс из Firestore", {
+    uid: user.uid,
+    streak: data?.progress?.streak,
+    bestStreak: data?.progress?.bestStreak,
+    hasProgress: !!data?.progress,
+    time: new Date().toISOString()
+  });
 
   window.__isDeveloper = false;
   paintProfile(data);
@@ -3953,6 +3971,13 @@ async function restoreAccount(user, username = "") {
   let cloudProgressRestored = false;
   if (data.progress && window.__restoreCloudState) {
     cloudProgressRestored = window.__restoreCloudState(data.progress) === true;
+    console.warn("[STREAK TRACE] Восстановили локальное состояние", {
+      uid: user.uid,
+      restored: cloudProgressRestored,
+      localStreak: window.__getLocalState?.()?.streak,
+      cloudStreak: data.progress?.streak,
+      time: new Date().toISOString()
+    });
     if (!cloudProgressRestored) {
       // Не разрешаем автосохранение, если облачный снимок не удалось применить:
       // иначе стартовое локальное состояние может затереть реальные данные Firebase.
