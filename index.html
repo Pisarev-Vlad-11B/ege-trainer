@@ -974,7 +974,9 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
 <style>
 /* Мобильная защита от перекрытия элементов плавающим виджетом новостей */
 @media (max-width: 650px) {
-  #announcementWidget.announcement-widget {
+  /* Уменьшаем вертикальный промежуток между новостями и содержимым вкладок */
+  main { padding-top: 18px !important; }
+  #announcementWidget.announcement-widget { margin-bottom: -10px !important; }
     position: relative !important;
     inset: auto !important;
     z-index: 5 !important;
