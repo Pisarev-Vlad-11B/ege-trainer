@@ -3662,25 +3662,40 @@ async function syncPublicProfile(data = profile, state = window.__getLocalState?
   }
 
 async function syncCloudState(state) {
-  if (!auth?.currentUser || !db || !state) return;
+  const uid = auth?.currentUser?.uid;
+  if (!uid || !db || !state) return;
+  // Не принимаем снимки, которые были созданы до смены/восстановления
+  // локального состояния аккаунта.
+  if (state !== window.__getLocalState?.()) {
+    console.warn("Пропущено устаревшее автосохранение прогресса:", { uid });
+    return;
+  }
   // Пока накрутка собственного аккаунта выполняет контрольную запись,
-  // обычные автосохранения со старым снимком временно пропускаются.
-  if (window.__devCheatSavingUid === auth.currentUser.uid) return;
+  // обычные автосохранения временно пропускаются.
+  if (window.__devCheatSavingUid === uid) return;
 
   // Сохраняем личный прогресс в общей очереди с накруткой.
   try {
-    const uid = auth.currentUser.uid;
     const safeCoins = Math.max(0, Math.floor(Number(state.coins) || 0));
     const progressSnapshot = {
       ...state,
       coins: safeCoins,
       activeProfileHeader: String(state.activeProfileHeader || "")
     };
-    await queueUserProgressWrite(() => setDoc(userDoc(uid), {
-      progress: progressSnapshot,
-      shopCoins: safeCoins,
-      updatedAt: serverTimestamp()
-    }, { merge: true }));
+    await queueUserProgressWrite(() => {
+      // Повторная проверка ВНУТРИ очереди: снимок мог устареть, пока ждал записи.
+      if (auth?.currentUser?.uid !== uid ||
+          window.__devCheatSavingUid === uid ||
+          state !== window.__getLocalState?.()) {
+        console.warn("Пропущена запись устаревшего снимка прогресса:", { uid });
+        return;
+      }
+      return setDoc(userDoc(uid), {
+        progress: progressSnapshot,
+        shopCoins: safeCoins,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    });
   } catch (e) {
     console.warn("Не удалось сохранить прогресс:", e);
   }
