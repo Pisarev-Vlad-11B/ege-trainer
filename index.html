@@ -1456,7 +1456,10 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
       <button type="button" class="achievement-page-card task-category-card" data-task-category="4"><span class="achievement-page-icon">🗣️</span><span class="achievement-page-copy"><strong>Задание 4 · Орфоэпия</strong><span>Постановка ударения в словах</span></span><span class="achievement-status">Открыть →</span></button>
       <button type="button" class="achievement-page-card task-category-card" data-task-category="5"><span class="achievement-page-icon">📖</span><span class="achievement-page-copy"><strong>Задание 5 · Паронимы</strong><span>Употребление паронимов</span></span><span class="achievement-status">Открыть →</span></button>
       <button type="button" class="achievement-page-card task-category-card" data-task-category="6"><span class="achievement-page-icon">💬</span><span class="achievement-page-copy"><strong>Задание 6 · Лексика</strong><span>Лексические нормы и речевые ошибки</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="7"><span class="achievement-page-icon">🧩</span><span class="achievement-page-copy"><strong>Задание 7 · Грамматика</strong><span>Грамматические нормы русского языка</span></span><span class="achievement-status">Открыть →</span></button>
       <button type="button" class="achievement-page-card task-category-card" data-task-category="9"><span class="achievement-page-icon">🔤</span><span class="achievement-page-copy"><strong>Задание 9 · Корни</strong><span>Правописание корней слов</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="10"><span class="achievement-page-icon">🔠</span><span class="achievement-page-copy"><strong>Задание 10 · Приставки</strong><span>Правописание приставок</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="11"><span class="achievement-page-icon">✍️</span><span class="achievement-page-copy"><strong>Задание 11 · Суффиксы</strong><span>Правописание суффиксов различных частей речи</span></span><span class="achievement-status">Открыть →</span></button>
       <button type="button" class="achievement-page-card task-category-card" data-task-category="12"><span class="achievement-page-icon">📝</span><span class="achievement-page-copy"><strong>Задание 12 · Глаголы и формы</strong><span>Правописание глаголов и причастий</span></span><span class="achievement-status">Открыть →</span></button>
     </div>
   </div>
@@ -6847,11 +6850,14 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
   opacity:1!important;
   background:#f4eeec;
 }
-.task-category-card:nth-child(1) .achievement-page-icon{background:#fff0df}
-.task-category-card:nth-child(2) .achievement-page-icon{background:#e9f1ff}
-.task-category-card:nth-child(3) .achievement-page-icon{background:#fce8ed}
-.task-category-card:nth-child(4) .achievement-page-icon{background:#e8f4e9}
-.task-category-card:nth-child(5) .achievement-page-icon{background:#f2eaff}
+.task-category-card[data-task-category="4"] .achievement-page-icon{background:#fff0df}
+.task-category-card[data-task-category="5"] .achievement-page-icon{background:#e9f1ff}
+.task-category-card[data-task-category="6"] .achievement-page-icon{background:#fce8ed}
+.task-category-card[data-task-category="7"] .achievement-page-icon{background:#e8f4e9}
+.task-category-card[data-task-category="9"] .achievement-page-icon{background:#e8f4e9}
+.task-category-card[data-task-category="10"] .achievement-page-icon{background:#fff0df}
+.task-category-card[data-task-category="11"] .achievement-page-icon{background:#f2eaff}
+.task-category-card[data-task-category="12"] .achievement-page-icon{background:#f2eaff}
 .task-category-card{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
 .task-category-card .achievement-page-copy{display:grid;gap:4px;text-align:left;flex:1}
 .task-category-card .achievement-page-copy strong{font-size:14px;line-height:1.35}
