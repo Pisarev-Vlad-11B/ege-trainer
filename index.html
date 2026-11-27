@@ -1397,6 +1397,7 @@ html[data-theme="dark"] #tasks .task-catalog-card-available{background:linear-gr
 html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-color:#3b383b}
 @media(max-width:760px){#home .home-welcome{min-height:0;padding:31px 23px;border-radius:23px}#home .home-welcome h1{font-size:clamp(39px,10vw,54px);letter-spacing:-1.8px}#home .home-welcome-lead{font-size:14px}#home .home-welcome-bottom{gap:10px 17px;margin-top:29px}#tasks .task-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#tasks .task-catalog-card{min-height:165px;padding:15px}#tasks .task-workspace-top{align-items:flex-start;flex-direction:column}}
 @media(max-width:390px){#tasks .task-catalog-card{min-height:175px;padding:13px}#tasks .task-catalog-card strong{font-size:13px}#tasks .task-catalog-card small{font-size:10px}}
+#tasks .task-bank-notice{margin:0 0 16px;padding:12px 15px;border:1px solid #d6a5ad;border-radius:12px;background:#a9364510;color:var(--muted);font-size:12px;line-height:1.55}
 </style></head>
 <body>
 <header class="topbar">
@@ -1549,6 +1550,7 @@ html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-colo
   </div>
   <div id="taskWorkspace" hidden>
     <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCatalog">← Все задания</button><span id="taskWorkspaceTitle">Выбранное задание</span></div>
+    <div class="task-bank-notice" id="taskBankNotice">Сейчас подключён существующий банк из 143 заданий №12. Отдельные наборы вопросов для выбранных заданий добавим следующим этапом.</div>
     <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button><button class="task-tab" id="favoritesTab">Избранное <span class="count-pill" id="favoriteCount">0</span></button></div>
   <div id="bankPane">
     <div class="practice-shell">
@@ -2792,7 +2794,9 @@ document.addEventListener("click", function(e) {
     if (workspace) workspace.hidden = false;
     document.querySelectorAll("[data-task-number]").forEach(card => card.classList.toggle("selected", card.dataset.taskNumber === String(number)));
     const title = document.getElementById("taskWorkspaceTitle");
-    if (title) title.textContent = number === 12 ? "Тренажёр · задание №12" : "Тренажёр · задание №" + number + " · подготовка банка";
+    if (title) title.textContent = "Тренажёр · задание №" + number;
+    const notice = document.getElementById("taskBankNotice");
+    if (notice) notice.hidden = number === 12;
     showPane("bank"); renderTask(); window.scrollTo({top:0,behavior:"smooth"}); return;
   }
   if (el.id === "taskBackToCatalog") {
