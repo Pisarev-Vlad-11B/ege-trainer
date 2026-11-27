@@ -2337,8 +2337,9 @@ async function applyDeveloperCheatToTarget(kind){
       if(window.__devCheatSavingUid===uid)throw new Error("Для этого аккаунта уже выполняется сохранение.");
       window.__devCheatSavingUid=uid;
       ownsCheatLock=true;
-      invalidateUserProgressWrites(uid);
-      await queueUserProgressWrite(()=>{});
+      window.__progressWriteVersions = window.__progressWriteVersions || Object.create(null);
+      window.__progressWriteVersions[uid] = (Number(window.__progressWriteVersions[uid]) || 0) + 1;
+      await window.__devCheatFirebase.flushProgressWrites();
     }
     const account=await window.__devCheatFirebase.getUser(uid);if(!account)throw new Error("Аккаунт не найден");
     // Для собственного аккаунта приоритет у состояния открытого тренажёра:
@@ -4164,6 +4165,8 @@ if (FIREBASE_CONFIG_READY) {
     auth = getAuth(app);
     db = getFirestore(app);
     window.__devCheatFirebase = {
+      // Барьер общей очереди: ждём завершения всех ранее поставленных записей.
+      flushProgressWrites: async () => { await queueUserProgressWrite(() => {}); },
       listUsers: async () => { const snap=await getDocs(collection(db,"users")); return snap.docs.map(item=>({uid:item.id,...item.data()})); },
       getUser: async uid => { const snap=await getDoc(doc(db,"users",uid)); return snap.exists()?snap.data():null; },
       saveProgress: async (uid,progress,account={}) => {
