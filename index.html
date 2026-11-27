@@ -3082,6 +3082,21 @@ async function loadAccount(user, fallbackUsername = "") {
   const snap = await getDocFromServer(ref);
   const stored = snap.exists() ? (snap.data() || {}) : {};
 
+  // Временная диагностика: проверяем фактическую структуру серверного документа.
+  console.warn("[FIRESTORE DOC TRACE] Документ users при загрузке", {
+    uid: user.uid,
+    exists: snap.exists(),
+    topLevelKeys: Object.keys(stored),
+    hasProgressField: Object.prototype.hasOwnProperty.call(stored, "progress"),
+    progressType: stored.progress === null ? "null" : typeof stored.progress,
+    progressKeys: stored.progress && typeof stored.progress === "object"
+      ? Object.keys(stored.progress)
+      : [],
+    streak: stored.progress?.streak,
+    bestStreak: stored.progress?.bestStreak,
+    time: new Date().toISOString()
+  });
+
   // Восстанавливаем недостающие поля из публичной копии профиля.
   // Это помогает, если личный документ users оказался неполным,
   // но данные профиля ранее были сохранены в publicProfiles.
