@@ -2729,7 +2729,7 @@ document.addEventListener("click", function(e) {
     }
     if (isTask5) {
       showTask5Pane("bank");
-      renderTask5();
+      window.renderTask5?.();
     }
     window.scrollTo({top:0,behavior:"smooth"});
     return;
@@ -6968,6 +6968,7 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
   host.innerHTML=ids.map(id=>{const t=TASK5_TASKS.find(x=>x.id===id);return '<div class="mistake-item"><div><strong>Задание №'+id+'</strong><p>'+esc(t.question.slice(0,170))+'</p></div><button class="secondary" data-task5-open="'+id+'">Повторить</button></div>';}).join("");
  }
  window.showTask5Pane=paneTo;
+ window.renderTask5=render;
  document.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;
   if(b.id==="task5BankTab"){paneTo("bank");}
