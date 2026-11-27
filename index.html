@@ -1520,35 +1520,16 @@ html[data-theme="dark"] #tasks .task-category-card:hover{background:linear-gradi
     <span class="page-doodle doodle-spark">✦</span>
   </div>
 <section id="home" class="view active">
-  <div class="home-dashboard">
-    <section class="home-hero-panel">
-      <div class="home-hero-copy">
-        <div class="home-kicker"><span class="home-kicker-dot"></span> ПЛАТФОРМА ПОДГОТОВКИ К ЕГЭ</div>
-        <h1>Твой путь к<br><em>высокому баллу</em><br>начинается здесь.</h1>
-        <p>Тренируйся в удобном темпе, отслеживай прогресс и возвращайся к тем заданиям, которые требуют внимания.</p>
-        <div class="home-hero-actions">
-          <button class="home-primary-btn" id="startBtn">Начать тренировку <span>→</span></button>
-          <button class="home-ghost-btn" id="homeProfileBtn">Мой профиль</button>
-        </div>
-      </div>
-      <div class="home-progress-panel">
-        <div class="home-progress-top"><span>ТВОЯ ПОДГОТОВКА</span><span class="home-live-dot">● В ПРОЦЕССЕ</span></div>
-        <div class="home-progress-title">Маленькие шаги — большой результат</div>
-        <div class="home-progress-ring-wrap">
-          <div class="home-progress-ring" id="homeProgressRing"><div><strong id="homePercent">0%</strong><span>пройдено</span></div></div>
-          <div class="home-progress-details">
-            <div><strong id="homeDoneCount">0</strong><span>верных ответов</span></div>
-            <div><strong id="homeStreak">0 🔥</strong><span>серия подряд</span></div>
-          </div>
-        </div>
-        <div class="home-progress-foot"><span>Текущий банк</span><strong>143 задания</strong></div>
-        <div class="home-progress-track"><i id="homeProgressBar"></i></div>
-      </div>
-      <div class="home-hero-decoration home-decoration-one"></div>
-      <div class="home-hero-decoration home-decoration-two"></div>
-    </section>
-
-      <div class="home-author">Писарев Владислав 11Б</div>
+  <div class="home-welcome">
+    <div class="home-welcome-kicker"><span></span> ТВОЯ ПОДГОТОВКА К ЕГЭ</div>
+    <h1>Твой путь к<br><em>поступлению</em><br>начинается здесь.</h1>
+    <p class="home-welcome-lead">Большие цели складываются из маленьких шагов. Каждый решённый вариант, каждое выученное правило и каждая тренировка приближают тебя к мечте.</p>
+    <div class="home-welcome-quote">«Не обязательно быть лучше всех. Достаточно каждый день становиться лучше, чем вчера».</div>
+    <button class="home-welcome-button" id="startBtn">Начать подготовку <span>→</span></button>
+    <div class="home-welcome-bottom"><span>✦ Учись в своём темпе</span><span>✦ Отслеживай свой прогресс</span><span>✦ Приближайся к цели</span></div>
+    <div class="home-welcome-decoration home-welcome-decoration-a">✳</div><div class="home-welcome-decoration home-welcome-decoration-b">✦</div>
+  </div>
+  <div class="home-author">Писарев Владислав 11Б</div>
 </section>
 <section id="leaderboard" class="view">
   <div class="section-head">
@@ -1578,18 +1559,13 @@ html[data-theme="dark"] #tasks .task-category-card:hover{background:linear-gradi
       <button type="button" class="achievement-page-card task-category-card" data-task-category="9"><span class="achievement-page-icon">🔤</span><span class="achievement-page-copy"><strong>Задание 9 · Корни</strong><span>Правописание корней слов</span></span><span class="achievement-status">Открыть →</span></button>
       <button type="button" class="achievement-page-card task-category-card" data-task-category="10"><span class="achievement-page-icon">🧩</span><span class="achievement-page-copy"><strong>Задание 10 · Приставки</strong><span>Правописание приставок</span></span><span class="achievement-status">Открыть →</span></button>
       <button type="button" class="achievement-page-card task-category-card" data-task-category="11"><span class="achievement-page-icon">✍️</span><span class="achievement-page-copy"><strong>Задание 11 · Суффиксы</strong><span>Правописание суффиксов</span></span><span class="achievement-status">Открыть →</span></button>
-    </div>
-  </div>
-  <div id="taskCategoryDetail" hidden>
-    <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCategories">← Все категории</button><span id="taskCategoryTitle">Задание</span></div>
-    <div class="section-head"><div><div class="eyebrow">ВЫБРАННАЯ КАТЕГОРИЯ</div><h2 id="taskCategoryHeading">Тренировки</h2><p>Открой тренировочный набор по выбранной теме.</p></div></div>
-    <div class="achievement-page-grid task-category-exercises">
-      <button type="button" class="achievement-page-card task-category-card" id="openCategoryPractice"><span class="achievement-page-icon">✍️</span><span class="achievement-page-copy"><strong>Практика</strong><span>Перейти к выполнению тренировочных заданий</span></span><span class="achievement-status">Начать →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="12"><span class="achievement-page-icon">📝</span><span class="achievement-page-copy"><strong>Задание 12 · Глаголы и формы</strong><span>Правописание глаголов и причастий</span></span><span class="achievement-status">Открыть →</span></button>
     </div>
   </div>
   <div id="taskWorkspace" hidden>
     <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCatalog">← Все задания</button><span id="taskWorkspaceTitle">Выбранное задание</span></div>
     <div class="task-bank-notice" id="taskBankNotice">Сейчас подключён существующий банк из 143 заданий №12. Отдельные наборы вопросов для выбранных заданий добавим следующим этапом.</div>
+    <div id="emptyTaskPage" hidden></div>
     <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button><button class="task-tab" id="favoritesTab">Избранное <span class="count-pill" id="favoriteCount">0</span></button></div>
   <div id="bankPane">
     <div class="practice-shell">
@@ -2828,33 +2804,35 @@ document.addEventListener("click", function(e) {
   if(el.id==="devCheatCorrectApply"){applyDeveloperCheat("correct");return;}
   if(el.id==="devCheatWrongApply"){applyDeveloperCheat("wrong");return;}
   if (el.dataset && el.dataset.taskCategory) {
-    const n = el.dataset.taskCategory;
-    const catalog = document.getElementById("taskCatalog"), detail = document.getElementById("taskCategoryDetail");
-    if (catalog) catalog.hidden = true;
-    if (detail) detail.hidden = false;
-    const names = {"4":"Орфоэпические нормы","5":"Паронимы","6":"Лексические нормы","9":"Правописание корней","10":"Правописание приставок","11":"Правописание суффиксов"};
-    const title = document.getElementById("taskCategoryTitle"), heading = document.getElementById("taskCategoryHeading");
-    if (title) title.textContent = "Категория · задание №" + n;
-    if (heading) heading.textContent = names[n] || "Тренировки";
-    window.currentTaskCategory = n;
-    window.scrollTo({top:0,behavior:"smooth"}); return;
-  }
-  if (el.id === "taskBackToCategories") {
-    const catalog = document.getElementById("taskCatalog"), detail = document.getElementById("taskCategoryDetail");
-    if (catalog) catalog.hidden = false;
-    if (detail) detail.hidden = true;
-    window.scrollTo({top:0,behavior:"smooth"}); return;
-  }
-  if (el.id === "openCategoryPractice") {
-    const n = window.currentTaskCategory || "4";
-    const catalog = document.getElementById("taskCategoryDetail"), workspace = document.getElementById("taskWorkspace");
+    const n = String(el.dataset.taskCategory);
+    const catalog = document.getElementById("taskCatalog");
+    const workspace = document.getElementById("taskWorkspace");
+    const title = document.getElementById("taskWorkspaceTitle");
+    const notice = document.getElementById("taskBankNotice");
+    const tabs = document.querySelector("#taskWorkspace .task-tabs");
+    const bank = document.getElementById("bankPane");
+    const errors = document.getElementById("errorsPane");
+    const favorites = document.getElementById("favoritesPane");
+    const empty = document.getElementById("emptyTaskPage");
+    const isTask12 = n === "12";
+
     if (catalog) catalog.hidden = true;
     if (workspace) workspace.hidden = false;
-    const title = document.getElementById("taskWorkspaceTitle");
     if (title) title.textContent = "Тренажёр · задание №" + n;
-    const notice = document.getElementById("taskBankNotice");
-    if (notice) notice.hidden = false;
-    showPane("bank"); renderTask(); window.scrollTo({top:0,behavior:"smooth"}); return;
+    if (notice) notice.hidden = true;
+    if (tabs) tabs.hidden = !isTask12;
+    if (bank) bank.hidden = !isTask12;
+    if (errors) errors.hidden = true;
+    if (favorites) favorites.hidden = true;
+    if (empty) empty.hidden = isTask12;
+
+    window.currentTaskCategory = n;
+    if (isTask12) {
+      showPane("bank");
+      renderTask();
+    }
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
   }
   if (el.dataset && el.dataset.taskNumber) {
     const number = Number(el.dataset.taskNumber);
@@ -2869,10 +2847,12 @@ document.addEventListener("click", function(e) {
     showPane("bank"); renderTask(); window.scrollTo({top:0,behavior:"smooth"}); return;
   }
   if (el.id === "taskBackToCatalog") {
-    const catalog = document.getElementById("taskCatalog"), workspace = document.getElementById("taskWorkspace");
+    const catalog = document.getElementById("taskCatalog");
+    const workspace = document.getElementById("taskWorkspace");
     if (catalog) catalog.hidden = false;
     if (workspace) workspace.hidden = true;
-    window.scrollTo({top:0,behavior:"smooth"}); return;
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
   }
   if(el.dataset && el.dataset.repeatTask){state.index=state.order.indexOf(Number(el.dataset.repeatTask));showView("tasks");showPane("bank");renderTask();return;}
   if(el.dataset && el.dataset.shopCategory){activeShopCategory=el.dataset.shopCategory==="newyear"?"newyear":"regular";renderShop();return;}
