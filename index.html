@@ -1359,7 +1359,45 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
 html[data-theme="dark"] #home .home-task-tile:not(.home-task-available){background:#222225;border-color:#3b383b}
 html[data-theme="dark"] #home .home-subject-card,html[data-theme="dark"] #home .home-how-card{background:#222225;border-color:#3b383b}
 </style>
-</head>
+<style id="taskCatalogAndWelcomeStyles">
+#home .home-welcome{position:relative;isolation:isolate;overflow:hidden;max-width:1120px;min-height:440px;margin:12px auto 0;padding:clamp(34px,6vw,72px);border-radius:30px;background:linear-gradient(125deg,#79283a 0%,#a93645 58%,#c05b65 100%);color:#fff;box-shadow:0 20px 50px rgba(111,35,51,.16)}
+#home .home-welcome-kicker{display:flex;align-items:center;gap:10px;color:#ffe1e2;font-size:10px;font-weight:850;letter-spacing:1.8px}
+#home .home-welcome-kicker span{width:7px;height:7px;border-radius:50%;background:#ffdfb4;box-shadow:0 0 0 5px #ffffff18}
+#home .home-welcome h1{position:relative;z-index:2;margin:25px 0 17px;color:#fff;font-size:clamp(43px,6vw,70px);line-height:1.02;letter-spacing:-2.7px}
+#home .home-welcome h1 em{font-style:normal;color:#ffdfb4}
+#home .home-welcome-lead{position:relative;z-index:2;max-width:620px;margin:0;color:#f6dfe2;font-size:16px;line-height:1.75}
+#home .home-welcome-quote{position:relative;z-index:2;max-width:570px;margin-top:25px;padding-left:16px;border-left:2px solid #ffdfb4;color:#ffe9e8;font-size:13px;line-height:1.65;font-style:italic}
+#home .home-welcome-button{position:relative;z-index:2;display:inline-flex;align-items:center;gap:22px;margin-top:29px;padding:15px 20px;border:0;border-radius:13px;background:#fff;color:#8f2d40;font-size:14px;font-weight:850;cursor:pointer;box-shadow:0 8px 20px #48101f30;transition:transform .18s ease,box-shadow .18s ease}
+#home .home-welcome-button:hover{transform:translateY(-3px);box-shadow:0 13px 25px #48101f40}
+#home .home-welcome-button span{font-size:20px}
+#home .home-welcome-bottom{position:relative;z-index:2;display:flex;gap:22px;flex-wrap:wrap;margin-top:39px;color:#f4dadd;font-size:11px;font-weight:650}
+#home .home-welcome-decoration{position:absolute;z-index:1;color:#ffffff12;pointer-events:none}
+#home .home-welcome-decoration-a{right:7%;top:10%;font-size:180px}
+#home .home-welcome-decoration-b{right:24%;bottom:3%;font-size:110px}
+#home .home-author{max-width:1120px;margin:18px auto;text-align:right;color:var(--muted);font-size:11px}
+#tasks .task-catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+#tasks .task-catalog-card{position:relative;display:flex;min-height:178px;flex-direction:column;align-items:flex-start;gap:8px;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--paper);color:var(--ink);text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+#tasks .task-catalog-card:hover{transform:translateY(-3px);border-color:#bd6674;box-shadow:0 12px 25px rgba(169,54,69,.1)}
+#tasks .task-catalog-number{position:absolute;top:15px;right:17px;color:var(--muted);font-size:12px;font-weight:900;letter-spacing:1px}
+#tasks .task-catalog-icon{font-size:26px}
+#tasks .task-catalog-card strong{max-width:90%;font-size:15px}
+#tasks .task-catalog-card small{max-width:95%;color:var(--muted);font-size:11px;line-height:1.5}
+#tasks .task-catalog-arrow{position:absolute;right:17px;bottom:15px;color:var(--red);font-size:20px}
+#tasks .task-catalog-card-available{border:1.5px solid #bd6674;background:linear-gradient(145deg,var(--paper),var(--soft))}
+#tasks .task-catalog-badge{padding:4px 8px;border-radius:20px;background:#a9364515;color:var(--red);font-size:9px;font-weight:850;letter-spacing:.3px}
+#tasks .task-catalog-card.selected{border-color:var(--red)}
+#tasks .task-catalog-note{display:flex;align-items:center;gap:12px;margin-top:20px;padding:15px 17px;border:1px solid var(--line);border-radius:14px;background:var(--soft)}
+#tasks .task-catalog-note span{color:var(--red);font-size:20px}
+#tasks .task-catalog-note p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+#tasks .task-workspace-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px}
+#tasks .task-back-to-catalog{padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-weight:750;cursor:pointer}
+#tasks .task-workspace-top>span{color:var(--muted);font-size:12px;font-weight:750}
+html[data-theme="dark"] #tasks .task-catalog-card{background:#222225;border-color:#3b383b}
+html[data-theme="dark"] #tasks .task-catalog-card-available{background:linear-gradient(145deg,#292326,#342329);border-color:#9c4a5a}
+html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-color:#3b383b}
+@media(max-width:760px){#home .home-welcome{min-height:0;padding:31px 23px;border-radius:23px}#home .home-welcome h1{font-size:clamp(39px,10vw,54px);letter-spacing:-1.8px}#home .home-welcome-lead{font-size:14px}#home .home-welcome-bottom{gap:10px 17px;margin-top:29px}#tasks .task-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#tasks .task-catalog-card{min-height:165px;padding:15px}#tasks .task-workspace-top{align-items:flex-start;flex-direction:column}}
+@media(max-width:390px){#tasks .task-catalog-card{min-height:175px;padding:13px}#tasks .task-catalog-card strong{font-size:13px}#tasks .task-catalog-card small{font-size:10px}}
+</style></head>
 <body>
 <header class="topbar">
   <button class="brand" id="homeLogo" type="button" aria-label="Перейти на главную">
@@ -1466,33 +1504,17 @@ html[data-theme="dark"] #home .home-subject-card,html[data-theme="dark"] #home .
     <span class="page-doodle doodle-spark">✦</span>
   </div>
 <section id="home" class="view active">
-  <div class="home-dashboard">
-    <section class="home-hero-panel">
-      <div class="home-hero-copy">
-        <div class="home-kicker"><span class="home-kicker-dot"></span> ПЛАТФОРМА ПОДГОТОВКИ К ЕГЭ</div>
-        <h1>Твой путь к<br><em>высокому баллу</em><br>начинается здесь.</h1>
-        <p>Тренируйся в удобном темпе, отслеживай прогресс и возвращайся к тем заданиям, которые требуют внимания.</p>
-        <div class="home-hero-actions">
-          <button class="home-primary-btn" id="startBtn">Начать тренировку <span>→</span></button>
-          <button class="home-ghost-btn" id="homeProfileBtn">Мой профиль</button>
-        </div>
-      </div>
-      <div class="home-progress-panel">
-        <div class="home-progress-top"><span>ТВОЯ ПОДГОТОВКА</span><span class="home-live-dot">● В ПРОЦЕССЕ</span></div>
-        <div class="home-progress-title">Маленькие шаги — большой результат</div>
-        <div class="home-progress-ring-wrap">
-          <div class="home-progress-ring" id="homeProgressRing"><div><strong id="homePercent">0%</strong><span>пройдено</span></div></div>
-          <div class="home-progress-details">
-            <div><strong id="homeDoneCount">0</strong><span>верных ответов</span></div>
-            <div><strong id="homeStreak">0 🔥</strong><span>серия подряд</span></div>
-          </div>
-        </div>
-        <div class="home-progress-foot"><span>Текущий банк</span><strong>143 задания</strong></div>
-        <div class="home-progress-track"><i id="homeProgressBar"></i></div>
-      </div>
-      <div class="home-hero-decoration home-decoration-one"></div>
-      <div class="home-hero-decoration home-decoration-two"></div>
-    </section>
+  <div class="home-welcome">
+    <div class="home-welcome-kicker"><span></span> ТВОЯ ПОДГОТОВКА К ЕГЭ</div>
+    <h1>Твой путь к<br><em>поступлению</em><br>начинается здесь.</h1>
+    <p class="home-welcome-lead">Большие цели складываются из маленьких шагов. Каждый решённый вариант, каждое выученное правило и каждая тренировка приближают тебя к мечте.</p>
+    <div class="home-welcome-quote">«Не обязательно быть лучше всех. Достаточно каждый день становиться лучше, чем вчера».</div>
+    <button class="home-welcome-button" id="startBtn">Начать подготовку <span>→</span></button>
+    <div class="home-welcome-bottom"><span>✦ Учись в своём темпе</span><span>✦ Отслеживай свой прогресс</span><span>✦ Приближайся к цели</span></div>
+    <div class="home-welcome-decoration home-welcome-decoration-a">✳</div><div class="home-welcome-decoration home-welcome-decoration-b">✦</div>
+  </div>
+  <div class="home-author">Писарев Владислав 11Б</div>
+</section>
 
     <section class="home-available-section">
       <div class="home-section-heading">
@@ -1564,8 +1586,22 @@ html[data-theme="dark"] #home .home-subject-card,html[data-theme="dark"] #home .
   </div>
 </section>
   <section id="tasks" class="view">
-  <div class="section-head"><div><div class="eyebrow">Практика</div><h2>Задания</h2><p>Решай самостоятельно — порядок заданий перемешивается.</p></div></div>
-  <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button><button class="task-tab" id="favoritesTab">Избранное <span class="count-pill" id="favoriteCount">0</span></button></div>
+  <div id="taskCatalog">
+    <div class="section-head task-catalog-heading"><div><div class="eyebrow">ВЫБЕРИ НАПРАВЛЕНИЕ</div><h2>Тренировка по заданиям ЕГЭ</h2><p>Выбери номер задания, чтобы перейти к практике.</p></div></div>
+    <div class="task-catalog-grid">
+      <button class="task-catalog-card" type="button" data-task-number="4"><span class="task-catalog-number">04</span><span class="task-catalog-icon">🗣️</span><strong>Орфоэпические нормы</strong><small>Постановка ударения</small><span class="task-catalog-arrow">→</span></button>
+      <button class="task-catalog-card" type="button" data-task-number="5"><span class="task-catalog-number">05</span><span class="task-catalog-icon">📖</span><strong>Паронимы</strong><small>Употребление близких по звучанию слов</small><span class="task-catalog-arrow">→</span></button>
+      <button class="task-catalog-card" type="button" data-task-number="6"><span class="task-catalog-number">06</span><span class="task-catalog-icon">💬</span><strong>Лексические нормы</strong><small>Речевые ошибки и нормы словоупотребления</small><span class="task-catalog-arrow">→</span></button>
+      <button class="task-catalog-card" type="button" data-task-number="9"><span class="task-catalog-number">09</span><span class="task-catalog-icon">🔤</span><strong>Правописание корней</strong><small>Проверяемые, чередующиеся и непроверяемые гласные</small><span class="task-catalog-arrow">→</span></button>
+      <button class="task-catalog-card" type="button" data-task-number="10"><span class="task-catalog-number">10</span><span class="task-catalog-icon">🧩</span><strong>Правописание приставок</strong><small>Приставки и их варианты написания</small><span class="task-catalog-arrow">→</span></button>
+      <button class="task-catalog-card" type="button" data-task-number="11"><span class="task-catalog-number">11</span><span class="task-catalog-icon">✍️</span><strong>Правописание суффиксов</strong><small>Суффиксы разных частей речи</small><span class="task-catalog-arrow">→</span></button>
+      <button class="task-catalog-card task-catalog-card-available" type="button" data-task-number="12"><span class="task-catalog-number">12</span><span class="task-catalog-icon">📚</span><strong>Глагольные формы</strong><small>Личные окончания и суффиксы причастий · 143 задания</small><span class="task-catalog-badge">Банк готов</span><span class="task-catalog-arrow">→</span></button>
+    </div>
+    <div class="task-catalog-note"><span>✦</span><p>Выбирай тему и занимайся регулярно. Новые тренировочные банки будут добавляться постепенно.</p></div>
+  </div>
+  <div id="taskWorkspace" hidden>
+    <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCatalog">← Все задания</button><span id="taskWorkspaceTitle">Тренажёр · задание №12</span></div>
+    <div class="task-tabs"><button class="task-tab active" id="bankTab">Банк заданий <span class="count-pill" id="bankCount">143</span></button><button class="task-tab" id="errorsTab">Ошибки <span class="count-pill" id="errorCount">0</span></button><button class="task-tab" id="favoritesTab">Избранное <span class="count-pill" id="favoriteCount">0</span></button></div>
   <div id="bankPane">
     <div class="practice-shell">
       <div class="side-art left"><div class="orb"></div><div class="side-symbol">✦</div></div>
@@ -1581,6 +1617,8 @@ html[data-theme="dark"] #home .home-subject-card,html[data-theme="dark"] #home .
     </div>
   </div>
   <div id="errorsPane" hidden><div id="mistakesList" class="mistakes-list"></div></div><div id="favoritesPane" hidden><div id="favoritesList" class="mistakes-list"></div></div>
+
+  </div>
 </section>
 <section id="stats" class="view">
   <div class="section-head compact-head"><div><div class="eyebrow">Твой прогресс</div><h2>Статистика</h2><p>Все главные показатели — на одном экране.</p></div></div>
@@ -2314,7 +2352,12 @@ function showView(name) {
     b.classList.toggle("active", b.dataset.view === name);
   });
 
-  if (name === "tasks") renderTask();
+  if (name === "tasks") {
+    const catalog = $("taskCatalog"), workspace = $("taskWorkspace");
+    if (catalog) catalog.hidden = false;
+    if (workspace) workspace.hidden = true;
+    document.querySelectorAll("[data-task-number]").forEach(card => card.classList.remove("selected"));
+  }
   if (name === "stats") updateStats();
   if (name === "achievements") renderAchievements();
   if (name === "shop") renderShop();
@@ -2794,6 +2837,22 @@ document.addEventListener("click", function(e) {
   if(el.id==="devCheatCoinsApply"){applyDeveloperCheat("coins");return;}
   if(el.id==="devCheatCorrectApply"){applyDeveloperCheat("correct");return;}
   if(el.id==="devCheatWrongApply"){applyDeveloperCheat("wrong");return;}
+  if (el.dataset && el.dataset.taskNumber) {
+    const number = Number(el.dataset.taskNumber);
+    const catalog = document.getElementById("taskCatalog"), workspace = document.getElementById("taskWorkspace");
+    if (catalog) catalog.hidden = true;
+    if (workspace) workspace.hidden = false;
+    document.querySelectorAll("[data-task-number]").forEach(card => card.classList.toggle("selected", card.dataset.taskNumber === String(number)));
+    const title = document.getElementById("taskWorkspaceTitle");
+    if (title) title.textContent = number === 12 ? "Тренажёр · задание №12" : "Тренажёр · задание №" + number + " · подготовка банка";
+    showPane("bank"); renderTask(); window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
+  if (el.id === "taskBackToCatalog") {
+    const catalog = document.getElementById("taskCatalog"), workspace = document.getElementById("taskWorkspace");
+    if (catalog) catalog.hidden = false;
+    if (workspace) workspace.hidden = true;
+    window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
   if(el.dataset && el.dataset.repeatTask){state.index=state.order.indexOf(Number(el.dataset.repeatTask));showView("tasks");showPane("bank");renderTask();return;}
   if(el.dataset && el.dataset.shopCategory){activeShopCategory=el.dataset.shopCategory==="newyear"?"newyear":"regular";renderShop();return;}
   if(el.dataset && el.dataset.shopItem){handleShopItem(el.dataset.shopItem);return;}
