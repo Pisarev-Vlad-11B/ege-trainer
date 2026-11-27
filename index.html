@@ -1582,10 +1582,9 @@ html[data-theme="dark"] #tasks .task-category-card:hover{background:linear-gradi
   </div>
   <div id="taskCategoryDetail" hidden>
     <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCategories">← Все категории</button><span id="taskCategoryTitle">Задание</span></div>
-    <div class="section-head"><div><div class="eyebrow">ВЫБРАННАЯ КАТЕГОРИЯ</div><h2 id="taskCategoryHeading">Тренировки</h2><p>Выбери нужный формат работы.</p></div></div>
+    <div class="section-head"><div><div class="eyebrow">ВЫБРАННАЯ КАТЕГОРИЯ</div><h2 id="taskCategoryHeading">Тренировки</h2><p>Открой тренировочный набор по выбранной теме.</p></div></div>
     <div class="achievement-page-grid task-category-exercises">
       <button type="button" class="achievement-page-card task-category-card" id="openCategoryPractice"><span class="achievement-page-icon">✍️</span><span class="achievement-page-copy"><strong>Практика</strong><span>Перейти к выполнению тренировочных заданий</span></span><span class="achievement-status">Начать →</span></button>
-      <button type="button" class="achievement-page-card task-category-card" id="openCategoryTheory"><span class="achievement-page-icon">📚</span><span class="achievement-page-copy"><strong>Теория</strong><span>Материалы и правила по выбранной теме</span></span><span class="achievement-status">Открыть →</span></button>
     </div>
   </div>
   <div id="taskWorkspace" hidden>
@@ -2856,10 +2855,6 @@ document.addEventListener("click", function(e) {
     const notice = document.getElementById("taskBankNotice");
     if (notice) notice.hidden = false;
     showPane("bank"); renderTask(); window.scrollTo({top:0,behavior:"smooth"}); return;
-  }
-  if (el.id === "openCategoryTheory") {
-    const n = window.currentTaskCategory || "4";
-    showView("theory"); window.scrollTo({top:0,behavior:"smooth"}); return;
   }
   if (el.dataset && el.dataset.taskNumber) {
     const number = Number(el.dataset.taskNumber);
