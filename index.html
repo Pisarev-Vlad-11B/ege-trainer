@@ -953,17 +953,17 @@ html[data-theme="dark"] #developer .dev-publish-announcement-btn:hover{backgroun
 @media(max-width:600px){#developer .dev-announcement-workspace>.dev-setting-card{padding:16px}}
 </style>
 <style>
-/* Мобильная защита от перекрытия элементов плавающим виджетом новостей */
+/* Мобильное расположение виджета новостей: отдельная строка под шапкой */
 @media (max-width: 650px) {
-  /* Уменьшаем вертикальный промежуток между новостями и содержимым вкладок */
   main { padding-top: 18px !important; }
-  #announcementWidget.announcement-widget { margin-bottom: -10px !important; }
+  #announcementWidget.announcement-widget {
     position: relative !important;
     inset: auto !important;
     z-index: 5 !important;
+    box-sizing: border-box !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 8px 0 0 !important;
+    margin: 8px 0 -10px !important;
     padding: 0 14px !important;
     display: flex !important;
     flex-direction: column !important;
