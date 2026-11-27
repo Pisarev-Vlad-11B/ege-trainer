@@ -6841,6 +6841,17 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 
 /* Каталог категорий ЕГЭ */
 .task-category-grid{margin-top:22px}
+/* Иконки заданий остаются яркими, независимо от оформления достижений */
+.task-category-card .achievement-page-icon{
+  filter:none!important;
+  opacity:1!important;
+  background:#f4eeec;
+}
+.task-category-card:nth-child(1) .achievement-page-icon{background:#fff0df}
+.task-category-card:nth-child(2) .achievement-page-icon{background:#e9f1ff}
+.task-category-card:nth-child(3) .achievement-page-icon{background:#fce8ed}
+.task-category-card:nth-child(4) .achievement-page-icon{background:#e8f4e9}
+.task-category-card:nth-child(5) .achievement-page-icon{background:#f2eaff}
 .task-category-card{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
 .task-category-card .achievement-page-copy{display:grid;gap:4px;text-align:left;flex:1}
 .task-category-card .achievement-page-copy strong{font-size:14px;line-height:1.35}
