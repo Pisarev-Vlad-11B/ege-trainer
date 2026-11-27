@@ -1398,6 +1398,21 @@ html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-colo
 @media(max-width:760px){#home .home-welcome{min-height:0;padding:31px 23px;border-radius:23px}#home .home-welcome h1{font-size:clamp(39px,10vw,54px);letter-spacing:-1.8px}#home .home-welcome-lead{font-size:14px}#home .home-welcome-bottom{gap:10px 17px;margin-top:29px}#tasks .task-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#tasks .task-catalog-card{min-height:165px;padding:15px}#tasks .task-workspace-top{align-items:flex-start;flex-direction:column}}
 @media(max-width:390px){#tasks .task-catalog-card{min-height:175px;padding:13px}#tasks .task-catalog-card strong{font-size:13px}#tasks .task-catalog-card small{font-size:10px}}
 #tasks .task-bank-notice{margin:0 0 16px;padding:12px 15px;border:1px solid #d6a5ad;border-radius:12px;background:#a9364510;color:var(--muted);font-size:12px;line-height:1.55}
+</style><style id="taskCategoryAchievementStyles">
+#tasks .task-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
+#tasks .task-category-card{width:100%;min-height:84px;text-align:left;cursor:pointer;font:inherit}
+#tasks .task-category-card .achievement-page-icon{filter:none;opacity:1;background:#f5e1df}
+#tasks .task-category-card:hover{transform:translateY(-5px) scale(1.018);border-color:#d5a8ad;box-shadow:0 15px 30px rgba(113,53,59,.13),0 0 0 3px rgba(214,151,157,.10);background:linear-gradient(135deg,#fffdfa,#fbefed)}
+#tasks .task-category-card:hover .achievement-page-icon{transform:translateY(-3px) rotate(-5deg) scale(1.08);box-shadow:0 7px 14px rgba(169,54,69,.12)}
+#tasks .task-category-card:hover .achievement-page-copy strong{color:#9f3040}
+#tasks .task-category-exercises{margin-top:18px}
+#tasks .task-category-exercises .task-category-card{min-height:105px}
+#tasks #taskCategoryDetail .section-head{margin-top:22px}
+#tasks .task-workspace-top{margin-bottom:20px}
+html[data-theme="dark"] #tasks .task-category-card{background:#242225;border-color:#40383b}
+html[data-theme="dark"] #tasks .task-category-card .achievement-page-icon{background:#473136}
+html[data-theme="dark"] #tasks .task-category-card:hover{background:linear-gradient(135deg,#302529,#392a30);border-color:#a65b68}
+@media(max-width:620px){#tasks .task-category-grid{grid-template-columns:1fr;gap:10px}#tasks .task-category-card{min-height:76px;padding:13px}#tasks .task-category-exercises .task-category-card{min-height:90px}}
 </style></head>
 <body>
 <header class="topbar">
@@ -1505,16 +1520,35 @@ html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-colo
     <span class="page-doodle doodle-spark">✦</span>
   </div>
 <section id="home" class="view active">
-  <div class="home-welcome">
-    <div class="home-welcome-kicker"><span></span> ТВОЯ ПОДГОТОВКА К ЕГЭ</div>
-    <h1>Твой путь к<br><em>поступлению</em><br>начинается здесь.</h1>
-    <p class="home-welcome-lead">Большие цели складываются из маленьких шагов. Каждый решённый вариант, каждое выученное правило и каждая тренировка приближают тебя к мечте.</p>
-    <div class="home-welcome-quote">«Не обязательно быть лучше всех. Достаточно каждый день становиться лучше, чем вчера».</div>
-    <button class="home-welcome-button" id="startBtn">Начать подготовку <span>→</span></button>
-    <div class="home-welcome-bottom"><span>✦ Учись в своём темпе</span><span>✦ Отслеживай свой прогресс</span><span>✦ Приближайся к цели</span></div>
-    <div class="home-welcome-decoration home-welcome-decoration-a">✳</div><div class="home-welcome-decoration home-welcome-decoration-b">✦</div>
-  </div>
-  <div class="home-author">Писарев Владислав 11Б</div>
+  <div class="home-dashboard">
+    <section class="home-hero-panel">
+      <div class="home-hero-copy">
+        <div class="home-kicker"><span class="home-kicker-dot"></span> ПЛАТФОРМА ПОДГОТОВКИ К ЕГЭ</div>
+        <h1>Твой путь к<br><em>высокому баллу</em><br>начинается здесь.</h1>
+        <p>Тренируйся в удобном темпе, отслеживай прогресс и возвращайся к тем заданиям, которые требуют внимания.</p>
+        <div class="home-hero-actions">
+          <button class="home-primary-btn" id="startBtn">Начать тренировку <span>→</span></button>
+          <button class="home-ghost-btn" id="homeProfileBtn">Мой профиль</button>
+        </div>
+      </div>
+      <div class="home-progress-panel">
+        <div class="home-progress-top"><span>ТВОЯ ПОДГОТОВКА</span><span class="home-live-dot">● В ПРОЦЕССЕ</span></div>
+        <div class="home-progress-title">Маленькие шаги — большой результат</div>
+        <div class="home-progress-ring-wrap">
+          <div class="home-progress-ring" id="homeProgressRing"><div><strong id="homePercent">0%</strong><span>пройдено</span></div></div>
+          <div class="home-progress-details">
+            <div><strong id="homeDoneCount">0</strong><span>верных ответов</span></div>
+            <div><strong id="homeStreak">0 🔥</strong><span>серия подряд</span></div>
+          </div>
+        </div>
+        <div class="home-progress-foot"><span>Текущий банк</span><strong>143 задания</strong></div>
+        <div class="home-progress-track"><i id="homeProgressBar"></i></div>
+      </div>
+      <div class="home-hero-decoration home-decoration-one"></div>
+      <div class="home-hero-decoration home-decoration-two"></div>
+    </section>
+
+      <div class="home-author">Писарев Владислав 11Б</div>
 </section>
 <section id="leaderboard" class="view">
   <div class="section-head">
@@ -1536,17 +1570,23 @@ html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-colo
 </section>
   <section id="tasks" class="view">
   <div id="taskCatalog">
-    <div class="section-head task-catalog-heading"><div><div class="eyebrow">ВЫБЕРИ НАПРАВЛЕНИЕ</div><h2>Тренировка по заданиям ЕГЭ</h2><p>Выбери номер задания, чтобы перейти к практике.</p></div></div>
-    <div class="task-catalog-grid">
-      <button class="task-catalog-card" type="button" data-task-number="4"><span class="task-catalog-number">04</span><span class="task-catalog-icon">🗣️</span><strong>Орфоэпические нормы</strong><small>Постановка ударения</small><span class="task-catalog-arrow">→</span></button>
-      <button class="task-catalog-card" type="button" data-task-number="5"><span class="task-catalog-number">05</span><span class="task-catalog-icon">📖</span><strong>Паронимы</strong><small>Употребление близких по звучанию слов</small><span class="task-catalog-arrow">→</span></button>
-      <button class="task-catalog-card" type="button" data-task-number="6"><span class="task-catalog-number">06</span><span class="task-catalog-icon">💬</span><strong>Лексические нормы</strong><small>Речевые ошибки и нормы словоупотребления</small><span class="task-catalog-arrow">→</span></button>
-      <button class="task-catalog-card" type="button" data-task-number="9"><span class="task-catalog-number">09</span><span class="task-catalog-icon">🔤</span><strong>Правописание корней</strong><small>Проверяемые, чередующиеся и непроверяемые гласные</small><span class="task-catalog-arrow">→</span></button>
-      <button class="task-catalog-card" type="button" data-task-number="10"><span class="task-catalog-number">10</span><span class="task-catalog-icon">🧩</span><strong>Правописание приставок</strong><small>Приставки и их варианты написания</small><span class="task-catalog-arrow">→</span></button>
-      <button class="task-catalog-card" type="button" data-task-number="11"><span class="task-catalog-number">11</span><span class="task-catalog-icon">✍️</span><strong>Правописание суффиксов</strong><small>Суффиксы разных частей речи</small><span class="task-catalog-arrow">→</span></button>
-      
+    <div class="section-head"><div><div class="eyebrow">ВЫБЕРИ НАПРАВЛЕНИЕ</div><h2>Задания ЕГЭ</h2><p>Выбери категорию, чтобы увидеть доступные тренировки.</p></div></div>
+    <div class="achievement-page-grid task-category-grid">
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="4"><span class="achievement-page-icon">🗣️</span><span class="achievement-page-copy"><strong>Задание 4 · Орфоэпия</strong><span>Постановка ударения в словах</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="5"><span class="achievement-page-icon">📖</span><span class="achievement-page-copy"><strong>Задание 5 · Паронимы</strong><span>Употребление паронимов</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="6"><span class="achievement-page-icon">💬</span><span class="achievement-page-copy"><strong>Задание 6 · Лексика</strong><span>Лексические нормы и речевые ошибки</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="9"><span class="achievement-page-icon">🔤</span><span class="achievement-page-copy"><strong>Задание 9 · Корни</strong><span>Правописание корней слов</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="10"><span class="achievement-page-icon">🧩</span><span class="achievement-page-copy"><strong>Задание 10 · Приставки</strong><span>Правописание приставок</span></span><span class="achievement-status">Открыть →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" data-task-category="11"><span class="achievement-page-icon">✍️</span><span class="achievement-page-copy"><strong>Задание 11 · Суффиксы</strong><span>Правописание суффиксов</span></span><span class="achievement-status">Открыть →</span></button>
     </div>
-    <div class="task-catalog-note"><span>✦</span><p>Выбирай тему и занимайся регулярно. Новые тренировочные банки будут добавляться постепенно.</p></div>
+  </div>
+  <div id="taskCategoryDetail" hidden>
+    <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCategories">← Все категории</button><span id="taskCategoryTitle">Задание</span></div>
+    <div class="section-head"><div><div class="eyebrow">ВЫБРАННАЯ КАТЕГОРИЯ</div><h2 id="taskCategoryHeading">Тренировки</h2><p>Выбери нужный формат работы.</p></div></div>
+    <div class="achievement-page-grid task-category-exercises">
+      <button type="button" class="achievement-page-card task-category-card" id="openCategoryPractice"><span class="achievement-page-icon">✍️</span><span class="achievement-page-copy"><strong>Практика</strong><span>Перейти к выполнению тренировочных заданий</span></span><span class="achievement-status">Начать →</span></button>
+      <button type="button" class="achievement-page-card task-category-card" id="openCategoryTheory"><span class="achievement-page-icon">📚</span><span class="achievement-page-copy"><strong>Теория</strong><span>Материалы и правила по выбранной теме</span></span><span class="achievement-status">Открыть →</span></button>
+    </div>
   </div>
   <div id="taskWorkspace" hidden>
     <div class="task-workspace-top"><button type="button" class="task-back-to-catalog" id="taskBackToCatalog">← Все задания</button><span id="taskWorkspaceTitle">Выбранное задание</span></div>
@@ -1569,7 +1609,7 @@ html[data-theme="dark"] #tasks .task-catalog-note{background:#222225;border-colo
   <div id="errorsPane" hidden><div id="mistakesList" class="mistakes-list"></div></div><div id="favoritesPane" hidden><div id="favoritesList" class="mistakes-list"></div></div>
 
   </div>
-</section>
+
 <section id="stats" class="view">
   <div class="section-head compact-head"><div><div class="eyebrow">Твой прогресс</div><h2>Статистика</h2><p>Все главные показатели — на одном экране.</p></div></div>
   <div class="stats-layout">
@@ -2303,7 +2343,8 @@ function showView(name) {
   });
 
   if (name === "tasks") {
-    const catalog = $("taskCatalog"), workspace = $("taskWorkspace");
+    const catalog = $("taskCatalog"), workspace = $("taskWorkspace"), categoryDetail = $("taskCategoryDetail");
+    if (categoryDetail) categoryDetail.hidden = true;
     if (catalog) catalog.hidden = false;
     if (workspace) workspace.hidden = true;
     document.querySelectorAll("[data-task-number]").forEach(card => card.classList.remove("selected"));
@@ -2787,6 +2828,39 @@ document.addEventListener("click", function(e) {
   if(el.id==="devCheatCoinsApply"){applyDeveloperCheat("coins");return;}
   if(el.id==="devCheatCorrectApply"){applyDeveloperCheat("correct");return;}
   if(el.id==="devCheatWrongApply"){applyDeveloperCheat("wrong");return;}
+  if (el.dataset && el.dataset.taskCategory) {
+    const n = el.dataset.taskCategory;
+    const catalog = document.getElementById("taskCatalog"), detail = document.getElementById("taskCategoryDetail");
+    if (catalog) catalog.hidden = true;
+    if (detail) detail.hidden = false;
+    const names = {"4":"Орфоэпические нормы","5":"Паронимы","6":"Лексические нормы","9":"Правописание корней","10":"Правописание приставок","11":"Правописание суффиксов"};
+    const title = document.getElementById("taskCategoryTitle"), heading = document.getElementById("taskCategoryHeading");
+    if (title) title.textContent = "Категория · задание №" + n;
+    if (heading) heading.textContent = names[n] || "Тренировки";
+    window.currentTaskCategory = n;
+    window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
+  if (el.id === "taskBackToCategories") {
+    const catalog = document.getElementById("taskCatalog"), detail = document.getElementById("taskCategoryDetail");
+    if (catalog) catalog.hidden = false;
+    if (detail) detail.hidden = true;
+    window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
+  if (el.id === "openCategoryPractice") {
+    const n = window.currentTaskCategory || "4";
+    const catalog = document.getElementById("taskCategoryDetail"), workspace = document.getElementById("taskWorkspace");
+    if (catalog) catalog.hidden = true;
+    if (workspace) workspace.hidden = false;
+    const title = document.getElementById("taskWorkspaceTitle");
+    if (title) title.textContent = "Тренажёр · задание №" + n;
+    const notice = document.getElementById("taskBankNotice");
+    if (notice) notice.hidden = false;
+    showPane("bank"); renderTask(); window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
+  if (el.id === "openCategoryTheory") {
+    const n = window.currentTaskCategory || "4";
+    showView("theory"); window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
   if (el.dataset && el.dataset.taskNumber) {
     const number = Number(el.dataset.taskNumber);
     const catalog = document.getElementById("taskCatalog"), workspace = document.getElementById("taskWorkspace");
