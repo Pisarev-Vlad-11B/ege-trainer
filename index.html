@@ -1491,6 +1491,29 @@ html[data-theme="dark"] #leaderboardList .leaderboard-entry.is-me{background:#63
       <div id="task5ErrorsPane" hidden><div id="task5MistakesList" class="mistakes-list"></div></div>
       <div id="task5FavoritesPane" hidden><div id="task5FavoritesList" class="mistakes-list"></div></div>
     </div>
+      <div id="task9Workspace" hidden>
+      <div class="task-tabs">
+        <button class="task-tab active" id="task9BankTab">Банк заданий <span class="count-pill" id="task9BankCount">142</span></button>
+        <button class="task-tab" id="task9ErrorsTab">Ошибки <span class="count-pill" id="task9ErrorCount">0</span></button>
+        <button class="task-tab" id="task9FavoritesTab">Избранное <span class="count-pill" id="task9FavoriteCount">0</span></button>
+      </div>
+      <div id="task9BankPane">
+        <div class="practice-shell">
+          <div class="side-art left"><div class="orb"></div><div class="side-symbol">✦</div></div>
+          <article class="task-card">
+            <div class="task-meta"><div class="task-number" id="task9Number">Задание 1 из 142</div><div style="display:flex;align-items:center;gap:12px"><div class="progress-label" id="task9ProgressLabel">0% пройдено</div><button type="button" class="task-favorite-btn" id="task9FavoriteBtn" aria-label="Добавить в избранное" title="Добавить в избранное">☆</button></div></div>
+            <div class="progress"><span id="task9ProgressBar" style="width:0%"></span></div>
+            <p class="prompt">Укажите варианты ответов, в которых во всех словах одного ряда пропущена одна и та же буква. Запишите номера ответов.</p>
+            <div class="question-list" id="task9QuestionText" style="white-space:pre-line"></div>
+            <div class="answer-area"><label class="answer-label" for="task9AnswerInput">ТВОЙ ОТВЕТ · ВВЕДИ ЦИФРЫ БЕЗ ПРОБЕЛОВ</label><div class="answer-row"><input id="task9AnswerInput" class="answer-input" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="Например, 23"><button class="check-btn" id="task9CheckBtn">Проверить</button></div><div class="feedback" id="task9Feedback"></div></div>
+            <div class="task-footer"><button class="arrow-btn" id="task9PrevBtn">← Назад</button><span></span><button class="arrow-btn" id="task9NextBtn">Далее →</button></div>
+          </article>
+          <div class="side-art right"><div class="orb"></div><div class="side-symbol">✎</div></div>
+        </div>
+      </div>
+      <div id="task9ErrorsPane" hidden><div id="task9MistakesList" class="mistakes-list"></div></div>
+      <div id="task9FavoritesPane" hidden><div id="task9FavoritesList" class="mistakes-list"></div></div>
+    </div>
   </div>
 </section>
 <section id="stats" class="view">
@@ -2714,14 +2737,17 @@ document.addEventListener("click", function(e) {
     const empty = document.getElementById("emptyTaskPage");
     const task12 = document.getElementById("task12Workspace");
     const task5 = document.getElementById("task5Workspace");
+    const task9 = document.getElementById("task9Workspace");
     const isTask12 = n === "12";
     const isTask5 = n === "5";
+    const isTask9 = n === "9";
     if (catalog) catalog.hidden = true;
     if (workspace) workspace.hidden = false;
     if (title) title.textContent = "Тренажёр · задание №" + n;
-    if (empty) empty.hidden = isTask12 || isTask5;
+    if (empty) empty.hidden = isTask12 || isTask5 || isTask9;
     if (task12) task12.hidden = !isTask12;
     if (task5) task5.hidden = !isTask5;
+    if (task9) task9.hidden = !isTask9;
     window.currentTaskCategory = n;
     if (isTask12) {
       showPane("bank");
@@ -2730,6 +2756,10 @@ document.addEventListener("click", function(e) {
     if (isTask5) {
       showTask5Pane("bank");
       window.renderTask5?.();
+    }
+    if (isTask9) {
+      window.showTask9Pane?.("bank");
+      window.renderTask9?.();
     }
     window.scrollTo({top:0,behavior:"smooth"});
     return;
@@ -6889,6 +6919,7 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
 .task-empty-page p{max-width:420px;margin:0;color:var(--muted);font-size:14px;line-height:1.6}
 #task12Workspace[hidden]{display:none!important}
 @media(max-width:700px){.achievement-page-grid.task-category-grid{grid-template-columns:1fr;gap:10px}.task-category-card{padding:14px 12px}.task-workspace-top{align-items:flex-start;flex-wrap:wrap}.task-category-card .achievement-status{font-size:10px}}
+#task9Workspace[hidden]{display:none!important}
 </style>
 
 
@@ -6983,6 +7014,80 @@ html[data-theme="dark"] .shop-category-heading{background:var(--paper)}
  document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target?.id==="task5AnswerInput")check();});
  document.addEventListener("input",e=>{if(e.target?.id==="task5AnswerInput")e.target.value=e.target.value.slice(0,40);});
  render();
+})();
+</script>
+<script src="task9-data.js"></script>
+<script>
+/* Отдельный тренажёр задания 9: правописание корней */
+(function(){
+ const el=id=>document.getElementById(id);
+ let st=null,pane="bank",tasks=[];
+ const KEY="ege9_trainer_state_v1";
+ const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+ const storageKey=()=>window.__currentFirebaseUid?KEY+"_"+window.__currentFirebaseUid:KEY;
+ const fresh=()=>({order:shuffle(tasks.map(t=>t.id)),index:0,answers:{},completed:[],mistakes:[],favorites:[]});
+ const save=()=>{try{localStorage.setItem(storageKey(),JSON.stringify(st));}catch(e){}};
+ const current=()=>tasks.find(t=>t.id===st.order[st.index])||tasks[0];
+ const norm=v=>String(v||"").replace(/[^1-5]/g,"").split("").sort().join("");
+ const esc=v=>String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ function load(){try{const x=JSON.parse(localStorage.getItem(storageKey()));if(x&&Array.isArray(x.order)&&x.order.length===tasks.length&&x.answers)return {...fresh(),...x};}catch(e){}return fresh();}
+ function render(){
+  if(!tasks.length||!st)return;
+  const t=current(),a=st.answers[t.id]||{},done=st.completed.length,total=tasks.length;
+  el("task9Number").textContent="Задание "+(st.index+1)+" из "+total;
+  el("task9ProgressLabel").textContent=Math.round(done/total*100)+"% пройдено";
+  el("task9ProgressBar").style.width=(done/total*100)+"%";
+  el("task9QuestionText").textContent=t.question;
+  el("task9AnswerInput").value=a.value||"";
+  el("task9AnswerInput").className="answer-input"+(a.status==="correct"?" correct":a.status==="wrong"?" incorrect":"");
+  el("task9Feedback").className="feedback"+(a.status==="correct"?" good":a.status==="wrong"?" bad":"");
+  el("task9Feedback").textContent=a.status==="correct"?"Верно! Отличная работа.":a.status==="wrong"?"Пока неверно. Попробуй ещё раз.":"";
+  el("task9CheckBtn").textContent=a.status==="correct"?"Верно ✓":"Проверить";
+  el("task9PrevBtn").disabled=st.index===0;
+  el("task9NextBtn").disabled=st.index===total-1;
+  const fav=el("task9FavoriteBtn"),yes=st.favorites.includes(t.id);
+  fav.textContent=yes?"★":"☆";fav.classList.toggle("is-favorite",yes);
+  el("task9BankCount").textContent=total;el("task9ErrorCount").textContent=st.mistakes.length;el("task9FavoriteCount").textContent=st.favorites.length;
+ }
+ function check(){
+  const t=current(),value=el("task9AnswerInput").value.trim(),answer=norm(value);
+  if(!answer){el("task9Feedback").textContent="Сначала введи ответ.";el("task9Feedback").className="feedback bad";return;}
+  if(!/^[1-5]+$/.test(value.replace(/\s/g,""))){el("task9Feedback").textContent="Используй только цифры от 1 до 5.";el("task9Feedback").className="feedback bad";return;}
+  const ok=(t.answers||[]).some(x=>norm(x)===answer),was=st.completed.includes(t.id);
+  st.answers[t.id]={value,status:ok?"correct":"wrong"};
+  if(ok){if(!was)st.completed.push(t.id);st.mistakes=st.mistakes.filter(x=>x!==t.id);}
+  else if(!st.mistakes.includes(t.id))st.mistakes.push(t.id);
+  save();render();
+ }
+ function paneTo(name){
+  pane=name;
+  for(const n of ["bank","errors","favorites"]){
+   el("task9"+(n==="bank"?"Bank":n==="errors"?"Errors":"Favorites")+"Pane").hidden=n!==name;
+   el("task9"+(n==="bank"?"Bank":n==="errors"?"Errors":"Favorites")+"Tab").classList.toggle("active",n===name);
+  }
+  if(name==="errors"||name==="favorites")renderList(name);
+  render();
+ }
+ function renderList(kind){
+  const ids=kind==="errors"?st.mistakes:st.favorites,host=el(kind==="errors"?"task9MistakesList":"task9FavoritesList");
+  if(!ids.length){host.innerHTML='<div class="mistakes-empty"><div style="font-size:38px;margin-bottom:12px">✦</div><strong>'+(kind==="errors"?"Пока ошибок нет":"Избранное пока пусто")+'</strong><p>'+(kind==="errors"?"Задания, в которых будет допущена ошибка, появятся здесь.":"Добавляй задания в избранное кнопкой ☆.")+'</p></div>';return;}
+  host.innerHTML=ids.map(id=>{const t=tasks.find(x=>x.id===id);return '<div class="mistake-item"><div><strong>Задание №'+id+'</strong><p>'+esc(t.question.slice(0,170))+'</p></div><button class="secondary" data-task9-open="'+id+'">Повторить</button></div>';}).join("");
+ }
+ window.showTask9Pane=paneTo;
+ window.renderTask9=render;
+ document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.id==="task9BankTab")paneTo("bank");
+  else if(b.id==="task9ErrorsTab")paneTo("errors");
+  else if(b.id==="task9FavoritesTab")paneTo("favorites");
+  else if(b.id==="task9CheckBtn")check();
+  else if(b.id==="task9PrevBtn"&&st.index>0){st.index--;save();render();}
+  else if(b.id==="task9NextBtn"&&st.index<tasks.length-1){st.index++;save();render();}
+  else if(b.id==="task9FavoriteBtn"){const id=current().id;st.favorites=st.favorites.includes(id)?st.favorites.filter(x=>x!==id):[...st.favorites,id];save();render();}
+  else if(b.dataset.task9Open){st.index=st.order.indexOf(Number(b.dataset.task9Open));paneTo("bank");}
+ });
+ document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target?.id==="task9AnswerInput")check();});
+ (async()=>{try{tasks=await window.TASK9_TASKS_PROMISE;st=load();render();}catch(e){console.error("Не удалось загрузить задания №9",e);const host=el("task9QuestionText");if(host)host.textContent="Не удалось загрузить банк заданий. Обнови страницу.";}})();
 })();
 </script>
 </body>
