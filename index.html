@@ -4210,7 +4210,7 @@ if (FIREBASE_CONFIG_READY) {
             updatedAt:serverTimestamp()
           },{merge:true});
           // Полная проверка: сравниваем весь прогресс, а не только несколько счётчиков.
-          const check=await getDoc(doc(db,"users",uid));
+          const check=await getDocFromServer(doc(db,"users",uid));
           const stored=check.exists()?check.data()?.progress:null;
           const normalize=value=>{
             if(Array.isArray(value)) return value.map(normalize);
