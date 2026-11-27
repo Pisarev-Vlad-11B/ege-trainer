@@ -3159,6 +3159,10 @@ async function loadAccount(user, fallbackUsername = "") {
     }, { merge: true });
   }
 
+  // Служебный признак: отличаем новый аккаунт от существующего документа,
+  // в котором по неизвестной причине отсутствует progress.
+  data.__userDocumentExists = snap.exists();
+
   return data;
 }
   function escapeDevHTML(value) {
@@ -3984,6 +3988,9 @@ async function restoreAccount(user, username = "") {
   if (window.__isDeveloper === true) window.__startDeveloperSupport?.();
 
   let cloudProgressRestored = false;
+  const existingDocumentWithoutProgress =
+    data.__userDocumentExists === true && !data.progress;
+
   if (data.progress && window.__restoreCloudState) {
     cloudProgressRestored = window.__restoreCloudState(data.progress) === true;
     console.warn("[STREAK TRACE] Восстановили локальное состояние", {
@@ -3994,21 +4001,29 @@ async function restoreAccount(user, username = "") {
       time: new Date().toISOString()
     });
     if (!cloudProgressRestored) {
-      // Не разрешаем автосохранение, если облачный снимок не удалось применить:
-      // иначе стартовое локальное состояние может затереть реальные данные Firebase.
       window.__cloudProgressReadyUid = "";
       throw new Error("Облачный прогресс найден, но его структура не совпадает с текущей версией тренажёра. Автосохранение заблокировано, данные Firebase не изменены. Сообщи разработчику.");
     }
+  } else if (existingDocumentWithoutProgress) {
+    // Существующий аккаунт без progress нельзя считать новым:
+    // не сбрасываем локальное состояние и не записываем нули поверх Firestore.
+    window.__cloudProgressReadyUid = "";
+    console.error("[STREAK TRACE] В существующем документе отсутствует progress. Автосохранение заблокировано для защиты данных.", {
+      uid: user.uid,
+      time: new Date().toISOString()
+    });
   } else if (window.__resetLocalState) {
-    // Новый аккаунт не должен наследовать прогресс гостя или другого аккаунта на устройстве.
+    // Только действительно новый аккаунт начинает с чистого состояния.
     window.__resetLocalState();
   }
 
-  // Разрешаем автосохранение только после успешного восстановления либо сброса нового аккаунта.
-  window.__cloudProgressReadyUid = user.uid;
+  // Разрешаем синхронизацию только после восстановления или инициализации нового аккаунта.
+  if (!existingDocumentWithoutProgress) {
+    window.__cloudProgressReadyUid = user.uid;
+  }
 
-  // У нового аккаунта нет облачного прогресса — создаём его после снятия блокировки.
-  if (!data.progress && window.__getLocalState) {
+  // Начальный прогресс создаём только для действительно нового документа.
+  if (!data.progress && !existingDocumentWithoutProgress && window.__getLocalState) {
     await syncCloudState(window.__getLocalState());
   }
 
